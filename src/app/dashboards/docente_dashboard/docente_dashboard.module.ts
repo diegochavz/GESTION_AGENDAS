@@ -13,7 +13,12 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import{MatTooltipModule} from "@angular/material/tooltip";
 import {MatFormFieldModule} from '@angular/material/form-field';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatIconModule} from "@angular/material/icon";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   imports: [
@@ -29,6 +34,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatButtonModule,
     MatTooltipModule,
     MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   declarations: [
     Principal_docenteComponent,
