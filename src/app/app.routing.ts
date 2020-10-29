@@ -4,6 +4,7 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import {DocenteDashboardComponent} from "./dashboards/docente_dashboard/docente_dashboard.component";
+import { CrearFormularioDocenteComponent} from "./dashboards/docente_dashboard/crear_formulario_docente/crear_formulario_docente.component";
 
 const routes: Routes =[
   {
@@ -16,7 +17,7 @@ const routes: Routes =[
     children: [
       {
         path: '',
-       /* loadChildren: 'src/app/dashboards/docente_dashboard/docente_dashboard.module#DocenteDashboardModule'*/
+        /*loadChildren: () => import('src/app/dashboards/docente_dashboard/docente_dashboard.module').then(m => m.DocenteDashboardModule)*/
         loadChildren: () => import('src/app/dashboards/docente_dashboard/docente_dashboard.module').then(m => m.DocenteDashboardModule)
       }
     ]
