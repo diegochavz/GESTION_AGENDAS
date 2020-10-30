@@ -47,4 +47,8 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
     this.horarioAtencion.push(horario);
   }
+
+  borrarHorarioAtencion(indice:number){
+    this.horarioAtencion.removeAt(indice)
+  }
 }

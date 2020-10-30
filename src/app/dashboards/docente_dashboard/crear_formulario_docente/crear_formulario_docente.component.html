@@ -32,51 +32,52 @@
 
               <div class="row  pl-lg-4">
                 <div class="col-lg-6 col-md-12">
+                 <div class="row">
                   <form [formGroup]="formularioDinamico">
                     <div formArrayName="horarioAtencion">
-                      <div *ngFor="let horario of horarioAtencion.controls">
+                      <div *ngFor="let horario of horarioAtencion.controls; let i = index;">
                         <div class="row">
                           <div class="col-lg-4">
-                            <mat-form-field class="fluid" appearance="fill">
-                              <mat-label>Día
-                              </mat-label>
-                              <input matInput required>
-                              <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
-                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            <mat-form-field class="fluid" appearance="legacy">
+                              <mat-label>Día</mat-label>
+                              <mat-select>
+                                <mat-option *ngFor="let food of toppingList" [value]="food">
+                                  {{food}}
+                                </mat-option>
+                              </mat-select>
                             </mat-form-field>
                           </div>
                           <div class="col-lg-3">
-                            <mat-form-field class="fluid" appearance="fill">
+                            <mat-form-field class="fluid" appearance="legacy">
                               <mat-label>Hora inicio
                               </mat-label>
                               <input matInput required>
-                              <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
-                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                             </mat-form-field>
                           </div>
                           <div class="col-lg-3">
-                            <mat-form-field class="fluid" appearance="fill">
+                            <mat-form-field class="fluid" appearance="legacy">
                               <mat-label>Hora fin
                               </mat-label>
                               <input matInput required>
-                              <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
-                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                             </mat-form-field>
                           </div>
-                          <div class="col-lg-2">
-                            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
-                                    (click)="agregarHorarioAtencion()">
-                              <mat-icon>home</mat-icon>
-                            </button>
+                          <div class="col-lg-1">
+                            <a mat-icon-button color="primary" (click)="borrarHorarioAtencion(i)">
+                              <p class="icon-input"><i class="fas fa-trash"></i></p>
+                            </a>
                           </div>
                         </div>
-
                       </div>
-
-
-
                     </div>
                   </form>
+                 </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <a  class="fluid" mat-icon-button color="primary" (click)="agregarHorarioAtencion()">
+                        <p class="icon-input"><i class="fas fa-plus-circle"></i> Agregar un nuevo horario</p>
+                      </a>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-lg-6 col-md-12 ">
                   <form>
@@ -173,7 +174,7 @@
 
                 </div>
               </div>
-              <div>
+              <div class="btn-stepper">
                 <button mat-flat-button matStepperNext>Regresar</button>
                 <button mat-raised-button color="warn" matStepperNext>Siguiente</button>
               </div>
