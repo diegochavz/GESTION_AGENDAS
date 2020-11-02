@@ -1,0 +1,50 @@
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClipboardModule } from 'ngx-clipboard';
+import {DocenteDashboardRoutes} from "./docente_dashboard.routing";
+import {Principal_docenteComponent} from "./principal_docente/principal_docente.component";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CrearFormularioDocenteComponent } from './crear_formulario_docente/crear_formulario_docente.component';
+import {MatStepperModule} from '@angular/material/stepper';
+//import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatButtonModule} from '@angular/material/button';
+import{MatTooltipModule} from "@angular/material/tooltip";
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatIconModule} from "@angular/material/icon";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule.forChild(DocenteDashboardRoutes),
+    FormsModule,
+    HttpClientModule,
+    NgbModule,
+    ClipboardModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+   // MatFormFieldModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatOptionModule,
+    MatSelectModule,
+  ],
+  declarations: [
+    Principal_docenteComponent,
+    CrearFormularioDocenteComponent,
+  ]
+})
+
+export class DocenteDashboardModule {}

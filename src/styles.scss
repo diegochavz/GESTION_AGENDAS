@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file.
+@import '~bootstrap/scss/bootstrap';
+@import "assets/scss/argon";
+*/
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.fluid{
+  width: 100% !important;
+}
+
+.icon-input{
+  color: #B51755;
+  padding-top: 30px!important;
+  margin-left: -30px!important;
+}
+
+.move-right{
+  float: right;
+}
+
+.btn-stepper{
+  margin: 20px;
+  float: right!important;
+}
