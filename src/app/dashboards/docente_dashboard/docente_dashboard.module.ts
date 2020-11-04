@@ -7,7 +7,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import {DocenteDashboardRoutes} from "./docente_dashboard.routing";
 import {Principal_docenteComponent} from "./principal_docente/principal_docente.component";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CrearFormularioDocenteComponent } from './crear_formulario_docente/crear_formulario_docente.component';
+import { CrearFormularioDocenteComponent } from './formularios/formularios_add/formulario_add.component';
 import {MatStepperModule} from '@angular/material/stepper';
 //import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from '@angular/material/button';
@@ -19,6 +19,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatIconModule} from "@angular/material/icon";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   imports: [
@@ -40,6 +42,8 @@ import {MatSelectModule} from "@angular/material/select";
     MatIconModule,
     MatOptionModule,
     MatSelectModule,
+    MatCheckboxModule,
+    MatProgressBarModule,
   ],
   declarations: [
     Principal_docenteComponent,
