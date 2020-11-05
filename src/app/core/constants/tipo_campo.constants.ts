@@ -1,0 +1,4 @@
+export const TIPO_CAMPO = {
+  CUADRO_TEXTO: "CUADRO DE TEXTO",
+  COMBOBOX: "COMBOBOX"
+}

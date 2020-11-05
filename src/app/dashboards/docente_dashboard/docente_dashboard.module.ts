@@ -22,6 +22,10 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 
+
+import {MatDividerModule} from "@angular/material/divider";
+import {MatChipsModule} from "@angular/material/chips";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -44,6 +48,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatSelectModule,
     MatCheckboxModule,
     MatProgressBarModule,
+    MatDividerModule,
+    MatChipsModule,
+
   ],
   declarations: [
     Principal_docenteComponent,
