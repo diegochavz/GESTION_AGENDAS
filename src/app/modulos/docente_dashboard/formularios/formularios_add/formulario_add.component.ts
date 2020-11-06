@@ -13,6 +13,9 @@ import {FormularioServiceImpl} from "../../../../core/http/implement/formulario.
 import Pregunta from "../../../../core/models/pregunta.model";
 import {TIPO_CAMPO} from "../../../../core/constants/tipo_campo.constants";
 import {TIPO_DATO} from "../../../../core/constants/tipo_dato.constants";
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {MatChipInputEvent} from "@angular/material/chips";
+import {newArray} from "@angular/compiler/src/util";
 
 @Component({
   selector: 'formulario-add',
@@ -30,8 +33,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
   mensajeError: string
   listTipoDatos: Array<string>;
   listTipoCampos: Array<string>;
-  items = ['Javascript', 'Typescript'];
-
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(private _formBuilder: FormBuilder, private formularioService: FormularioServiceImpl) {
     this.loading = false;
@@ -53,27 +55,13 @@ export class CrearFormularioDocenteComponent implements OnInit {
       preguntas: this._formBuilder.array([]),
       carga_archivos: [false],
     })
-    /**
-     this.formNewPregunta = this._formBuilder.group({
-      nombre_campo: ['', Validators.required],
-      tipo_campo: ['', Validators.required],
-      tipo_dato: ['', Validators.required],
-      longitud: ['', Validators.required],
-      obligatorio: [false],
-      selecciones: ['', Validators.required],
-    })
-     **/
-
     this.listTipoDatos = this.getTipoDatos();
     this.listTipoCampos = this.getTipoCampos();
     this.agregarHorario();
     this.agregarPregunta();
   }
-  public onSelect(item) {
-    console.log('tag selected: value is ' + item);
-  }
 
-  validarIsTipoCampo(indice: number):number {
+  validarIsTipoCampo(indice: number): number {
     let response;
     switch (this.preguntas.controls[indice].value.tipo_campo) {
       case TIPO_CAMPO.CUADRO_TEXTO:
@@ -122,13 +110,28 @@ export class CrearFormularioDocenteComponent implements OnInit {
   agregarPregunta() {
     const pregunta = this._formBuilder.group({
       nombre_campo: '',
-      tipo_campo: '',
+      tipo_campo: TIPO_CAMPO.CUADRO_TEXTO,
       tipo_dato: '',
       longitud: '',
-      obligatorio: '',
-      selecciones: '',
+      obligatorio: false,
+      selecciones: this._formBuilder.array([]),
     });
     this.preguntas.push(pregunta);
+  }
+
+  listarItems(indice: number): Array<string> {
+    return this.preguntas.controls[indice].value['selecciones'] as Array<string>;
+  }
+
+  agregarItemCombobox(event: MatChipInputEvent, indice: number): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.preguntas.controls[indice].value['selecciones'].push(value.trim())
+      if (input) {
+        input.value = '';
+      }
+    }
   }
 
   borrarHorario(indice: number) {
@@ -139,6 +142,11 @@ export class CrearFormularioDocenteComponent implements OnInit {
     this.preguntas.removeAt(indice)
   }
 
+  borrarItemCombobox(indicePregunta: number, indiceItem): void {
+    if (indiceItem >= 0) {
+      this.preguntas.controls[indicePregunta].value['selecciones'].splice(indiceItem, 1);
+    }
+  }
 
   /**
    extraerDatosFormularioPregunta(): Pregunta {
@@ -154,71 +162,20 @@ export class CrearFormularioDocenteComponent implements OnInit {
     return newPregunta;
   }
 
-
-   agregarPregunta() {
-    const pregunta = this.extraerDatosFormularioPregunta();
-    const newPregunta = this._formBuilder.group({
-      nombre_campo: pregunta.nombre_campo,
-      tipo_campo: pregunta.tipo_campo,
-      tipo_dato: pregunta.tipo_dato,
-      longitud: pregunta.longitud,
-      obligatorio: pregunta.obligatorio,
-      selecciones: pregunta.nombre_campo,
-    })
-
-    this.preguntas.push(horario);
-
-
-
-
-     var newPreguntaControl = this._formBuilder.group({
-      this.pregunta.nombre_campo: ''
-    });
-
-
-
-     if (pregunta.tipo_campo == TIPO_CAMPO.CUADRO_TEXTO) {
-      newPreguntaControl =  new FormControl(Validators.maxLength(pregunta.longitud))
-    } else {
-      newPreguntaControl = null;
-    }
-     if(pregunta.obligatorio){
-      newPreguntaControl.setValidators(Validators.required);
-    }
-
-    const horario = this._formBuilder.group({
-      "fecha_horario": '',
-      inicio_horario: '',
-      fin_horario: '',
-    });
-
-    //this.preguntas.push(newPreguntaControl);
-  }
    **/
   onFormSubmit() {
-
     this.loading = true;
+    //const dataFormulario = <Formulario>Object.assign({}, this.formAddFormulario.getRawValue());
+    const dataFormulario = <Formulario>Object.assign({}, this.formAddFormulario.value);
+    console.log(dataFormulario)
+
     /**
-     this.mensajeError = null;
-     const formValues = Object.assign({}, this.formAddFormulario.value);
-     const formularioNuevo = <Formulario>{
-      nombre_formulario: formValues.nombre_formulario,
-      ubicacion_formulario: formValues.ubicacion_formulario,
-      disponibilidad_inicio_formulario: formValues.disponibilidad_inicio_formulario,
-      disponibilidad_fin_formulario: formValues.disponibilidad_fin_formulario,
-      tiempo_minimo: formValues.tiempo_minimo,
-      intervalo: formValues.intervalo,
-      duracion: formValues.duracion,
-      restringe_estudiantes: formValues.restringe_estudiantes,
-      restringe_otros_estudiantes: formValues.restringe_otros_estudiantes,
-      programas: formValues.programa,
-    };
-
-
      this.formularioService.save(FormularioNuevo).pipe(
      finalize(() => {
         this.loading = false
       })
      )**/
   }
+
+
 }

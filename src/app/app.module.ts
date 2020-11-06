@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { DocenteDashboardComponent } from './dashboards/docente_dashboard/docente_dashboard.component';
+import { DocenteDashboardComponent } from './modulos/docente_dashboard/docente_dashboard.component';
 import {AppRoutingModule} from "./app.routing";
 import {ComponentsModule} from "./components/components.module";
 import {CoreModule} from "./core/core.module";

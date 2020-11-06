@@ -22,7 +22,6 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 
-
 import {MatDividerModule} from "@angular/material/divider";
 import {MatChipsModule} from "@angular/material/chips";
 
@@ -50,7 +49,6 @@ import {MatChipsModule} from "@angular/material/chips";
     MatProgressBarModule,
     MatDividerModule,
     MatChipsModule,
-
   ],
   declarations: [
     Principal_docenteComponent,
