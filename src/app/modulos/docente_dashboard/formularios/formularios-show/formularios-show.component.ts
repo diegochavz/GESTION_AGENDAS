@@ -1,46 +1,56 @@
-import {Component, OnInit, Type, ViewChild} from '@angular/core';
+import {Component, OnInit, Type, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import Formulario from "../../../../core/models/formulario.model";
-import {Time} from "@angular/common";
 import Horario from "../../../../core/models/horario.model";
+import {MatCalendarCellClassFunction, MatCalendarCellCssClasses} from "@angular/material/datepicker";
 
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-formularios-show',
   templateUrl: './formularios-show.component.html',
-  styleUrls: ['./formularios-show.component.scss']
+  styleUrls: ['./formularios-show.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ]
 })
 export class FormulariosShowComponent implements OnInit {
 
 
   formulario: Formulario;
   listHorariosDisponibles: Array<string>;
-  title = 'ng-calendar-demo';
-  selectedDate = new Date('2019/09/26');
-  startAt = new Date('2020/09/11');
-  // startAt : Date;
-  minDate = new Date('2020/09/11');
-  maxDate = new Date(new Date().setMonth(new Date().getMonth() + 1));
-  //maxDate: Date;
+  fechasResaltar: Array<Date>;
+  selectedDate = new Date('2020/09/12');
+  startAt = new Date(2020, 1, 15);
+  minDate = new Date(2020, 1, 15);
+  maxDate = new Date(2020, 11, 20);
   year: any;
   DayAndDate: string;
 
-  constructor() {
+  constructor(private _adapter: DateAdapter<any>) {
+    this._adapter.setLocale('es');
     this.formulario = new Formulario();
     this.onSelect(this.selectedDate);
     this.listHorariosDisponibles = [];
     this.crearFormularioPrueba();
-    /**
-     this.startAt = new Date(
-     this.formulario.disponibilidad_inicio_formulario.getFullYear(),
-     this.formulario.disponibilidad_inicio_formulario.getMonth(),
-     this.formulario.disponibilidad_inicio_formulario.getDate());
+    this.fechasDisponibles();
+  }
 
-     this.maxDate = new Date(
-     this.formulario.disponibilidad_fin_formulario.getFullYear(),
-     this.formulario.disponibilidad_fin_formulario.getMonth(),
-     this.formulario.disponibilidad_fin_formulario.getDate());
-     **/
+  ngOnInit(): void {
   }
 
   crearFormularioPrueba() {
@@ -58,9 +68,13 @@ export class FormulariosShowComponent implements OnInit {
     this.formulario.restringe_otros_estudiantes = false;
     this.formulario.carga_archivos = false;
 
-    let date_3: Date = new Date(2020, 9, 11);
-    let date_4: Date = new Date(2020, 9, 18);
-    let date_5: Date = new Date(2020, 9, 8);
+    let date_3: Date = new Date(2020, 10, 11);
+    let date_4: Date = new Date(2020, 8, 18);
+    let date_5: Date = new Date(2020, 2, 8);//
+    let date_6: Date = new Date(2020, 9, 9);
+    let date_7: Date = new Date(2020, 10, 10);
+    let date_8: Date = new Date(2020, 11, 9);
+
 
     let horar: Array<Horario> = [
       {
@@ -69,12 +83,27 @@ export class FormulariosShowComponent implements OnInit {
         "fin_horario": "18:00"
       },
       {
-        fecha_horario: date_3,
+        fecha_horario: date_4,
         "inicio_horario": "14:50",
         "fin_horario": "18:00"
       },
       {
-        fecha_horario: date_4,
+        fecha_horario: date_5,
+        inicio_horario: "15:50",
+        fin_horario: "18:00"
+      },
+      {
+        "fecha_horario": date_6,
+        "inicio_horario": "13:50",
+        "fin_horario": "18:00"
+      },
+      {
+        fecha_horario: date_7,
+        "inicio_horario": "14:50",
+        "fin_horario": "18:00"
+      },
+      {
+        fecha_horario: date_8,
         inicio_horario: "15:50",
         fin_horario: "18:00"
       }
@@ -82,6 +111,23 @@ export class FormulariosShowComponent implements OnInit {
     this.formulario.horarios = horar;
   }
 
+  fechasDisponibles() {
+    this.fechasResaltar = new Array<Date>();
+    if (this.formulario.horarios != null && this.formulario.horarios != undefined) {
+      for (let i of this.formulario.horarios) {
+        this.fechasResaltar.push(i.fecha_horario)
+      }
+    }
+  }
+
+  dateClass() {
+    return (date: Date): MatCalendarCellCssClasses => {
+      //console.log("día: " + moment(date).day() + "mes " + moment(date).month() + "año" + moment(date).year()  );
+      const highlightDate = this.fechasResaltar.map(str => new Date(str.toDateString()))
+        .some(d => moment(d).date() === moment(date).date() && (moment(d).month()) === moment(date).month() && moment(d).year() === moment(date).year());
+      return highlightDate ? 'example-custom-date-class' : '';
+    };
+  }
 
   calcularHorariosDisponibles(fechaSeleccionada: Date) {
     const horarios = this.formulario.horarios;
@@ -89,9 +135,8 @@ export class FormulariosShowComponent implements OnInit {
     if (horarios != undefined && horarios != null) {
       for (var i = 0; i < this.formulario.horarios.length; i++) {
         if ((horarios[i].fecha_horario.getDate() == fechaSeleccionada.getDate()) &&
-          ((horarios[i].fecha_horario.getMonth()) == fechaSeleccionada.getMonth() + 1) &&
+          ((horarios[i].fecha_horario.getMonth()) == fechaSeleccionada.getMonth()) &&
           (horarios[i].fecha_horario.getFullYear() == fechaSeleccionada.getFullYear())) {
-          console.log("Hola")
           this.listHorariosDisponibles.push(horarios[i].inicio_horario)
         }
       }
@@ -102,7 +147,7 @@ export class FormulariosShowComponent implements OnInit {
   onSelect(event) {
     this.selectedDate = event;
     //const dateSelected = this.convertDateCalendar(event.toDateString());
-    this.calcularHorariosDisponibles(new Date(event.toDateString()))
+    //this.calcularHorariosDisponibles(new Date(event.toDateString()))
     /** const dateValue = dateString.split(' ');
      this.year = dateValue[3];
      this.DayAndDate = dateValue[0] + ',' + ' ' + dateValue[1] + ' ' + dateValue[2];
@@ -110,13 +155,16 @@ export class FormulariosShowComponent implements OnInit {
   }
 
   selectedHorario(horario: string) {
-    console.log(horario)
+    console.log("selected: " + horario)
   }
 
   /****PRUEBAS EXPAN********/
   step = 0;
 
-  setStep(index: number) {
+  setStep(index
+            :
+            number
+  ) {
     this.step = index;
   }
 
@@ -128,22 +176,5 @@ export class FormulariosShowComponent implements OnInit {
     this.step--;
   }
 
-  /****PRUEBAS EXPAN********/
 
-
-
-
-
-  formAddFormulario: FormGroup;
-
-
-  ngOnInit(): void {
-  }
-
-
-  myDateFilter = (d: Date): boolean => {
-    const day = d.getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 6;
-  }
 }

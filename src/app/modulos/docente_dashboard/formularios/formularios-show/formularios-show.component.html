@@ -26,6 +26,7 @@
                 </h3>
                 <hr class="my-4"/>
                 <div>
+                 <!--
                   <mat-calendar
                     [selected]="selectedDate"
                     [startAt]="startAt"
@@ -34,6 +35,17 @@
                     [dateFilter]="myDateFilter"
                     (selectedChange)="onSelect($event)">
                   </mat-calendar>
+                  -->
+
+                  <mat-calendar
+                    [selected]="selectedDate"
+                    [startAt]="startAt"
+                    [minDate]="minDate"
+                    [maxDate]="maxDate"
+                    [dateClass]="dateClass()"
+                    (selectedChange)="onSelect($event)">
+                  </mat-calendar>
+
                 </div>
                 <hr class="my-4"/>
                 <div class="h5 font-weight-300">

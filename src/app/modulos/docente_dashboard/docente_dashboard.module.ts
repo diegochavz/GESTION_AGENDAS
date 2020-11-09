@@ -26,6 +26,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatChipsModule} from "@angular/material/chips";
 import { FormulariosShowComponent } from './formularios/formularios-show/formularios-show.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MomentDateModule} from "@angular/material-moment-adapter";
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MatDividerModule,
     MatChipsModule,
     MatExpansionModule,
+    MomentDateModule,
   ],
   declarations: [
     Principal_docenteComponent,
