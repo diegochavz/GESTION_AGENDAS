@@ -148,21 +148,6 @@ export class CrearFormularioDocenteComponent implements OnInit {
     }
   }
 
-  /**
-   extraerDatosFormularioPregunta(): Pregunta {
-    const formValues = Object.assign({}, this.formNewPregunta.value);
-    const newPregunta = <Pregunta>{
-      nombre_campo: formValues.nombre_campo,
-      tipo_campo: formValues.tipo_campo,
-      tipo_dato: formValues.tipo_dato,
-      longitud: formValues.longitud,
-      obligatorio: formValues.obligatorio,
-      //selecciones:formValues.nombre_campo,
-    }
-    return newPregunta;
-  }
-
-   **/
   onFormSubmit() {
     this.loading = true;
     //const dataFormulario = <Formulario>Object.assign({}, this.formAddFormulario.getRawValue());

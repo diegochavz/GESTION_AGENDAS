@@ -24,6 +24,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import {MatDividerModule} from "@angular/material/divider";
 import {MatChipsModule} from "@angular/material/chips";
+import { FormulariosShowComponent } from './formularios/formularios-show/formularios-show.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   imports: [
@@ -49,10 +51,12 @@ import {MatChipsModule} from "@angular/material/chips";
     MatProgressBarModule,
     MatDividerModule,
     MatChipsModule,
+    MatExpansionModule,
   ],
   declarations: [
     Principal_docenteComponent,
     CrearFormularioDocenteComponent,
+    FormulariosShowComponent,
   ]
 })
 
