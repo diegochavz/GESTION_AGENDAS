@@ -1,9 +1,9 @@
 import {Component, OnInit, Type, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import Formulario from "../../../../core/models/formulario.model";
 import Horario from "../../../../core/models/horario.model";
 import {MatCalendarCellClassFunction, MatCalendarCellCssClasses} from "@angular/material/datepicker";
-
+import {TIPO_DATO} from "../../../../core/constants/tipo_dato.constants";
 import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
@@ -12,6 +12,8 @@ import {
 
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as moment from 'moment';
+import {TIPO_CAMPO} from "../../../../core/constants/tipo_campo.constants";
+import Pregunta from "../../../../core/models/pregunta.model";
 
 @Component({
   selector: 'app-formularios-show',
@@ -30,9 +32,10 @@ import * as moment from 'moment';
 })
 export class FormulariosShowComponent implements OnInit {
 
-
+  formularioAddAsesoria: FormGroup;
   formulario: Formulario;
   listHorariosDisponibles: Array<string>;
+  listPreguntas: Array<Pregunta>;
   fechasResaltar: Array<Date>;
   selectedDate = new Date('2020/09/12');
   startAt = new Date(2020, 1, 15);
@@ -41,17 +44,61 @@ export class FormulariosShowComponent implements OnInit {
   year: any;
   DayAndDate: string;
 
-  constructor(private _adapter: DateAdapter<any>) {
+  constructor(private _adapter: DateAdapter<any>, private _formBuilder: FormBuilder) {
     this._adapter.setLocale('es');
     this.formulario = new Formulario();
     this.onSelect(this.selectedDate);
     this.listHorariosDisponibles = [];
+    this.listPreguntas = [];
     this.crearFormularioPrueba();
     this.fechasDisponibles();
   }
 
   ngOnInit(): void {
+    this.formularioAddAsesoria = this._formBuilder.group({
+      fecha_asesoría: ['', [Validators.required]],
+      hora_asesoría: ['', [Validators.required]],
+      preguntas: this._formBuilder.array([]),
+      integrantes: this._formBuilder.array([]),
+    })
   }
+
+  get preguntas(): FormArray {
+    return this.formularioAddAsesoria.get('preguntas') as FormArray;
+  }
+
+  validarIsTipoCampo(tipoCampo: string): number {
+    let response;
+    switch (tipoCampo) {
+      case TIPO_CAMPO.CUADRO_TEXTO:
+        response = 0;
+        break;
+      case TIPO_CAMPO.COMBOBOX:
+        response = 1;
+        break
+    }
+    return response;
+  }
+
+  validarIsTipoDato(tipoDato: string): number {
+    let response;
+    switch (tipoDato) {
+      case TIPO_DATO.ALFANUMERICO:
+        response = 0;
+        break;
+      case TIPO_DATO.NUMERICO:
+        response = 1;
+        break
+    }
+    return response;
+  }
+
+  crearControlForm(index: number): number {
+      this.preguntas.push( new FormControl());
+    return index;
+  }
+
+  /***********************************************/
 
   crearFormularioPrueba() {
     this.formulario = new Formulario();
@@ -109,6 +156,47 @@ export class FormulariosShowComponent implements OnInit {
       }
     ]
     this.formulario.horarios = horar;
+
+    let pregunt: Array<Pregunta> = [
+      {
+        nombre_campo: "Nombre estudiante",
+        tipo_campo: TIPO_CAMPO.CUADRO_TEXTO,
+        tipo_dato: TIPO_DATO.ALFANUMERICO,
+        longitud: 100,
+        obligatorio: true,
+        selecciones: [],
+      },
+      {
+        nombre_campo: "Materias",
+        tipo_campo: TIPO_CAMPO.COMBOBOX,
+        tipo_dato: "",
+        longitud: 0,
+        obligatorio: true,
+        selecciones: ["Materia 1", "Materia 2", "Materia 3", "Materia 4"],
+      },
+      {
+        nombre_campo: "campos prueba",
+        tipo_campo: TIPO_CAMPO.CUADRO_TEXTO,
+        tipo_dato: TIPO_DATO.NUMERICO,
+        longitud: 4,
+        obligatorio: false,
+        selecciones: [],
+      },
+      {
+        nombre_campo: "un select de cada",
+        tipo_campo: TIPO_CAMPO.COMBOBOX,
+        tipo_dato: "",
+        longitud: 0,
+        obligatorio: false,
+        selecciones: ["SIIII", "NOOOO"],
+      }
+    ]
+
+    this.formulario.preguntas = pregunt;
+    this.listPreguntas = pregunt;
+
+
+
   }
 
   fechasDisponibles() {
