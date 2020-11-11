@@ -39,7 +39,6 @@ export class FormulariosShowComponent implements OnInit {
   @Input() minDateCalendar: Date;
   @Input() maxDateCalendar: Date;
 
-  selectedDate: Date;
   startAt: Date;
 
   //Form
@@ -54,7 +53,6 @@ export class FormulariosShowComponent implements OnInit {
     this._adapter.setLocale('es');
     this.showFormulario = new Formulario();
     this.listHorariosDisponibles = [];
-    this.selectedDate = new Date();
     this.startAt = new Date();
     this.minDateCalendar = new Date();
     this.maxDateCalendar = new Date();
@@ -126,7 +124,6 @@ export class FormulariosShowComponent implements OnInit {
   /****CONFIGURACIÓN DE HORARIOS DE ATENCIÓN***/
 
   onSelect(event) {
-    this.selectedDate = event;
     this.calcularHorariosDisponibles(event);
   }
 
