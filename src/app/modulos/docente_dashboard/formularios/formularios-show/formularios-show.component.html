@@ -26,24 +26,13 @@
                 </h3>
                 <hr class="my-4"/>
                 <div>
-                 <!--
-                  <mat-calendar
-                    [selected]="selectedDate"
-                    [startAt]="establecerStartAtCalendario()"
-                    [minDate]="establecerMinDateCalendario()"
-                    [maxDate]="establecerMaxDateCalendario()"
-                    [dateClass]="dateClass()"
-                    (selectedChange)="onSelect($event)">
-                  </mat-calendar>
-
-                  https://www.freakyjolly.com/angular-8-7-material-inline-matcalender-datepicker-tutorial-by-example/#.X6tkUMgzbIU
-                  -->
 
                   <mat-calendar
                     [selected]="selectedDate"
                     [startAt]=" startAt"
                     [minDate]="minDateCalendar"
                     [maxDate]="maxDateCalendar"
+                    [dateClass]="dateClass()"
                     (selectedChange)="onSelect($event)">
                   </mat-calendar>
 

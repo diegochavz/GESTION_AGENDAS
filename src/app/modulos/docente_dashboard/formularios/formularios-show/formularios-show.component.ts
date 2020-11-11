@@ -34,16 +34,21 @@ import {CrearFormularioDocenteComponent} from "../formularios_add/formulario_add
 })
 export class FormulariosShowComponent implements OnInit {
 
+  //Datos del formularios a exponer en el step
   @Input() showFormulario: Formulario;
   @Input() minDateCalendar: Date;
   @Input() maxDateCalendar: Date;
 
-  formularioAddAsesoria: FormGroup;
-  listHorariosDisponibles: Array<string>;
-  loadFile: FileList;
-  step = 0;
   selectedDate: Date;
   startAt: Date;
+
+  //Form
+  formularioAddAsesoria: FormGroup;
+  listHorariosDisponibles: Array<string>;
+
+  //Archivo cargado por el estudiante
+  loadFile: FileList;
+  step = 0;
 
   constructor(private _adapter: DateAdapter<any>, private _formBuilder: FormBuilder) {
     this._adapter.setLocale('es');
@@ -61,7 +66,7 @@ export class FormulariosShowComponent implements OnInit {
     this.agregarIntegrante();
   }
 
-  /****INICIO: CARGA VALORES INICIALES**************************************/
+  /****CARGA VALORES INICIALES***/
 
   crearFormAddAsesoria() {
     this.formularioAddAsesoria = this._formBuilder.group({
@@ -73,7 +78,6 @@ export class FormulariosShowComponent implements OnInit {
     })
   }
 
-  /**Retorna la duración de cada asesoría**/
   get duracionAsesoria(): number {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       return this.showFormulario.duracion;
@@ -81,7 +85,6 @@ export class FormulariosShowComponent implements OnInit {
     return 0;
   }
 
-  /**Retorna si el formulario permite carga de archivo**/
   get cargaArchivo(): boolean {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       return this.showFormulario.carga_archivos;
@@ -89,7 +92,6 @@ export class FormulariosShowComponent implements OnInit {
     return false;
   }
 
-  /**Retorna el listado de preguntas elaboradas por el docente**/
   get listPreguntas(): Array<Pregunta> {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       return this.showFormulario.preguntas;
@@ -97,72 +99,9 @@ export class FormulariosShowComponent implements OnInit {
     return new Array<Pregunta>();
   }
 
-  /****FIN: CARGA VALORES INICIALES**************************************/
+  /****CONFIGURACIÓN DEL CALENDARIO***/
 
-  /****INICIO: CONFIGURACIÓN DEL CALENDARIO**************************************/
-
-  /**Establecer limite inferior disponible del calendario
-   establecerMinDateCalendario(): Date {
-    console.log("Entre a min")
-    if (this.showFormulario != null && this.showFormulario != undefined) {
-      //Asinga una MinDate de acuerdo al especificado por el docente
-      return new Date(this.showFormulario.disponibilidad_inicio_formulario);
-    }
-    //Asigna un MinDate en la fecha actual por defecto
-    return new Date();
-  }**/
-
-  /**Establecer limite superior disponible del calendario
-   establecerMaxDateCalendario(): Date {
-    console.log("Entre a max")
-    if (this.showFormulario != null && this.showFormulario != undefined) {
-      //Asinga una MaxDate de acuerdo al especificado por el docente
-      return new Date(this.showFormulario.disponibilidad_fin_formulario);
-    }
-    //Asigna un MaxDate en la fecha actual por defecto
-    return new Date();
-  }**/
-
-
-
-  get establecerMaxDateCalendario(): Date {
-    if (this.showFormulario != null && this.showFormulario != undefined) {
-      return new Date(
-        moment(this.showFormulario.disponibilidad_fin_formulario).year(),
-        moment(this.showFormulario.disponibilidad_fin_formulario).month(),
-        moment(this.showFormulario.disponibilidad_fin_formulario).date(),
-      );
-    } else {
-      return new Date();
-    }
-    // return new Date(moment(new Date()).year(),moment(new Date()).month()+1, moment(new Date()).date());
-  }
-
-  get establecerMinDateCalendario(): Date {
-    if (this.showFormulario != null && this.showFormulario != undefined) {
-      console.log("Hola 2 " + moment(this.showFormulario.disponibilidad_inicio_formulario).year() +
-        moment(this.showFormulario.disponibilidad_inicio_formulario).month() +
-        moment(this.showFormulario.disponibilidad_inicio_formulario).date())
-      return new Date(
-        moment(this.showFormulario.disponibilidad_inicio_formulario).year(),
-        moment(this.showFormulario.disponibilidad_inicio_formulario).month(),
-        moment(this.showFormulario.disponibilidad_inicio_formulario).date(),
-      );
-    } else {
-      console.log("Hola 3")
-      return new Date();
-    }
-
-  }
-
-
-  /**Establecer desde que mes se empezara a mostrar el calendario**/
-  establecerStartAtCalendario(): Date {
-    //Asigna un StartAt en la fecha actual por defecto
-    return new Date();
-  }
-
-  /**Pinta de color diferente los días con disponibilidad de agenda en el calendario**/
+  //Personalización de días en el calendar
   dateClass() {
     return (date: Date): MatCalendarCellCssClasses => {
       let listFechasDisponibles = this.fechasDisponibles();
@@ -172,7 +111,6 @@ export class FormulariosShowComponent implements OnInit {
     };
   }
 
-  /**Retorna un listado de días con disponibilidad de agenda en el calendario**/
   fechasDisponibles(): Array<Date> {
     const newFechasDisponibles = new Array<Date>()
     if (this.showFormulario != null && this.showFormulario != undefined) {
@@ -185,46 +123,37 @@ export class FormulariosShowComponent implements OnInit {
     return newFechasDisponibles;
   }
 
-  /****FIN: CONFIGURACIÓN DEL CALENDARIO**************************************/
+  /****CONFIGURACIÓN DE HORARIOS DE ATENCIÓN***/
 
-  /****INICIO: CONFIGURACIÓN DE HORARIOS DE ATENCIÓN**************************************/
-
-  /**Retorna en la variable global listHorariosDisponibles los horarios de disponibilidad de un día seleccionado**/
   onSelect(event) {
-    console.log("Que esta pasando aquí")
-    this.listHorariosDisponibles = [];
     this.selectedDate = event;
-    /**
-     if (this.showFormulario != null && this.showFormulario != undefined) {
+    this.calcularHorariosDisponibles(event);
+  }
+
+  calcularHorariosDisponibles(fechaSeleccionada: Date) {
+    this.listHorariosDisponibles = [];
+    if (this.showFormulario != null && this.showFormulario != undefined) {
       const horarios = this.showFormulario.horarios;
       if (horarios != undefined && horarios != null) {
-        for (var i = 0; i < this.showFormulario.horarios.length; i++) {
-          if ((moment(horarios[i].fecha_horario).date() == moment(event).date()) &&
-            ((moment(horarios[i].fecha_horario).month()) == moment(event).month()) &&
-            (moment(horarios[i].fecha_horario).year() == moment(event).year())) {
+        for (var i = 0; i < horarios.length; i++) {
+          if ((moment(horarios[i].fecha_horario).date() == moment(fechaSeleccionada).date()) &&
+            ((moment(horarios[i].fecha_horario).month()) == moment(fechaSeleccionada).month()) &&
+            (moment(horarios[i].fecha_horario).year() == moment(fechaSeleccionada).year())) {
             this.listHorariosDisponibles.push(horarios[i].inicio_horario)
           }
         }
-        console.log("----> "+  this.listHorariosDisponibles)
       }
     }
-     **/
   }
 
-  /**Contiene le horario de atención seleccionado por el estudiante**/
-  selectedHorario(horario: string) {
-  }
+  selectedHorario(horario: string) {}
 
-  /****FIN: CONFIGURACIÓN DE HORARIOS DE ATENCIÓN**************************************/
+  /****CONFIGURACIÓN DE INTEGRANTES***/
 
-  /****INICIO: CONFIGURACIÓN DE INTEGRANTES**************************************/
-
-  /***Retorna una lista de Formgroup de integrantes*/
   get integrantes(): FormArray {
     return this.formularioAddAsesoria.get('integrantes') as FormArray;
   }
 
-  /***Crear un formgroup para un nuevo integrante en la lista de integrantes*/
   agregarIntegrante() {
     const newIntegrante = this._formBuilder.group({
       nombre: '',
@@ -233,22 +162,16 @@ export class FormulariosShowComponent implements OnInit {
     this.integrantes.push(newIntegrante);
   }
 
-  /***Borra un formgroup de la lista de integrantes*/
   borrarIntegrante(indice: number) {
     this.integrantes.removeAt(indice)
   }
 
-  /****FIN: CONFIGURACIÓN DE INTEGRANTES**************************************/
+  /****CONFIGURACIÓN DE PREGUNTAS***/
 
-
-  /****INICIO: CONFIGURACIÓN DE PREGUNTAS**************************************/
-
-  /***Retorna una lista  de preguntas*/
   get preguntas(): FormArray {
     return this.formularioAddAsesoria.get('preguntas') as FormArray;
   }
 
-  /***Valida si la pregunta es de tipo CUADRO_TEXTO o COMBOBOX*/
   validarIsTipoCampo(tipoCampo: string): number {
     let response;
     switch (tipoCampo) {
@@ -262,7 +185,6 @@ export class FormulariosShowComponent implements OnInit {
     return response;
   }
 
-  /***Valida si la pregunta es de tipo ALFANUMERICO o NUMERICO*/
   validarIsTipoDato(tipoDato: string): number {
     let response;
     switch (tipoDato) {
@@ -276,20 +198,16 @@ export class FormulariosShowComponent implements OnInit {
     return response;
   }
 
-  /**Crear un control por cada pregunta elaborada por el docente**/
   crearControlFormPregunta(index: number): number {
     this.preguntas.push(new FormControl());
     return index;
   }
 
-  /**Permite almacenar un archivo cargado por el estudiante**/
   cargarArchivo(event): void {
     this.loadFile = event.target.files[0];
   }
 
-  /****FIN: CONFIGURACIÓN DE PREGUNTAS**************************************/
-
-  /****INICIO: CONFIGURACIÓN DE mat-expansion-panel**************************************/
+  /****CONFIGURACIÓN DE mat-expansion-panel***/
 
   setStep(index: number) {
     this.step = index;
@@ -302,7 +220,5 @@ export class FormulariosShowComponent implements OnInit {
   prevStep() {
     this.step--;
   }
-
-  /****FIN: CONFIGURACIÓN DE mat-expansion-panel**************************************/
 
 }
