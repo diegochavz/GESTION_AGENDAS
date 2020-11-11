@@ -1,4 +1,12 @@
 <div class="header bg-gradient-danger py-7 py-lg-8">
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row ">
+      <div class="col-lg-12 col-md-10">
+        <h1 class="display-3 text-white">Visualización formulario de asesoría</h1>
+        <p class="text-white subtitle-crear-formulario">A continuación podrás ver como quedara tu formulario de asesoría
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid mt--7">
@@ -22,7 +30,7 @@
                   Docente <br><span class="font-weight-light">Nombre del docente</span>
                 </h3>
                 <h3 class="text-title-form">
-                  Formulario <br> <span class="font-weight-light">Nombre del Formulario</span>
+                  Formulario <br> <span class="font-weight-light"><span>{{nombreformularioAsesoria}}</span> </span>
                 </h3>
                 <hr class="my-4"/>
                 <div>
@@ -69,7 +77,7 @@
                 <div class="container-fluid">
                   <div class="row">
                     <div class="col-lg-12">
-                      <p class="m-t-subtitle-stepper">Ten encuenta que cada asesoría tiene una duración de
+                      <p class="m-t-subtitle-stepper"> Cada asesoría tiene una duración de
                         <span>{{duracionAsesoria}}</span> minutos
                       </p>
                     </div>
@@ -97,13 +105,11 @@
                     Solicitud de información
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-
                 <div class="container-fluid">
                   <div class="row">
                     <div class="col-lg-12">
                       <p class="m-t-subtitle-stepper">
-                        Las preguntas ayudan al docente a conocer mejor las inquietudes a ser resueltas durante la
-                        orientación académica
+                        Diligencia las preguntas presentadas a continuación
                       </p>
                     </div>
                   </div>
@@ -146,9 +152,28 @@
                         (change)="cargarArchivo($event)">
                     </div>
                   </div>
+                  <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría academica</h3><br/></div>
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-radio-group formControlName="lugar">
+                        <mat-radio-button value="1">Presencial</mat-radio-button>
+                        <mat-radio-button value="2">Virtual</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <p *ngIf="formularioAddAsesoria.controls['lugar'].value ==1">
+                      Lugar de asesoría: {{lugarPreencial}}
+                    </p>
+
+                    <p *ngIf="formularioAddAsesoria.controls['lugar'].value ==2">
+                      Lugar de asesoría: Virtual
+                    </p>
+
+                  </div>
 
                 </div>
-
                 <mat-action-row>
                   <a mat-button (click)="prevStep()">Anterior</a>
                   <a mat-raised-button color="accent" (click)="nextStep()">Siguiente</a>
@@ -162,6 +187,13 @@
                 </mat-expansion-panel-header>
 
                 <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p class="m-t-subtitle-stepper">
+                        Añade a tu equipo de trabajo para agendar la reunión vía email
+                      </p>
+                    </div>
+                  </div>
                   <div class="row">
                     <div formArrayName='integrantes'>
                       <div *ngFor="let integrante of integrantes.controls; let i = index;">
@@ -204,7 +236,7 @@
 
                 <mat-action-row>
                   <a mat-button (click)="prevStep()">Anterior</a>
-                  <a mat-raised-button color="accent" (click)="nextStep()">Finalizar</a>
+                  <a mat-raised-button color="accent" (click)="nextStep()">Agendar</a>
                 </mat-action-row>
               </mat-expansion-panel>
             </mat-accordion>

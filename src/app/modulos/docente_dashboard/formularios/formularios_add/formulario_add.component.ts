@@ -141,7 +141,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
     const pregunta = this._formBuilder.group({
       nombre_campo: ['', [Validators.required]],
       tipo_campo: [TIPO_CAMPO.CUADRO_TEXTO, [Validators.required]],
-      tipo_dato: '',
+      tipo_dato: [TIPO_DATO.ALFANUMERICO],
       longitud: '',
       obligatorio: false,
       selecciones: this._formBuilder.array([]),

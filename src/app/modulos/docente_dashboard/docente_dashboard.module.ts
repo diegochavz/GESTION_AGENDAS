@@ -27,6 +27,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import { FormulariosShowComponent } from './formularios/formularios-show/formularios-show.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MomentDateModule} from "@angular/material-moment-adapter";
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import {MomentDateModule} from "@angular/material-moment-adapter";
     MatChipsModule,
     MatExpansionModule,
     MomentDateModule,
+    MatRadioModule,
   ],
   declarations: [
     Principal_docenteComponent,

@@ -73,6 +73,7 @@ export class FormulariosShowComponent implements OnInit {
       preguntas: this._formBuilder.array([]),
       integrantes: this._formBuilder.array([]),
       file: '',
+      lugar:false,
     })
   }
 
@@ -83,11 +84,24 @@ export class FormulariosShowComponent implements OnInit {
     return 0;
   }
 
+  get nombreformularioAsesoria(): string {
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      return this.showFormulario.nombre_formulario;
+    }
+    return '';
+  }
+
   get cargaArchivo(): boolean {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       return this.showFormulario.carga_archivos;
     }
     return false;
+  }
+  get lugarPreencial(): string {
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      return this.showFormulario.ubicacion_formulario+"";
+    }
+    return '';
   }
 
   get listPreguntas(): Array<Pregunta> {
