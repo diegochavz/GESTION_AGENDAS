@@ -14,3 +14,10 @@
 .titulo-general-elementos{
   margin-bottom: -20px!important;
 }
+
+
+::ng-deep .mat-horizontal-stepper-header{
+  pointer-events: none !important;
+}
+
+

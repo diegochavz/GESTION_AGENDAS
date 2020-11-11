@@ -4,5 +4,8 @@ import {CrearFormularioDocenteComponent} from "./formularios/formularios_add/for
 import {FormulariosShowComponent} from "./formularios/formularios-show/formularios-show.component";
 
 export const DocenteDashboardRoutes: Routes = [
-  { path: 'principal',      component: FormulariosShowComponent },
+  { path: 'principal',      component: Principal_docenteComponent },
+  { path: 'crear-formulario',      component: CrearFormularioDocenteComponent },
+  { path: 'n',      component: FormulariosShowComponent },
+
 ];

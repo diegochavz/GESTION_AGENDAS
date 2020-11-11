@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -16,27 +16,53 @@ import {TIPO_DATO} from "../../../../core/constants/tipo_dato.constants";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {newArray} from "@angular/compiler/src/util";
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter
+} from "@angular/material-moment-adapter";
+import {Observable, Subject} from "rxjs";
 
 @Component({
   selector: 'formulario-add',
   templateUrl: './formulario_add.component.html',
-  styleUrls: ['./formulario_add.component.scss']
-
+  styleUrls: ['./formulario_add.component.scss'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ]
 })
 export class CrearFormularioDocenteComponent implements OnInit {
 
   formAddFormulario: FormGroup;
   formNewPregunta: FormGroup;
-  toppings = new FormControl();
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   loading: boolean;
   mensajeError: string
   listTipoDatos: Array<string>;
   listTipoCampos: Array<string>;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  newFormulario: Formulario;
+  //Impide el paso del Step 1
+  isDisable_1 = true;
 
-  constructor(private _formBuilder: FormBuilder, private formularioService: FormularioServiceImpl) {
+  //Impide el paso del Step 2
+  isDisable_2 = true;
+
+  minDate: Date;
+  maxDate: Date;
+
+
+  constructor(private _adapter: DateAdapter<any>, private _formBuilder: FormBuilder, private formularioService: FormularioServiceImpl) {
+    this._adapter.setLocale('es');
     this.loading = false;
+    this.minDate = new Date();
+    this.maxDate = new Date();
   }
 
   ngOnInit() {
@@ -59,6 +85,11 @@ export class CrearFormularioDocenteComponent implements OnInit {
     this.listTipoCampos = this.getTipoCampos();
     this.agregarHorario();
     this.agregarPregunta();
+
+    this.formAddFormulario.valueChanges.subscribe(rst =>{
+      this.validarGrupoHorarioAtencion();
+      this.validarGrupoPreguntas();
+    })
   }
 
   validarIsTipoCampo(indice: number): number {
@@ -105,18 +136,20 @@ export class CrearFormularioDocenteComponent implements OnInit {
       fin_horario: '',
     });
     this.horarios.push(horario);
+    this.isDisable_1 = true;
   }
 
   agregarPregunta() {
     const pregunta = this._formBuilder.group({
-      nombre_campo: '',
-      tipo_campo: TIPO_CAMPO.CUADRO_TEXTO,
+      nombre_campo: ['',[Validators.required]],
+      tipo_campo:  [TIPO_CAMPO.CUADRO_TEXTO,[Validators.required]],
       tipo_dato: '',
       longitud: '',
       obligatorio: false,
       selecciones: this._formBuilder.array([]),
     });
     this.preguntas.push(pregunta);
+    this.isDisable_2 = true;
   }
 
   listarItems(indice: number): Array<string> {
@@ -148,12 +181,40 @@ export class CrearFormularioDocenteComponent implements OnInit {
     }
   }
 
+  validarGrupoPreguntas(){
+    if (!this.formAddFormulario.controls["preguntas"].invalid) {
+      this.isDisable_2 = false;
+    } else {
+      this.isDisable_2 = true;
+    }
+  }
+
+  validarGrupoHorarioAtencion() {
+    if (
+      !this.formAddFormulario.controls["nombre_formulario"].invalid &&
+      !this.formAddFormulario.controls["ubicacion_formulario"].invalid &&
+      !this.formAddFormulario.controls["disponibilidad_inicio_formulario"].invalid &&
+      !this.formAddFormulario.controls["disponibilidad_fin_formulario"].invalid &&
+      !this.formAddFormulario.controls["tiempo_minimo"].invalid &&
+      !this.formAddFormulario.controls["intervalo"].invalid &&
+      !this.formAddFormulario.controls["duracion"].invalid &&
+      !this.formAddFormulario.controls["horarios"].invalid
+    ) {
+      this.isDisable_1 = false;
+    } else {
+      this.isDisable_1 = true;
+    }
+  }
+
+  onShowFormulario() {
+    this.newFormulario = <Formulario>Object.assign({}, this.formAddFormulario.value);
+    this.minDate = this.newFormulario.disponibilidad_inicio_formulario;
+    this.maxDate = this.newFormulario.disponibilidad_fin_formulario;
+  }
+
   onFormSubmit() {
     this.loading = true;
     //const dataFormulario = <Formulario>Object.assign({}, this.formAddFormulario.getRawValue());
-    const dataFormulario = <Formulario>Object.assign({}, this.formAddFormulario.value);
-    console.log(dataFormulario)
-
     /**
      this.formularioService.save(FormularioNuevo).pipe(
      finalize(() => {

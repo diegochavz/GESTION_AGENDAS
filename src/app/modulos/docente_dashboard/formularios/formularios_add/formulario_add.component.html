@@ -18,8 +18,7 @@
       <div class="card bg-secondary shadow">
         <div class="card-body">
           <mat-progress-bar mode="indeterminate" color="accent" [hidden]="!loading"></mat-progress-bar>
-          <form [formGroup]="formAddFormulario"
-                (ngSubmit)="onFormSubmit()">
+          <form [formGroup]="formAddFormulario">
             <mat-horizontal-stepper>
               <mat-step label="Horario de atención">
                 <div class="row">
@@ -33,13 +32,12 @@
                     <div class="row">
                       <div formArrayName='horarios'>
                         <div *ngFor="let horario of horarios.controls; let i = index;">
-
                           <div [formGroupName]="i">
                             <div class="row">
                               <div class="col-lg-4">
                                 <mat-form-field class="fluid" appearance="legacy">
                                   <input formControlName="fecha_horario" matInput [matDatepicker]="picker1"
-                                         placeholder="Día">
+                                         placeholder="Día" required>
                                   <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                   <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
@@ -48,13 +46,13 @@
                                 <mat-form-field class="fluid" appearance="legacy">
                                   <mat-label>Hora inicio
                                   </mat-label>
-                                  <input matInput formControlName="inicio_horario" type="number" required>
+                                  <input matInput formControlName="inicio_horario" type="time" required>
                                 </mat-form-field>
                               </div>
                               <div class="col-lg-3">
                                 <mat-form-field class="fluid" appearance="legacy">
                                   <mat-label>Hora fin</mat-label>
-                                  <input matInput formControlName="fin_horario" type="number" required>
+                                  <input matInput formControlName="fin_horario" type="time" required>
                                 </mat-form-field>
                               </div>
                               <div class="col-lg-1">
@@ -131,7 +129,7 @@
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Tiempo mínimo
                           </mat-label>
-                          <input matInput formControlName="tiempo_minimo" required>
+                          <input matInput formControlName="tiempo_minimo" type="number" required>
                           <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
@@ -140,7 +138,7 @@
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Intervalo
                           </mat-label>
-                          <input matInput formControlName="intervalo" required>
+                          <input matInput formControlName="intervalo" type="number" required>
                           <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
@@ -151,22 +149,12 @@
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Duración
                           </mat-label>
-                          <input matInput formControlName="duracion" required>
+                          <input matInput formControlName="duracion"  type="number" required>
                           <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
                       <div class="col-lg-6">
-                        <!--
-                         <mat-form-field  class="fluid" appearance="fill">
-                           <mat-label>Planes academicos</mat-label>
-                           <mat-select formControlName="plan_estudios" [formControl]="toppings" multiple>
-                             <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-                           </mat-select>
-                           <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="below">
-                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                         </mat-form-field>
-                         -->
                       </div>
                     </div>
                     <div class="row">
@@ -200,12 +188,11 @@
                 </div>
                 <mat-divider class="m-lg-3"></mat-divider>
                 <div class="btn-stepper">
-                  <button (click)="onFormSubmit()" type="submit" mat-raised-button color="warn" matStepperNext>
+                  <button type="submit" mat-raised-button color="warn" matStepperNext [disabled]="false">
                     Siguiente
                   </button>
                 </div>
               </mat-step>
-
               <mat-step label="Formulario de información">
                 <div class="row">
                   <div class="col-lg-12">
@@ -236,7 +223,7 @@
                                   <div class="col-lg-3">
                                     <mat-form-field class="fluid" appearance="fill">
                                       <mat-label>Tipo de campo</mat-label>
-                                      <mat-select formControlName="tipo_campo">
+                                      <mat-select formControlName="tipo_campo" required>
                                         <mat-option *ngFor="let tipo of listTipoCampos"
                                                     [value]="tipo">{{tipo}}</mat-option>
                                       </mat-select>
@@ -261,7 +248,7 @@
                                     <mat-form-field class="fluid" appearance="fill">
                                       <mat-label>Longitud
                                       </mat-label>
-                                      <input matInput formControlName="longitud" required>
+                                      <input matInput formControlName="longitud">
                                       <mat-icon matSuffix><a matTooltip="Info about the action"
                                                              matTooltipPosition="after">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
@@ -270,8 +257,8 @@
                                   <div *ngIf="validarIsTipoCampo(i) == 1" class="col-lg-6 pt-lg-1">
                                     <mat-form-field class="fluid">
                                       <mat-label>ítems del Combobox</mat-label>
-                                      <mat-chip-list  #chipList>
-                                        <mat-chip  *ngFor="let item of listarItems(i); let j = index;"
+                                      <mat-chip-list #chipList>
+                                        <mat-chip *ngFor="let item of listarItems(i); let j = index;"
                                                   [removable]="true" (removed)="borrarItemCombobox(i,j)">
                                           {{item}}
                                           <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
@@ -319,21 +306,22 @@
                 <div class="btn-stepper">
                   <div>
                     <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <button mat-raised-button color="warn" (click)="onFormSubmit()" matStepperNext>Finalizar</button>
+                    <button mat-raised-button color="warn" (click)="onShowFormulario()" [disabled]="false" matStepperNext>Siguiente
+                    </button>
                   </div>
                 </div>
               </mat-step>
-
-
-                            <mat-step label="URL del formulario">
-
-                              <app-formularios-show></app-formularios-show>
-                              <div>
-                                <button mat-flat-button matStepperPrevious>Regresar</button>
-                                <button mat-raised-button color="warn" matStepperNext>Finalizar</button>
-                              </div>
-                            </mat-step>
-
+              <mat-step label="Visualización del formulario">
+                <app-formularios-show [showFormulario]="newFormulario" [minDateCalendar]="minDate" [maxDateCalendar]="maxDate" ></app-formularios-show>
+                <mat-divider class="m-lg-3"></mat-divider>
+                <div class="btn-stepper">
+                  <div>
+                    <button mat-flat-button matStepperPrevious>Regresar</button>
+                    <button mat-raised-button color="warn" (click)="onFormSubmit()" matStepperNext>Generar enlace
+                    </button>
+                  </div>
+                </div>
+              </mat-step>
             </mat-horizontal-stepper>
           </form>
         </div>

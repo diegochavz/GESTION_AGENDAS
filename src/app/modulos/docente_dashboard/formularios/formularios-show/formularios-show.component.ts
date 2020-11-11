@@ -1,8 +1,8 @@
-import {Component, OnInit, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import Formulario from "../../../../core/models/formulario.model";
 import Horario from "../../../../core/models/horario.model";
-import {MatCalendarCellClassFunction, MatCalendarCellCssClasses} from "@angular/material/datepicker";
+import {MatCalendar, MatCalendarCellClassFunction, MatCalendarCellCssClasses} from "@angular/material/datepicker";
 import {TIPO_DATO} from "../../../../core/constants/tipo_dato.constants";
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -14,6 +14,8 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import * as moment from 'moment';
 import {TIPO_CAMPO} from "../../../../core/constants/tipo_campo.constants";
 import Pregunta from "../../../../core/models/pregunta.model";
+import {Observable, Observer} from "rxjs";
+import {CrearFormularioDocenteComponent} from "../formularios_add/formulario_add.component";
 
 @Component({
   selector: 'app-formularios-show',
@@ -32,41 +34,221 @@ import Pregunta from "../../../../core/models/pregunta.model";
 })
 export class FormulariosShowComponent implements OnInit {
 
+  @Input() showFormulario: Formulario;
+  @Input() minDateCalendar: Date;
+  @Input() maxDateCalendar: Date;
+
   formularioAddAsesoria: FormGroup;
-  formulario: Formulario;
   listHorariosDisponibles: Array<string>;
-  listPreguntas: Array<Pregunta>;
-  fechasResaltar: Array<Date>;
-  selectedDate = new Date('2020/09/12');
-  startAt = new Date(2020, 1, 15);
-  minDate = new Date(2020, 1, 15);
-  maxDate = new Date(2020, 11, 20);
-  year: any;
-  DayAndDate: string;
+  loadFile: FileList;
+  step = 0;
+  selectedDate: Date;
+  startAt: Date;
 
   constructor(private _adapter: DateAdapter<any>, private _formBuilder: FormBuilder) {
     this._adapter.setLocale('es');
-    this.formulario = new Formulario();
-    this.onSelect(this.selectedDate);
+    this.showFormulario = new Formulario();
     this.listHorariosDisponibles = [];
-    this.listPreguntas = [];
-    this.crearFormularioPrueba();
-    this.fechasDisponibles();
+    this.selectedDate = new Date();
+    this.startAt = new Date();
+    this.minDateCalendar = new Date();
+    this.maxDateCalendar = new Date();
   }
 
+
   ngOnInit(): void {
+    this.crearFormAddAsesoria();
+    this.agregarIntegrante();
+  }
+
+  /****INICIO: CARGA VALORES INICIALES**************************************/
+
+  crearFormAddAsesoria() {
     this.formularioAddAsesoria = this._formBuilder.group({
       fecha_asesoría: ['', [Validators.required]],
       hora_asesoría: ['', [Validators.required]],
       preguntas: this._formBuilder.array([]),
       integrantes: this._formBuilder.array([]),
+      file: '',
     })
   }
 
+  /**Retorna la duración de cada asesoría**/
+  get duracionAsesoria(): number {
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      return this.showFormulario.duracion;
+    }
+    return 0;
+  }
+
+  /**Retorna si el formulario permite carga de archivo**/
+  get cargaArchivo(): boolean {
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      return this.showFormulario.carga_archivos;
+    }
+    return false;
+  }
+
+  /**Retorna el listado de preguntas elaboradas por el docente**/
+  get listPreguntas(): Array<Pregunta> {
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      return this.showFormulario.preguntas;
+    }
+    return new Array<Pregunta>();
+  }
+
+  /****FIN: CARGA VALORES INICIALES**************************************/
+
+  /****INICIO: CONFIGURACIÓN DEL CALENDARIO**************************************/
+
+  /**Establecer limite inferior disponible del calendario
+   establecerMinDateCalendario(): Date {
+    console.log("Entre a min")
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      //Asinga una MinDate de acuerdo al especificado por el docente
+      return new Date(this.showFormulario.disponibilidad_inicio_formulario);
+    }
+    //Asigna un MinDate en la fecha actual por defecto
+    return new Date();
+  }**/
+
+  /**Establecer limite superior disponible del calendario
+   establecerMaxDateCalendario(): Date {
+    console.log("Entre a max")
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      //Asinga una MaxDate de acuerdo al especificado por el docente
+      return new Date(this.showFormulario.disponibilidad_fin_formulario);
+    }
+    //Asigna un MaxDate en la fecha actual por defecto
+    return new Date();
+  }**/
+
+
+
+  get establecerMaxDateCalendario(): Date {
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      return new Date(
+        moment(this.showFormulario.disponibilidad_fin_formulario).year(),
+        moment(this.showFormulario.disponibilidad_fin_formulario).month(),
+        moment(this.showFormulario.disponibilidad_fin_formulario).date(),
+      );
+    } else {
+      return new Date();
+    }
+    // return new Date(moment(new Date()).year(),moment(new Date()).month()+1, moment(new Date()).date());
+  }
+
+  get establecerMinDateCalendario(): Date {
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      console.log("Hola 2 " + moment(this.showFormulario.disponibilidad_inicio_formulario).year() +
+        moment(this.showFormulario.disponibilidad_inicio_formulario).month() +
+        moment(this.showFormulario.disponibilidad_inicio_formulario).date())
+      return new Date(
+        moment(this.showFormulario.disponibilidad_inicio_formulario).year(),
+        moment(this.showFormulario.disponibilidad_inicio_formulario).month(),
+        moment(this.showFormulario.disponibilidad_inicio_formulario).date(),
+      );
+    } else {
+      console.log("Hola 3")
+      return new Date();
+    }
+
+  }
+
+
+  /**Establecer desde que mes se empezara a mostrar el calendario**/
+  establecerStartAtCalendario(): Date {
+    //Asigna un StartAt en la fecha actual por defecto
+    return new Date();
+  }
+
+  /**Pinta de color diferente los días con disponibilidad de agenda en el calendario**/
+  dateClass() {
+    return (date: Date): MatCalendarCellCssClasses => {
+      let listFechasDisponibles = this.fechasDisponibles();
+      const highlightDate = listFechasDisponibles.map(str => new Date(str))
+        .some(d => moment(d).date() === moment(date).date() && (moment(d).month()) === moment(date).month() && moment(d).year() === moment(date).year());
+      return highlightDate ? 'example-custom-date-class' : '';
+    };
+  }
+
+  /**Retorna un listado de días con disponibilidad de agenda en el calendario**/
+  fechasDisponibles(): Array<Date> {
+    const newFechasDisponibles = new Array<Date>()
+    if (this.showFormulario != null && this.showFormulario != undefined) {
+      if (this.showFormulario.horarios != null && this.showFormulario.horarios != undefined) {
+        for (let i of this.showFormulario.horarios) {
+          newFechasDisponibles.push(i.fecha_horario)
+        }
+      }
+    }
+    return newFechasDisponibles;
+  }
+
+  /****FIN: CONFIGURACIÓN DEL CALENDARIO**************************************/
+
+  /****INICIO: CONFIGURACIÓN DE HORARIOS DE ATENCIÓN**************************************/
+
+  /**Retorna en la variable global listHorariosDisponibles los horarios de disponibilidad de un día seleccionado**/
+  onSelect(event) {
+    console.log("Que esta pasando aquí")
+    this.listHorariosDisponibles = [];
+    this.selectedDate = event;
+    /**
+     if (this.showFormulario != null && this.showFormulario != undefined) {
+      const horarios = this.showFormulario.horarios;
+      if (horarios != undefined && horarios != null) {
+        for (var i = 0; i < this.showFormulario.horarios.length; i++) {
+          if ((moment(horarios[i].fecha_horario).date() == moment(event).date()) &&
+            ((moment(horarios[i].fecha_horario).month()) == moment(event).month()) &&
+            (moment(horarios[i].fecha_horario).year() == moment(event).year())) {
+            this.listHorariosDisponibles.push(horarios[i].inicio_horario)
+          }
+        }
+        console.log("----> "+  this.listHorariosDisponibles)
+      }
+    }
+     **/
+  }
+
+  /**Contiene le horario de atención seleccionado por el estudiante**/
+  selectedHorario(horario: string) {
+  }
+
+  /****FIN: CONFIGURACIÓN DE HORARIOS DE ATENCIÓN**************************************/
+
+  /****INICIO: CONFIGURACIÓN DE INTEGRANTES**************************************/
+
+  /***Retorna una lista de Formgroup de integrantes*/
+  get integrantes(): FormArray {
+    return this.formularioAddAsesoria.get('integrantes') as FormArray;
+  }
+
+  /***Crear un formgroup para un nuevo integrante en la lista de integrantes*/
+  agregarIntegrante() {
+    const newIntegrante = this._formBuilder.group({
+      nombre: '',
+      correo: '',
+    });
+    this.integrantes.push(newIntegrante);
+  }
+
+  /***Borra un formgroup de la lista de integrantes*/
+  borrarIntegrante(indice: number) {
+    this.integrantes.removeAt(indice)
+  }
+
+  /****FIN: CONFIGURACIÓN DE INTEGRANTES**************************************/
+
+
+  /****INICIO: CONFIGURACIÓN DE PREGUNTAS**************************************/
+
+  /***Retorna una lista  de preguntas*/
   get preguntas(): FormArray {
     return this.formularioAddAsesoria.get('preguntas') as FormArray;
   }
 
+  /***Valida si la pregunta es de tipo CUADRO_TEXTO o COMBOBOX*/
   validarIsTipoCampo(tipoCampo: string): number {
     let response;
     switch (tipoCampo) {
@@ -80,6 +262,7 @@ export class FormulariosShowComponent implements OnInit {
     return response;
   }
 
+  /***Valida si la pregunta es de tipo ALFANUMERICO o NUMERICO*/
   validarIsTipoDato(tipoDato: string): number {
     let response;
     switch (tipoDato) {
@@ -93,166 +276,22 @@ export class FormulariosShowComponent implements OnInit {
     return response;
   }
 
-  crearControlForm(index: number): number {
-      this.preguntas.push( new FormControl());
+  /**Crear un control por cada pregunta elaborada por el docente**/
+  crearControlFormPregunta(index: number): number {
+    this.preguntas.push(new FormControl());
     return index;
   }
 
-  /***********************************************/
-
-  crearFormularioPrueba() {
-    this.formulario = new Formulario();
-    this.formulario.nombre_formulario = "Formulario de prueba";
-    this.formulario.ubicacion_formulario = "SA 403";
-    let date_1: Date = new Date(2020, 5, 1);
-    let date_2: Date = new Date(2020, 5, 20);
-
-    this.formulario.disponibilidad_fin_formulario = date_1;
-    this.formulario.disponibilidad_fin_formulario = date_2;
-    this.formulario.intervalo = 10;
-    this.formulario.duracion = 15;
-    this.formulario.restringe_estudiantes = false;
-    this.formulario.restringe_otros_estudiantes = false;
-    this.formulario.carga_archivos = false;
-
-    let date_3: Date = new Date(2020, 10, 11);
-    let date_4: Date = new Date(2020, 8, 18);
-    let date_5: Date = new Date(2020, 2, 8);//
-    let date_6: Date = new Date(2020, 9, 9);
-    let date_7: Date = new Date(2020, 10, 10);
-    let date_8: Date = new Date(2020, 11, 9);
-
-
-    let horar: Array<Horario> = [
-      {
-        "fecha_horario": date_3,
-        "inicio_horario": "13:50",
-        "fin_horario": "18:00"
-      },
-      {
-        fecha_horario: date_4,
-        "inicio_horario": "14:50",
-        "fin_horario": "18:00"
-      },
-      {
-        fecha_horario: date_5,
-        inicio_horario: "15:50",
-        fin_horario: "18:00"
-      },
-      {
-        "fecha_horario": date_6,
-        "inicio_horario": "13:50",
-        "fin_horario": "18:00"
-      },
-      {
-        fecha_horario: date_7,
-        "inicio_horario": "14:50",
-        "fin_horario": "18:00"
-      },
-      {
-        fecha_horario: date_8,
-        inicio_horario: "15:50",
-        fin_horario: "18:00"
-      }
-    ]
-    this.formulario.horarios = horar;
-
-    let pregunt: Array<Pregunta> = [
-      {
-        nombre_campo: "Nombre estudiante",
-        tipo_campo: TIPO_CAMPO.CUADRO_TEXTO,
-        tipo_dato: TIPO_DATO.ALFANUMERICO,
-        longitud: 100,
-        obligatorio: true,
-        selecciones: [],
-      },
-      {
-        nombre_campo: "Materias",
-        tipo_campo: TIPO_CAMPO.COMBOBOX,
-        tipo_dato: "",
-        longitud: 0,
-        obligatorio: true,
-        selecciones: ["Materia 1", "Materia 2", "Materia 3", "Materia 4"],
-      },
-      {
-        nombre_campo: "campos prueba",
-        tipo_campo: TIPO_CAMPO.CUADRO_TEXTO,
-        tipo_dato: TIPO_DATO.NUMERICO,
-        longitud: 4,
-        obligatorio: false,
-        selecciones: [],
-      },
-      {
-        nombre_campo: "un select de cada",
-        tipo_campo: TIPO_CAMPO.COMBOBOX,
-        tipo_dato: "",
-        longitud: 0,
-        obligatorio: false,
-        selecciones: ["SIIII", "NOOOO"],
-      }
-    ]
-
-    this.formulario.preguntas = pregunt;
-    this.listPreguntas = pregunt;
-
-
-
+  /**Permite almacenar un archivo cargado por el estudiante**/
+  cargarArchivo(event): void {
+    this.loadFile = event.target.files[0];
   }
 
-  fechasDisponibles() {
-    this.fechasResaltar = new Array<Date>();
-    if (this.formulario.horarios != null && this.formulario.horarios != undefined) {
-      for (let i of this.formulario.horarios) {
-        this.fechasResaltar.push(i.fecha_horario)
-      }
-    }
-  }
+  /****FIN: CONFIGURACIÓN DE PREGUNTAS**************************************/
 
-  dateClass() {
-    return (date: Date): MatCalendarCellCssClasses => {
-      //console.log("día: " + moment(date).day() + "mes " + moment(date).month() + "año" + moment(date).year()  );
-      const highlightDate = this.fechasResaltar.map(str => new Date(str.toDateString()))
-        .some(d => moment(d).date() === moment(date).date() && (moment(d).month()) === moment(date).month() && moment(d).year() === moment(date).year());
-      return highlightDate ? 'example-custom-date-class' : '';
-    };
-  }
+  /****INICIO: CONFIGURACIÓN DE mat-expansion-panel**************************************/
 
-  calcularHorariosDisponibles(fechaSeleccionada: Date) {
-    const horarios = this.formulario.horarios;
-    this.listHorariosDisponibles = [];
-    if (horarios != undefined && horarios != null) {
-      for (var i = 0; i < this.formulario.horarios.length; i++) {
-        if ((horarios[i].fecha_horario.getDate() == fechaSeleccionada.getDate()) &&
-          ((horarios[i].fecha_horario.getMonth()) == fechaSeleccionada.getMonth()) &&
-          (horarios[i].fecha_horario.getFullYear() == fechaSeleccionada.getFullYear())) {
-          this.listHorariosDisponibles.push(horarios[i].inicio_horario)
-        }
-      }
-    }
-  }
-
-
-  onSelect(event) {
-    this.selectedDate = event;
-    //const dateSelected = this.convertDateCalendar(event.toDateString());
-    //this.calcularHorariosDisponibles(new Date(event.toDateString()))
-    /** const dateValue = dateString.split(' ');
-     this.year = dateValue[3];
-     this.DayAndDate = dateValue[0] + ',' + ' ' + dateValue[1] + ' ' + dateValue[2];
-     **/
-  }
-
-  selectedHorario(horario: string) {
-    console.log("selected: " + horario)
-  }
-
-  /****PRUEBAS EXPAN********/
-  step = 0;
-
-  setStep(index
-            :
-            number
-  ) {
+  setStep(index: number) {
     this.step = index;
   }
 
@@ -264,5 +303,6 @@ export class FormulariosShowComponent implements OnInit {
     this.step--;
   }
 
+  /****FIN: CONFIGURACIÓN DE mat-expansion-panel**************************************/
 
 }
