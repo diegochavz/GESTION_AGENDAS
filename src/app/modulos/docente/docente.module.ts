@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
-import {DocenteDashboardRoutes} from "./docente_dashboard.routing";
-import {Principal_docenteComponent} from "./principal_docente/principal_docente.component";
+import {DocenteDashboardRoutes} from "./docente.routing";
+import {Principal_docenteComponent} from "./main/principal_docente.component";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CrearFormularioDocenteComponent } from './formularios/formularios_add/formulario_add.component';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -28,6 +28,7 @@ import { FormulariosShowComponent } from './formularios/formularios-show/formula
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MomentDateModule} from "@angular/material-moment-adapter";
 import {MatRadioModule} from '@angular/material/radio';
+import { FormulariosListComponent } from './formularios/formularios-list/formularios-list.component';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import {MatRadioModule} from '@angular/material/radio';
     Principal_docenteComponent,
     CrearFormularioDocenteComponent,
     FormulariosShowComponent,
+    FormulariosListComponent,
   ]
 })
 

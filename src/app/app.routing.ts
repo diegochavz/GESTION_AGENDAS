@@ -3,8 +3,8 @@ import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
-import {DocenteDashboardComponent} from "./modulos/docente_dashboard/docente_dashboard.component";
-import { CrearFormularioDocenteComponent} from "./modulos/docente_dashboard/formularios/formularios_add/formulario_add.component";
+import {DocenteComponent} from "./modulos/docente/docente.component";
+import { CrearFormularioDocenteComponent} from "./modulos/docente/formularios/formularios_add/formulario_add.component";
 
 const routes: Routes =[
   {
@@ -13,12 +13,12 @@ const routes: Routes =[
     pathMatch: 'full',
   }, {
     path: '',
-    component: DocenteDashboardComponent,
+    component: DocenteComponent,
     children: [
       {
         path: '',
-        /*loadChildren: () => import('src/app/modulos/docente_dashboard/docente_dashboard.module').then(m => m.DocenteDashboardModule)*/
-        loadChildren: () => import('src/app/modulos/docente_dashboard/docente_dashboard.module').then(m => m.DocenteDashboardModule)
+        /*loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteDashboardModule)*/
+        loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteDashboardModule)
       }
     ]
   }, {
