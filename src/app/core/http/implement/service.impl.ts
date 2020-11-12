@@ -37,6 +37,10 @@ export class ServiceImpl<T> implements IService<T> {
     return this.httpClient.delete(this.getFullPath() + id).pipe(map((res: any) => res.data));
   }
 
+  executeGet(path: string): Observable<any> {
+    return this.httpClient.get(this.getFullPath() + path).pipe(map((res: any) => res));
+  }
+
   /**
    post(data: any, path?: string): Observable<any> {
     if (!path) {
@@ -50,9 +54,7 @@ export class ServiceImpl<T> implements IService<T> {
     return this.httpClient.get(this.getFullPath(), {params: filter}).pipe(map((res: ListResponse<T>) => res));
   }
 
-   executeGet(path: string): Observable<any> {
-    return this.httpClient.get(this.getFullPath() + path).pipe(map((res: any) => res));
-  }
+
 
    executeDelete(path: string): Observable<any> {
     return this.httpClient.delete(this.getFullPath() + path).pipe(map((res: any) => res));

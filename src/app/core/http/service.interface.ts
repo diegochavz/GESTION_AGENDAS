@@ -12,10 +12,13 @@ export interface IService<T> {
   update(id: string, data: T): Observable<string>;
 
   delete(id: string): Observable<string>;
-/**
-  post(data: any, path?: string): Observable<any>;
 
   executeGet(path: string): Observable<any>;
+
+
+  /**
+  post(data: any, path?: string): Observable<any>;
+
 
   executeDelete(path: string): Observable<any>;
 

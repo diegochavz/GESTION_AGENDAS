@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/v1/',
+  apiUrl: 'http://34.71.223.210/api/',
   //loginPath: 'security/login',
   //timeIntervalChecker: 1000,
   //limitSecondsInactivity: 120,

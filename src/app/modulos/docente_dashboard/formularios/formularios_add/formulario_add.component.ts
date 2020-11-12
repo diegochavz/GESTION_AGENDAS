@@ -23,6 +23,8 @@ import {
   MomentDateAdapter
 } from "@angular/material-moment-adapter";
 import {Observable, Subject} from "rxjs";
+import Programa from "../../../../core/models/programa.model";
+import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 
 @Component({
   selector: 'formulario-add',
@@ -63,11 +65,17 @@ export class CrearFormularioDocenteComponent implements OnInit {
   //Impide el paso del Step 2
   isDisable_2 = true;
 
-  constructor(private _adapter: DateAdapter<any>, private _formBuilder: FormBuilder, private formularioService: FormularioServiceImpl) {
+  listProgramas: Array<Programa>;
+
+  constructor(private _adapter: DateAdapter<any>,
+              private _formBuilder: FormBuilder,
+              private formularioService: FormularioServiceImpl,
+              private programaService: ProgramaServiceImpl) {
     this._adapter.setLocale('es');
     this.loading = false;
     this.minDate = new Date();
     this.maxDate = new Date();
+    this.listProgramas = new Array<Programa>();
   }
 
   ngOnInit() {
@@ -80,6 +88,13 @@ export class CrearFormularioDocenteComponent implements OnInit {
       this.validarGrupoHorarioAtencion();
       this.validarGrupoPreguntas();
     })
+
+    this.programaService.getAll().subscribe(
+      (programas: Array<Programa>) => {
+        this.listProgramas = programas;
+      }
+    );
+
   }
 
   /****CARGA VALORES INICIALES***/
@@ -92,7 +107,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
       tiempo_minimo: ['', [Validators.required]],
       intervalo: ['', [Validators.required]],
       duracion: ['', [Validators.required]],
-      //plan_estudios: [null, [Validators.required]],
+      programas: [null, [Validators.required]],
       restringe_estudiantes: [false],
       restringe_otros_estudiantes: [false],
       horarios: this._formBuilder.array([]),
@@ -234,12 +249,40 @@ export class CrearFormularioDocenteComponent implements OnInit {
   onFormSubmit() {
     this.loading = true;
     //const dataFormulario = <Formulario>Object.assign({}, this.formAddFormulario.getRawValue());
+
+    this.formularioService.save(this.newFormulario).subscribe(
+      (newForm) => {
+        console.log(newForm)
+        //this.toasterService.openSnackBar('Etapa creada exitosamente.', ToasterService.CERRAR_ACTION);
+
+      },
+      (error) => {
+        /**try {
+          for (let field of error.error.errors) {
+            this.formAddEtapa.get(field.field).setErrors(field.message)
+          }
+        } catch (e) {
+          this.mensajeError = error.error.message
+        }**/
+      },
+      ()=>{
+        this.loading = false;
+      });
+
     /**
-     this.formularioService.save(FormularioNuevo).pipe(
+     this.formularioService.save(FormularioNuevo).fina.pipe(
      finalize(() => {
         this.loading = false
       })
-     )**/
+     **/
+
+
+    /**
+     * .subscribe(
+     (data) => this.onSuccess(data),
+     (error) => this.handleError(error)
+     );
+     */
   }
 
 

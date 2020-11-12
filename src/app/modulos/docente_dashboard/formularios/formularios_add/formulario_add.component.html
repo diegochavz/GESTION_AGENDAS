@@ -149,12 +149,21 @@
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Duración
                           </mat-label>
-                          <input matInput formControlName="duracion"  type="number" required>
+                          <input matInput formControlName="duracion" type="number" required>
                           <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
                       <div class="col-lg-6">
+                        <!--
+                                              <mat-form-field class="fluid"  appearance="fill">
+                                                  <mat-label>Programas académicos</mat-label>
+                                                  <mat-select formControlName="programas" multiple>
+                                                    <mat-option *ngFor="let programa of listProgramas" [value]="programa.id">{{programa.nombre}}</mat-option>
+                                                  </mat-select>
+                                                </mat-form-field>
+                        -->
+
                       </div>
                     </div>
                     <div class="row">
@@ -306,18 +315,21 @@
                 <div class="btn-stepper">
                   <div>
                     <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <button mat-raised-button color="warn" (click)="onShowFormulario()" [disabled]="isDisable_2" matStepperNext>Siguiente
+                    <button mat-raised-button color="warn" (click)="onShowFormulario()" [disabled]="isDisable_2"
+                            matStepperNext>Siguiente
                     </button>
                   </div>
                 </div>
               </mat-step>
               <mat-step label="Visualización del formulario">
-                <app-formularios-show [showFormulario]="newFormulario" [minDateCalendar]="minDate" [maxDateCalendar]="maxDate" ></app-formularios-show>
+                <app-formularios-show [showFormulario]="newFormulario" [minDateCalendar]="minDate"
+                                      [maxDateCalendar]="maxDate"></app-formularios-show>
                 <mat-divider class="m-lg-3"></mat-divider>
                 <div class="btn-stepper">
                   <div>
                     <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <button mat-raised-button color="warn" (click)="onFormSubmit()" matStepperNext>Guardar y generar enlace
+                    <button mat-raised-button color="warn" (click)="onFormSubmit()" matStepperNext>Guardar y generar
+                      enlace
                     </button>
                   </div>
                 </div>
