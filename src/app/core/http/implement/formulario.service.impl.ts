@@ -10,6 +10,6 @@ export class FormularioServiceImpl extends ServiceImpl<Formulario> implements IF
   constructor(private http: HttpClient) {
     super();
     this.httpClient = http;
-    this.resource = 'formularios/';
+    this.resource = 'form/';
   }
 }

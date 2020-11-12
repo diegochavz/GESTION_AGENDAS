@@ -1,0 +1,344 @@
+<div class="header pb-8 pt-5 pt-lg-4 d-flex align-items-center"
+     style="min-height: 550px; background-image: url(../../../../../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  <span class="mask bg-gradient-danger opacity-8"></span>
+  <!-- TITULO -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row ">
+      <div class="col-lg-12 col-md-10">
+        <h1 class="display-3 text-white">CREAR FORMULARIO DE ASESOÍA</h1>
+        <p class="text-white mt-0 mb-8 subtitle-crear-formulario">A continuación podrás crear un formulario de asesoría
+          academica </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--330 ">
+  <div id="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-body">
+          <mat-progress-bar mode="indeterminate" color="accent" [hidden]="!loading"></mat-progress-bar>
+          <form [formGroup]="formAddFormulario">
+            <mat-horizontal-stepper>
+              <mat-step label="Horario de atención">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h1 class="display-4">Configuración de horarios de atención</h1>
+                    <p class="m-t-subtitle-stepper">Establece los horarios de atención para tus estudiantes </p>
+                  </div>
+                </div>
+                <div class="row  pl-lg-4">
+                  <div class="col-lg-6 col-md-12">
+                    <div class="row">
+                      <div formArrayName='horarios'>
+                        <div *ngFor="let horario of horarios.controls; let i = index;">
+                          <div [formGroupName]="i">
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <mat-form-field class="fluid" appearance="legacy">
+                                  <input formControlName="fecha_horario" matInput [matDatepicker]="picker1"
+                                         placeholder="Día" required>
+                                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                  <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                              <div class="col-lg-3">
+                                <mat-form-field class="fluid" appearance="legacy">
+                                  <mat-label>Hora inicio
+                                  </mat-label>
+                                  <input matInput formControlName="inicio_horario" type="time" required>
+                                </mat-form-field>
+                              </div>
+                              <div class="col-lg-3">
+                                <mat-form-field class="fluid" appearance="legacy">
+                                  <mat-label>Hora fin</mat-label>
+                                  <input matInput formControlName="fin_horario" type="time" required>
+                                </mat-form-field>
+                              </div>
+                              <div class="col-lg-1">
+                                <a mat-icon-button color="primary" (click)="borrarHorario(i)">
+                                  <p class="icon-input"><i class="fas fa-trash"></i></p>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <a class="fluid" mat-icon-button color="primary" (click)="agregarHorario()">
+                          <p class="icon-input"><i class="fas fa-plus-circle"></i> Agregar un nuevo horario
+                            <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                          </p>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-12 ">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <mat-form-field form appearance="fill" class="fluid">
+                          <mat-label>Nombre del formulario</mat-label>
+                          <input matInput formControlName="nombre_formulario" required>
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <mat-form-field appearance="fill" class="fluid">
+                          <mat-label>Ubicación presencial
+                          </mat-label>
+                          <input matInput formControlName="ubicacion_formulario" required>
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <h6 class="heading-small text-muted mb-4 titulo-general-elementos">Disponibilidad del
+                      formulario</h6>
+                    <div class="row">
+
+                      <div class="col-lg-6">
+                        <mat-form-field class="fluid">
+                          <input matInput formControlName="disponibilidad_inicio_formulario" [matDatepicker]="picker2"
+                                 placeholder="Fecha inicio">
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2></mat-datepicker>
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-lg-6">
+                        <mat-form-field class="fluid">
+                          <input matInput formControlName="disponibilidad_fin_formulario" [matDatepicker]="picker3"
+                                 placeholder="Fecha finalización">
+                          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                          <mat-datepicker #picker3></mat-datepicker>
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <mat-form-field class="fluid" appearance="fill">
+                          <mat-label>Tiempo mínimo
+                          </mat-label>
+                          <input matInput formControlName="tiempo_minimo" type="number" required>
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-lg-6">
+                        <mat-form-field class="fluid" appearance="fill">
+                          <mat-label>Intervalo
+                          </mat-label>
+                          <input matInput formControlName="intervalo" type="number" required>
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <mat-form-field class="fluid" appearance="fill">
+                          <mat-label>Duración
+                          </mat-label>
+                          <input matInput formControlName="duracion" type="number" required>
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-lg-6">
+                        <!--
+                                              <mat-form-field class="fluid"  appearance="fill">
+                                                  <mat-label>Programas académicos</mat-label>
+                                                  <mat-select formControlName="programas" multiple>
+                                                    <mat-option *ngFor="let programa of listProgramas" [value]="programa.id">{{programa.nombre}}</mat-option>
+                                                  </mat-select>
+                                                </mat-form-field>
+                        -->
+
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <mat-checkbox formControlName="carga_archivos" class="fluid"> El formulario permite carga de
+                          archivos
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="below">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <mat-checkbox formControlName="restringe_estudiantes" class="fluid">Restringir solicitudes a mis
+                          estudiantes
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="below">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <mat-checkbox formControlName="restringe_otros_estudiantes" class="fluid">Restringir solicitudes
+                          a otros estudiantes
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="below">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider class="m-lg-3"></mat-divider>
+                <div class="btn-stepper">
+                  <button type="submit" mat-raised-button color="warn" matStepperNext [disabled]="isDisable_1">
+                    Siguiente
+                  </button>
+                </div>
+              </mat-step>
+              <mat-step label="Formulario de información">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h1 class="display-4">Configuración deL formulario</h1>
+                    <p class="m-t-subtitle-stepper">Establece las preguntas a realizar a tus estudiantes </p>
+                  </div>
+                </div>
+                <div class="row  pl-lg-4">
+                  <div class="col-lg-12 col-md-12">
+                    <div class="row">
+                      <div formArrayName='preguntas'>
+                        <div *ngFor="let pregunta of preguntas.controls; let i = index;">
+                          <div [formGroupName]="i">
+                            <div class="card p-lg-3 m-lg-3">
+                              <div class="col-lg-12">
+                                <div class="row">
+                                  <div class="col-lg-9">
+                                    <mat-form-field appearance="fill" class="fluid">
+                                      <mat-label>Nombre del campo</mat-label>
+                                      <input matInput formControlName="nombre_campo" required>
+                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                                             matTooltipPosition="after">
+                                        <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-lg-3">
+                                    <mat-form-field class="fluid" appearance="fill">
+                                      <mat-label>Tipo de campo</mat-label>
+                                      <mat-select formControlName="tipo_campo" required>
+                                        <mat-option *ngFor="let tipo of listTipoCampos"
+                                                    [value]="tipo">{{tipo}}</mat-option>
+                                      </mat-select>
+                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                                             matTooltipPosition="below">
+                                        <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                                    </mat-form-field>
+                                  </div>
+                                  <div *ngIf="validarIsTipoCampo(i) == 0" class="col-lg-3">
+                                    <mat-form-field class="fluid" appearance="fill">
+                                      <mat-label>Tipo de dato</mat-label>
+                                      <mat-select formControlName="tipo_dato">
+                                        <mat-option *ngFor="let tipo of listTipoDatos"
+                                                    [value]="tipo">{{tipo}}</mat-option>
+                                      </mat-select>
+                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                                             matTooltipPosition="below">
+                                        <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                                    </mat-form-field>
+                                  </div>
+                                  <div *ngIf="validarIsTipoCampo(i) == 0" class="col-lg-3">
+                                    <mat-form-field class="fluid" appearance="fill">
+                                      <mat-label>Longitud
+                                      </mat-label>
+                                      <input matInput formControlName="longitud">
+                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                                             matTooltipPosition="after">
+                                        <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                                    </mat-form-field>
+                                  </div>
+                                  <div *ngIf="validarIsTipoCampo(i) == 1" class="col-lg-6 pt-lg-1">
+                                    <mat-form-field class="fluid">
+                                      <mat-label>ítems del Combobox</mat-label>
+                                      <mat-chip-list #chipList>
+                                        <mat-chip *ngFor="let item of listarItems(i); let j = index;"
+                                                  [removable]="true" (removed)="borrarItemCombobox(i,j)">
+                                          {{item}}
+                                          <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                                        </mat-chip>
+                                        <input placeholder="Nuevo ítem"
+                                               [matChipInputFor]="chipList"
+                                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                               [matChipInputAddOnBlur]="true"
+                                               (matChipInputTokenEnd)="agregarItemCombobox($event, i)">
+                                      </mat-chip-list>
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="col-lg-2">
+                                    <mat-checkbox formControlName="obligatorio" class="">Obligatorio
+                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                                             matTooltipPosition="below">
+                                        <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                                    </mat-checkbox>
+                                  </div>
+                                  <div class="col-lg-1">
+                                    <a mat-icon-button color="primary" (click)="borrarPregunta(i)">
+                                      <p class="ico-input-color"><i class="fas fa-trash"></i></p>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <a class="fluid" mat-icon-button color="primary" (click)="agregarPregunta()">
+                          <p class="icon-input"><i class="fas fa-plus-circle"></i> Agregar pregunta
+                            <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                          </p>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider class="m-lg-3"></mat-divider>
+                <div class="btn-stepper">
+                  <div>
+                    <button mat-flat-button matStepperPrevious>Regresar</button>
+                    <button mat-raised-button color="warn" (click)="onShowFormulario()" [disabled]="isDisable_2"
+                            matStepperNext>Siguiente
+                    </button>
+                  </div>
+                </div>
+              </mat-step>
+              <mat-step label="Visualización del formulario">
+                <app-formularios-show [showFormulario]="newFormulario" [minDateCalendar]="minDate"
+                                      [maxDateCalendar]="maxDate"></app-formularios-show>
+                <mat-divider class="m-lg-3"></mat-divider>
+                <div class="btn-stepper">
+                  <div>
+                    <button mat-flat-button matStepperPrevious>Regresar</button>
+                    <button mat-raised-button color="warn" (click)="onFormSubmit()" matStepperNext>Guardar y generar
+                      enlace
+                    </button>
+                  </div>
+                </div>
+              </mat-step>
+            </mat-horizontal-stepper>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

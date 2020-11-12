@@ -1,0 +1,23 @@
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+
+.subtitle-crear-formulario{
+  margin-top: -20px!important;
+}
+
+
+.titulo-general-elementos{
+  margin-bottom: -20px!important;
+}
+
+
+::ng-deep .mat-horizontal-stepper-header{
+  pointer-events: none !important;
+}
+
+

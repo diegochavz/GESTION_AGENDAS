@@ -15,6 +15,7 @@ export default class Formulario {
   restringe_otros_estudiantes: boolean;
   enlace_uuid_formulario: string;
   horarios: Horario[];
-  programas: Programa;
+  programas: number[];
   preguntas: Pregunta[];
+  carga_archivos: boolean;
 }

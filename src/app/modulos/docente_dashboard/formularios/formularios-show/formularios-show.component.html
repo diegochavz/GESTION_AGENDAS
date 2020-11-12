@@ -1,0 +1,248 @@
+<div class="header bg-gradient-danger py-7 py-lg-8">
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row ">
+      <div class="col-lg-12 col-md-10">
+        <h1 class="display-3 text-white">Visualización formulario de asesoría</h1>
+        <p class="text-white subtitle-crear-formulario">A continuación podrás ver como quedara tu formulario de asesoría
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-4 order-xl-1 mb-5 mb-xl-0">
+      <div class="card card-profile shadow">
+        <div class="row justify-content-center">
+          <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image">
+              <a href="javascript:void(0)">
+                <img src="assets/img/theme/team-4-800x800.png" class="rounded-circle">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0 pt-md-4">
+          <div class="row">
+            <div class="col">
+              <div class="text-center mt-md-5">
+                <h3>
+                  Docente <br><span class="font-weight-light">Nombre del docente</span>
+                </h3>
+                <h3 class="text-title-form">
+                  Formulario <br> <span class="font-weight-light"><span>{{nombreformularioAsesoria}}</span> </span>
+                </h3>
+                <hr class="my-4"/>
+                <div>
+
+                  <mat-calendar
+                    [startAt]=" startAt"
+                    [minDate]="minDateCalendar"
+                    [maxDate]="maxDateCalendar"
+                    [dateClass]="dateClass()"
+                    (selectedChange)="onSelect($event)">
+                  </mat-calendar>
+
+                </div>
+                <hr class="my-4"/>
+                <div class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i>Formulario disponible para las facultades: Ingeniería de sistemas
+                  - Ingeniería Mecanica
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 order-xl-2">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <p class="text-center"><img class="img-form-show-logo" src="assets/img/brand/logo_complex.png" alt=""></p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h6 class="heading-small text-muted mb-4">Diligencia la información solicitada a continuación</h6>
+          <form [formGroup]="formularioAddAsesoria">
+            <mat-accordion class="example-headers-align">
+              <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Horarios de atención
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p class="m-t-subtitle-stepper"> Cada asesoría tiene una duración de
+                        <span>{{duracionAsesoria}}</span> minutos
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                      <div *ngFor="let horario of listHorariosDisponibles; let i = index;">
+                        <button mat-stroked-button class="btn-horario-list fluid" (click)="selectedHorario(horario)">
+                          {{horario}}
+                        </button>
+
+                      </div>
+                    </div>
+                    <div class="col-lg-2"></div>
+                  </div>
+                </div>
+                <mat-action-row>
+                  <a mat-raised-button color="accent" (click)="nextStep()">Siguiente</a>
+                </mat-action-row>
+              </mat-expansion-panel>
+              <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Solicitud de información
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p class="m-t-subtitle-stepper">
+                        Diligencia las preguntas presentadas a continuación
+                      </p>
+                    </div>
+                  </div>
+                  <div formArrayName='preguntas'>
+                    <div class="row" *ngFor="let pregunta of listPreguntas; let i = index;">
+                      <div class="col-lg-12">
+                        <mat-form-field class="fluid" appearance="legacy"
+                                        *ngIf="validarIsTipoCampo(pregunta.tipo_campo) == 0">
+                          <mat-label>{{pregunta.nombre_campo}}</mat-label>
+                          <input *ngIf="validarIsTipoDato(pregunta.tipo_dato) == 0" matInput
+                                 formControlName="{{crearControlFormPregunta(i)}}" type="text"
+                                 maxlength="{{pregunta.longitud}}" required="{{pregunta.obligatorio}}">
+                          <input *ngIf="validarIsTipoDato(pregunta.tipo_dato) == 1" matInput
+                                 formControlName="{{crearControlFormPregunta(i)}}" type="number"
+                                 maxlength="{{pregunta.longitud}}" required="{{pregunta.obligatorio}}">
+                        </mat-form-field>
+                        <mat-form-field class="fluid" appearance="legacy"
+                                        *ngIf="validarIsTipoCampo(pregunta.tipo_campo) == 1">
+                          <mat-label>{{pregunta.nombre_campo}}</mat-label>
+                          <mat-select formControlName="{{crearControlFormPregunta(i)}}"
+                                      required="{{pregunta.obligatorio}}">
+                            <mat-option *ngFor="let opc of pregunta.selecciones"
+                                        [value]="opc">{{opc}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="cargaArchivo">
+                    <h3 class="pr-2">¿Deseas subir archivos?</h3><br/>
+                    <div class="form-group">
+                      <label for="file"></label>
+                      <input
+                        formControlName="file"
+                        id="file"
+                        type="file"
+                        class="form-control"
+                        (change)="cargarArchivo($event)">
+                    </div>
+                  </div>
+                  <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría academica</h3><br/></div>
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-radio-group formControlName="lugar">
+                        <mat-radio-button value="1">Presencial</mat-radio-button>
+                        <mat-radio-button value="2">Virtual</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <p *ngIf="formularioAddAsesoria.controls['lugar'].value ==1">
+                      Lugar de asesoría: {{lugarPreencial}}
+                    </p>
+
+                    <p *ngIf="formularioAddAsesoria.controls['lugar'].value ==2">
+                      Lugar de asesoría: Virtual
+                    </p>
+
+                  </div>
+
+                </div>
+                <mat-action-row>
+                  <a mat-button (click)="prevStep()">Anterior</a>
+                  <a mat-raised-button color="accent" (click)="nextStep()">Siguiente</a>
+                </mat-action-row>
+              </mat-expansion-panel>
+              <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Integrantes
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p class="m-t-subtitle-stepper">
+                        Añade a tu equipo de trabajo para agendar la reunión vía email
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div formArrayName='integrantes'>
+                      <div *ngFor="let integrante of integrantes.controls; let i = index;">
+                        <div [formGroupName]="i">
+                          <div class="row form-group">
+                            <div class="col-lg-6">
+                              <mat-form-field class="fluid" appearance="legacy">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput formControlName="nombre" type="text" required>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-lg-5">
+                              <mat-form-field class="fluid" appearance="legacy">
+                                <mat-label>Correo
+                                </mat-label>
+                                <input matInput formControlName="correo" type="email" required>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-lg-1">
+                              <a mat-icon-button color="primary" (click)="borrarIntegrante(i)">
+                                <p class="ico-input-color"><i class="fas fa-trash"></i></p>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <a class="fluid" mat-icon-button color="primary" (click)="agregarIntegrante()">
+                        <p class="ico-input-color"><i class="fas fa-plus-circle"></i> Agregar un nuevo integrante
+                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                        </p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <mat-action-row>
+                  <a mat-button (click)="prevStep()">Anterior</a>
+                  <a mat-raised-button color="accent" (click)="nextStep()">Agendar</a>
+                </mat-action-row>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
