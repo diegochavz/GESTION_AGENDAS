@@ -10,6 +10,7 @@ import { DocenteComponent} from "./modulos/docente/docente.component";
 import {AppRoutingModule} from "./app.routing";
 import {ComponentsModule} from "./components/components.module";
 import {CoreModule} from "./core/core.module";
+import { ConfirmDialogComponent } from './shared/confirmdialog/confirmdialog.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,9 @@ import {CoreModule} from "./core/core.module";
   declarations: [
     AppComponent,
     DocenteComponent,
+    ConfirmDialogComponent,
   ],
+  entryComponents:[ConfirmDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

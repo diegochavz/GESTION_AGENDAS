@@ -4,6 +4,5 @@ import {Observable} from "rxjs";
 
 export interface IProgramaService extends IService<Programa> {
 
-  getProgramasByDocente(idDocente): Observable<Programa[]>
 
 }

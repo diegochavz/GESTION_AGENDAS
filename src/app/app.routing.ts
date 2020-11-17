@@ -17,8 +17,8 @@ const routes: Routes =[
     children: [
       {
         path: '',
-        /*loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteDashboardModule)*/
-        loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteDashboardModule)
+        /*loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteModule)*/
+        loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteModule)
       }
     ]
   }, {

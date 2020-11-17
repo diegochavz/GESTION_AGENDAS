@@ -27,6 +27,9 @@ body {
 .ico-input-color {
   color: #B51755;
 }
+.ico-input-color:hover {
+  color: #B51755;
+}
 
 .float-bottom {
   float: bottom !important;
@@ -34,6 +37,10 @@ body {
 
 .btn-stepper {
   margin-bottom: 20px !important;
+  float: right !important;
+}
+.btn-modal {
+  margin: 5px !important;
   float: right !important;
 }
 
@@ -73,4 +80,48 @@ body {
 
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
+}
+
+/*****TABLAS****/
+table {
+  width: 100%;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+/*td, th {
+  width: 25%;
+}**/
+
+.btn-create{
+  float: right!important;
+  margin: 30px;
+}
+
+.bnm-center{
+  display: flex;
+  align-items: center;
+}
+.lop{
+  margin-top: 5px!important;
+}
+.s-opc{
+  margin: 5px!important;
+}
+.title-admin{
+  margin-top: 20px!important;
+  margin-left: 25px!important;
+  margin-bottom: -10px!important;
+  padding: 0px!important;
+  float: right!important;
+}
+
+.title-admin:hover {
+  color: #B51755;
+}
+
+.footer-aux{
+  margin-top: 80px;
 }

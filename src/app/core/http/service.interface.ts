@@ -7,13 +7,13 @@ export interface IService<T> {
 
   get(id: string): Observable<T>;
 
-  save(data: any): Observable<number>;
+  save(data: any): Observable<T>;
 
-  update(id: string, data: T): Observable<string>;
+  update(id: number, data: T): Observable<T>;
 
-  delete(id: string): Observable<string>;
+  delete(id: number): Observable<T>;
 
-  executeGet(path: string): Observable<any>;
+  executeGet(path: string): Observable<T>;
 
 
   /**

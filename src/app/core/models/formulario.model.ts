@@ -4,10 +4,11 @@ import Programa from "./programa.model";
 
 export default class Formulario {
 
+  id:number;
   nombre_formulario: string;
   ubicacion_formulario: String;
-  disponibilidad_inicio_formulario: Date;
-  disponibilidad_fin_formulario: Date;
+  disponibilidad_inicio_formulario: string;
+  disponibilidad_fin_formulario: string;
   tiempo_minimo: number;
   intervalo: number;
   duracion: number;
@@ -18,4 +19,6 @@ export default class Formulario {
   programas: number[];
   preguntas: Pregunta[];
   carga_archivos: boolean;
+  fecha_registro: Date;
+  docente: string;
 }
