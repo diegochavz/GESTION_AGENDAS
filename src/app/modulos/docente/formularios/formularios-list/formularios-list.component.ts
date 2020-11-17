@@ -16,24 +16,7 @@ import {DialogService} from "../../../../core/services/dialogs.service";
 import {ToasterService} from "../../../../core/services/toaster.service";
 import Programa from "../../../../core/models/programa.model";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
-
-export interface PeriodicElement {
-  id: number;
-  nombre_formulario: string;
-  ubicacion_formulario: String;
-  disponibilidad_inicio_formulario: string;
-  disponibilidad_fin_formulario: string;
-  tiempo_minimo: number;
-  intervalo: number;
-  duracion: number;
-  restringe_estudiantes: boolean;
-  restringe_otros_estudiantes: boolean;
-  enlace_uuid_formulario: string;
-  carga_archivos: boolean;
-  fecha_creacion: Date;
-  docente: string;
-
-}
+import * as moment from "moment";
 
 @Component({
   selector: 'app-formularios-list',
@@ -46,10 +29,10 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
   //@ViewChild(MatSort) sort: MatSort;
 
   //columnas de la tabla
-  displayedColumns: string[] = ['nombre_formulario', 'ubicacion_formulario', 'opciones'];
+  displayedColumns: string[] = ['fecha_registro','nombre_formulario', 'opciones'];
 
   //Datos a exponer en la tabla
-  dataSource: MatTableDataSource<PeriodicElement>;
+  dataSource: MatTableDataSource<Formulario>;
 
   //Visualización barra de carga
   loading: boolean;
@@ -104,6 +87,10 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  aplicarFormatoFecha(formulario:Formulario):string{
+    return moment(formulario.fecha_registro).format("YYYY-MM-DD");
   }
 
   /**

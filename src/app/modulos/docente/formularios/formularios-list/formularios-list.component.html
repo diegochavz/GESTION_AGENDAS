@@ -32,9 +32,9 @@
             <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
             <table mat-table [dataSource]="dataSource" matSort>
 
-              <ng-container matColumnDef="ubicacion_formulario">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> ubicacion_formulario</th>
-                <td mat-cell *matCellDef="let row"> {{row.ubicacion_formulario}} </td>
+              <ng-container matColumnDef="fecha_registro">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creación</th>
+                <td mat-cell *matCellDef="let row"> {{aplicarFormatoFecha(row)}} </td>
               </ng-container>
 
               <ng-container matColumnDef="nombre_formulario">

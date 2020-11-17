@@ -19,6 +19,6 @@ export default class Formulario {
   programas: number[];
   preguntas: Pregunta[];
   carga_archivos: boolean;
-  fecha_creacion: Date;
+  fecha_registro: Date;
   docente: string;
 }
