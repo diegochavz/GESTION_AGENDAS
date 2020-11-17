@@ -22,15 +22,6 @@ import {CrearFormularioDocenteComponent} from "../formularios_add/formulario_add
   templateUrl: './formularios-show.component.html',
   styleUrls: ['./formularios-show.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-  ]
 })
 export class FormulariosShowComponent implements OnInit {
 
@@ -49,6 +40,8 @@ export class FormulariosShowComponent implements OnInit {
   loadFile: FileList;
   step = 0;
 
+  programas: string;
+
   constructor(private _adapter: DateAdapter<any>, private _formBuilder: FormBuilder) {
     this._adapter.setLocale('es');
     this.showFormulario = new Formulario();
@@ -56,15 +49,29 @@ export class FormulariosShowComponent implements OnInit {
     this.startAt = new Date();
     this.minDateCalendar = new Date();
     this.maxDateCalendar = new Date();
+    this.programas = '';
   }
 
 
-  ngOnInit(): void {
+  ngOnInit(){
+    this.getProgramasNames();
     this.crearFormAddAsesoria();
     this.agregarIntegrante();
   }
 
   /****CARGA VALORES INICIALES***/
+
+  getProgramasNames() {
+    /**if (this.showFormulario != null && this.showFormulario != undefined) {
+      let size = this.showFormulario.programas.length - 1;
+      for (let i = 0; i < size; i = i++) {
+        this.programas += this.showFormulario.programas[i].nombre_programa + ", ";
+      }
+      this.programas += this.showFormulario.programas[size - 1].nombre_programa;
+    }
+     ESTO CAMBIA DEBIDO A QUE AHORA SOLO RECIBO LOS CODIGOS
+     **/
+  }
 
   crearFormAddAsesoria() {
     this.formularioAddAsesoria = this._formBuilder.group({
@@ -73,7 +80,7 @@ export class FormulariosShowComponent implements OnInit {
       preguntas: this._formBuilder.array([]),
       integrantes: this._formBuilder.array([]),
       file: '',
-      lugar:false,
+      lugar: false,
     })
   }
 
@@ -97,9 +104,10 @@ export class FormulariosShowComponent implements OnInit {
     }
     return false;
   }
+
   get lugarPreencial(): string {
     if (this.showFormulario != null && this.showFormulario != undefined) {
-      return this.showFormulario.ubicacion_formulario+"";
+      return this.showFormulario.ubicacion_formulario + "";
     }
     return '';
   }
@@ -117,8 +125,7 @@ export class FormulariosShowComponent implements OnInit {
   dateClass() {
     return (date: Date): MatCalendarCellCssClasses => {
       let listFechasDisponibles = this.fechasDisponibles();
-      const highlightDate = listFechasDisponibles.map(str => new Date(str))
-        .some(d => moment(d).date() === moment(date).date() && (moment(d).month()) === moment(date).month() && moment(d).year() === moment(date).year());
+      const highlightDate = listFechasDisponibles.some(d => moment(d).date() === moment(date).date() && moment(d).month() === moment(date).month() && moment(d).year() === moment(date).year());
       return highlightDate ? 'example-custom-date-class' : '';
     };
   }
@@ -128,7 +135,9 @@ export class FormulariosShowComponent implements OnInit {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       if (this.showFormulario.horarios != null && this.showFormulario.horarios != undefined) {
         for (let i of this.showFormulario.horarios) {
-          newFechasDisponibles.push(i.fecha_horario)
+          let dateAux = i.fecha_horario.split("-");
+          let newD = new Date(+dateAux[0],(+dateAux[1]-1),+dateAux[2])
+          newFechasDisponibles.push(newD);
         }
       }
     }
@@ -147,9 +156,11 @@ export class FormulariosShowComponent implements OnInit {
       const horarios = this.showFormulario.horarios;
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
-          if ((moment(horarios[i].fecha_horario).date() == moment(fechaSeleccionada).date()) &&
-            ((moment(horarios[i].fecha_horario).month()) == moment(fechaSeleccionada).month()) &&
-            (moment(horarios[i].fecha_horario).year() == moment(fechaSeleccionada).year())) {
+          let dateAux = horarios[i].fecha_horario.split("-");
+          let newD = new Date(+dateAux[0],(+dateAux[1]-1),+dateAux[2])
+          if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
+            ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
+            (moment(newD).year() == moment(fechaSeleccionada).year())) {
             this.listHorariosDisponibles.push(horarios[i].inicio_horario)
           }
         }
@@ -157,7 +168,8 @@ export class FormulariosShowComponent implements OnInit {
     }
   }
 
-  selectedHorario(horario: string) {}
+  selectedHorario(horario: string) {
+  }
 
   /****CONFIGURACIÓN DE INTEGRANTES***/
 

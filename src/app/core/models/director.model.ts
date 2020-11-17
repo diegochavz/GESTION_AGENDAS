@@ -1,6 +1,6 @@
 export default class Director{
   id:number;
-  nombre: string;
-  correo:string;
-  clave:string;
+  nombre_director: string;
+  correo_director:string;
+  codigo_director:string;
 }

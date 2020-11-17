@@ -5,6 +5,7 @@ import {environment} from '../../../../environments/environment';
 import {Injectable} from "@angular/core";
 import {map} from 'rxjs/operators';
 import ListResponse from "../../models/list_response.model";
+import {HTTP_OPTIONS} from "../../constants/http_options.constants";
 
 @Injectable()
 export class ServiceImpl<T> implements IService<T> {
@@ -18,27 +19,29 @@ export class ServiceImpl<T> implements IService<T> {
   }
 
   getAll(): Observable<Array<T>> {
-    return this.httpClient.get(this.getFullPath()).pipe(map((res: ListResponse<T>) => res.data));
+    return this.httpClient.get(this.getFullPath()) as Observable<Array<T>>;
   }
 
   get(id: string): Observable<T> {
-    return this.httpClient.get(this.getFullPath() + id).pipe(map((res: any) => <T>res.data));
+    return this.httpClient.get(this.getFullPath() + id) as Observable<T>;
   }
 
-  save(data: any): Observable<number> {
-    return this.httpClient.post(this.getFullPath(), data).pipe(map((res: any) => res.data));
+  save(data: any): Observable<T> {
+    return this.httpClient.post(this.getFullPath(), data) as Observable<T>;
   }
 
-  update(id: string, data: T): Observable<string> {
-    return this.httpClient.put(this.getFullPath() + id, data).pipe(map((res: any) => res));
+  update(id:number, data: T): Observable<T> {
+    const path = this.getFullPath()+`${id}/`;
+    return this.httpClient.put(path, data) as Observable<T>;
   }
 
-  delete(id: string): Observable<string> {
-    return this.httpClient.delete(this.getFullPath() + id).pipe(map((res: any) => res.data));
+  delete(id: number): Observable<T> {
+    const path = this.getFullPath()+`${id}/`;
+    return this.httpClient.delete(path) as Observable<T>;
   }
 
   executeGet(path: string): Observable<any> {
-    return this.httpClient.get(this.getFullPath() + path).pipe(map((res: any) => res));
+    return this.httpClient.get(this.getFullPath() + path) as Observable<T>;
   }
 
   /**

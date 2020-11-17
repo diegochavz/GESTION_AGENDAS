@@ -5,7 +5,7 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row ">
       <div class="col-lg-12 col-md-10">
-        <h1 class="display-3 text-white">CREAR FORMULARIO DE ASESOÍA</h1>
+        <h1 class="display-3 text-white">CREAR FORMULARIO DE ASESORÍA</h1>
         <p class="text-white mt-0 mb-8 subtitle-crear-formulario">A continuación podrás crear un formulario de asesoría
           academica </p>
       </div>
@@ -16,6 +16,7 @@
   <div id="row">
     <div class="col-xl-12 order-xl-1">
       <div class="card bg-secondary shadow">
+        <a class="title-admin" [routerLink]="['/listar-formularios']"><h3><i class="fas fa-sign-in-alt"></i> &nbsp;&nbsp;&nbsp; Regresar</h3></a>
         <div class="card-body">
           <mat-progress-bar mode="indeterminate" color="accent" [hidden]="!loading"></mat-progress-bar>
           <form [formGroup]="formAddFormulario">
@@ -155,15 +156,13 @@
                         </mat-form-field>
                       </div>
                       <div class="col-lg-6">
-                        <!--
-                                              <mat-form-field class="fluid"  appearance="fill">
+                                                <mat-form-field class="fluid" appearance="fill">
                                                   <mat-label>Programas académicos</mat-label>
                                                   <mat-select formControlName="programas" multiple>
-                                                    <mat-option *ngFor="let programa of listProgramas" [value]="programa.id">{{programa.nombre}}</mat-option>
+                                                    <mat-option *ngFor="let programa of listProgramas"
+                                                                [value]="programa.id">{{programa.nombre_programa}}</mat-option>
                                                   </mat-select>
                                                 </mat-form-field>
-                        -->
-
                       </div>
                     </div>
                     <div class="row">
@@ -205,7 +204,7 @@
               <mat-step label="Formulario de información">
                 <div class="row">
                   <div class="col-lg-12">
-                    <h1 class="display-4">Configuración deL formulario</h1>
+                    <h1 class="display-4">Configuración del formulario</h1>
                     <p class="m-t-subtitle-stepper">Establece las preguntas a realizar a tus estudiantes </p>
                   </div>
                 </div>
@@ -281,7 +280,7 @@
                                     </mat-form-field>
                                   </div>
                                   <div class="col-lg-2">
-                                    <mat-checkbox formControlName="obligatorio" class="">Obligatorio
+                                    <mat-checkbox formControlName="obligatoria" class="">Obligatorio
                                       <mat-icon matSuffix><a matTooltip="Info about the action"
                                                              matTooltipPosition="below">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
@@ -328,9 +327,36 @@
                 <div class="btn-stepper">
                   <div>
                     <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <button mat-raised-button color="warn" (click)="onFormSubmit()" matStepperNext>Guardar y generar
-                      enlace
+                    <button mat-raised-button color="warn" matStepperNext>Siguiente
                     </button>
+                  </div>
+                </div>
+              </mat-step>
+              <mat-step label="URL del formulario">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h1 class="display-4">URL del formulario</h1>
+                    <p class="m-t-subtitle-stepper">Con la siguiente URL tus estudiantes podran ingresan al formulario de asesoría </p>
+                  </div>
+                </div>
+                <div class="row bnm-center">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-6 ">
+                    <mat-form-field class="fluid" appearance="fill" >
+                      <mat-label>Url formulario</mat-label>
+                      <input matInput value="{{newFormulario.enlace_uuid_formulario}}" disabled>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-2">
+                    <a mat-raised-button color="warn">Copiar</a>
+                  </div>
+                  <div class="col-lg-2"></div>
+                </div>
+                <mat-divider class="m-lg-3"></mat-divider>
+                <div class="btn-stepper">
+                  <div>
+                    <button mat-flat-button matStepperPrevious>Regresar</button>
+                    <a mat-raised-button color="warn" [routerLink]="['/listar-formularios']" (click)="onFormSubmit()" matStepperNext>Guardar</a>
                   </div>
                 </div>
               </mat-step>

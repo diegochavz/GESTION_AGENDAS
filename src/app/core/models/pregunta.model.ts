@@ -3,7 +3,7 @@ export default class Pregunta {
   tipo_campo: string;
   tipo_dato: string;
   longitud: number;
-  obligatorio: boolean;
+  obligatoria: boolean;
   selecciones: string [];
-
+  selecciones_data: any;
 }

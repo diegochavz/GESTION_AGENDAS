@@ -25,20 +25,19 @@ import {
 import {Observable, Subject} from "rxjs";
 import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
+import {v4 as uuidv4} from 'uuid';
+import * as moment from 'moment';
+import {DefaultMatCalendarRangeStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY} from "@angular/material/datepicker";
+import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
+import {ToasterService} from "../../../../core/services/toaster.service";
+//https://www.npmjs.com/package/uuid
+// https://stackoverflow.com/questions/52836247/how-to-generate-uuid-in-angular-6/52840488
+
 
 @Component({
   selector: 'formulario-add',
   templateUrl: './formulario_add.component.html',
   styleUrls: ['./formulario_add.component.scss'],
-  providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-  ]
 })
 export class CrearFormularioDocenteComponent implements OnInit {
 
@@ -67,15 +66,19 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   listProgramas: Array<Programa>;
 
+  idDocente = "4";
+
   constructor(private _adapter: DateAdapter<any>,
               private _formBuilder: FormBuilder,
               private formularioService: FormularioServiceImpl,
-              private programaService: ProgramaServiceImpl) {
+              private docenteService: DocenteServiceImpl,
+              private toasterService: ToasterService) {
     this._adapter.setLocale('es');
     this.loading = false;
     this.minDate = new Date();
     this.maxDate = new Date();
-    this.listProgramas = new Array<Programa>();
+    this.listProgramas = [];
+    this.newFormulario = new Formulario();
   }
 
   ngOnInit() {
@@ -88,12 +91,6 @@ export class CrearFormularioDocenteComponent implements OnInit {
       this.validarGrupoHorarioAtencion();
       this.validarGrupoPreguntas();
     })
-
-    this.programaService.getAll().subscribe(
-      (programas: Array<Programa>) => {
-        this.listProgramas = programas;
-      }
-    );
 
   }
 
@@ -114,8 +111,12 @@ export class CrearFormularioDocenteComponent implements OnInit {
       preguntas: this._formBuilder.array([]),
       carga_archivos: [false],
     });
+    this.docenteService.getProgramasByDocente(this.idDocente).subscribe(
+      (programas: Array<Programa>) => {
+        this.listProgramas = programas;
+      }
+    );
   }
-
 
   /****CONFIGURACIÓN PREGUNTAS***/
 
@@ -157,8 +158,8 @@ export class CrearFormularioDocenteComponent implements OnInit {
       nombre_campo: ['', [Validators.required]],
       tipo_campo: [TIPO_CAMPO.CUADRO_TEXTO, [Validators.required]],
       tipo_dato: [TIPO_DATO.ALFANUMERICO],
-      longitud: '',
-      obligatorio: false,
+      longitud: 0,
+      obligatoria: false,
       selecciones: this._formBuilder.array([]),
     });
     this.preguntas.push(pregunta);
@@ -189,7 +190,6 @@ export class CrearFormularioDocenteComponent implements OnInit {
       this.preguntas.controls[indicePregunta].value['selecciones'].splice(indiceItem, 1);
     }
   }
-
 
   /****CONFIGURACIÓN HORARIOS***/
 
@@ -230,7 +230,9 @@ export class CrearFormularioDocenteComponent implements OnInit {
       !this.formAddFormulario.controls["tiempo_minimo"].invalid &&
       !this.formAddFormulario.controls["intervalo"].invalid &&
       !this.formAddFormulario.controls["duracion"].invalid &&
-      !this.formAddFormulario.controls["horarios"].invalid
+      !this.formAddFormulario.controls["horarios"].invalid &&
+      !this.formAddFormulario.controls["programas"].invalid
+
     ) {
       this.isDisable_1 = false;
     } else {
@@ -242,48 +244,39 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   onShowFormulario() {
     this.newFormulario = <Formulario>Object.assign({}, this.formAddFormulario.value);
-    this.minDate = this.newFormulario.disponibilidad_inicio_formulario;
-    this.maxDate = this.newFormulario.disponibilidad_fin_formulario;
+    this.newFormulario.enlace_uuid_formulario = uuidv4();
+    this.minDate = new Date(this.newFormulario.disponibilidad_inicio_formulario);
+    this.maxDate = new Date(this.newFormulario.disponibilidad_fin_formulario);
+
+    this.newFormulario.disponibilidad_inicio_formulario = moment(this.newFormulario.disponibilidad_inicio_formulario).format("YYYY-MM-DD")
+    this.newFormulario.disponibilidad_fin_formulario = moment(this.newFormulario.disponibilidad_fin_formulario).format("YYYY-MM-DD")
+
+   this.newFormulario.docente = this.idDocente;
+
+    for (let i = 0; i < this.newFormulario.horarios.length; i++) {
+      this.newFormulario.horarios[i].fecha_horario = moment(this.newFormulario.horarios[i].fecha_horario).format("YYYY-MM-DD")
+    }
   }
 
   onFormSubmit() {
-    this.loading = true;
-    //const dataFormulario = <Formulario>Object.assign({}, this.formAddFormulario.getRawValue());
-
+    this.loading = false;
+    console.log("INFORMACIÓN IMPORTANTE CREAR: " + JSON.stringify(this.newFormulario))
     this.formularioService.save(this.newFormulario).subscribe(
       (newForm) => {
-        console.log(newForm)
-        //this.toasterService.openSnackBar('Etapa creada exitosamente.', ToasterService.CERRAR_ACTION);
-
+        this.toasterService.openSnackBar(
+          'Formulario creado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
       },
       (error) => {
-        /**try {
-          for (let field of error.error.errors) {
-            this.formAddEtapa.get(field.field).setErrors(field.message)
-          }
-        } catch (e) {
-          this.mensajeError = error.error.message
-        }**/
+        this.toasterService.openSnackBar(
+          'Ha ocurrido un error inesperado',
+          ToasterService.CERRAR_ACTION
+        );
       },
-      ()=>{
-        this.loading = false;
+      () => {
+        console.log("carga")
+        this.loading = true;
       });
-
-    /**
-     this.formularioService.save(FormularioNuevo).fina.pipe(
-     finalize(() => {
-        this.loading = false
-      })
-     **/
-
-
-    /**
-     * .subscribe(
-     (data) => this.onSuccess(data),
-     (error) => this.handleError(error)
-     );
-     */
   }
-
-
 }

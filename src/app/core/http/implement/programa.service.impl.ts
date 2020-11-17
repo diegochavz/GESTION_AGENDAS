@@ -12,11 +12,7 @@ export class ProgramaServiceImpl extends ServiceImpl<Programa> implements IProgr
   constructor(private http: HttpClient) {
     super();
     this.httpClient = http;
-    this.resource = 'programas/';
+    this.resource = 'programa/';
   }
 
-  getProgramasByDocente(idDocente): Observable<Programa[]> {
-    const path = `${idDocente}/docente`;
-    return this.executeGet(path).pipe(map((res: any) => res.data));
-  }
 }

@@ -3,7 +3,7 @@ import Director from "./director.model";
 export default class Programa{
 
   id:number;
-  director: Director;
-  nombre: string;
-  codigo: number;
+  director: number;
+  nombre_programa: string;
+  codigo_programa: string;
 }

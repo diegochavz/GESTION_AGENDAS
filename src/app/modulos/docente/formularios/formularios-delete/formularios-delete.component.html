@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Eliminar formulario de asesoría</h1>
+<div mat-dialog-content>
+  <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+  <mat-list>
+    <div mat-subheader>¿Deseas eliminar el formmulario de asesoría?</div>
+    <mat-divider></mat-divider>
+  </mat-list>
+</div>
+<div mat-dialog-actions>
+  <a mat-raised-button color="warn" class="btn-modal"  (click)="borrar()" >Eliminar</a>
+  <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
+</div>
