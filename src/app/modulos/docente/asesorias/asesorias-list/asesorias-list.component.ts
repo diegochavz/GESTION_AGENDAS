@@ -4,7 +4,6 @@ import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import Formulario from "../../../../core/models/formulario.model";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDialogComponent} from "../../../../shared/confirmdialog/confirmdialog.component";
 import Asesoria from "../../../../core/models/asesoria.model";
 import {AsesoriaServiceImpl} from "../../../../core/http/implement/asesoria.service.impl";
 
@@ -90,27 +89,8 @@ export class AsesoriasListComponent implements OnInit {
 
   eliminarFormulario(formulario: Formulario){
     this.loading = true;
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '250px',
-      data: '¿Estas seguro de borrar el formulario?'
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      if(result){
-        this.formularioService.delete(formulario.id+"").subscribe(
-          (newForm) => {
-            console.log(newForm)
-            //this.toasterService.openSnackBar('Etapa creada exitosamente.', ToasterService.CERRAR_ACTION);
-          },
-          (error) => {
-          },
-          ()=>{
-            this.loading = false;
-          });
-      }
 
-    });
   }
 
 **/

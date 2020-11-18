@@ -8,13 +8,21 @@ import {DocenteServiceImpl} from "./http/implement/docente.service.impl";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ToasterService} from "./services/toaster.service";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSelectModule} from "@angular/material/select";
+import {DirectorServiceImpl} from "./http/implement/director.service.impl";
 
 @NgModule({
   declarations: [],
   imports: [
     MatDialogModule,
     MatSnackBarModule,
-     ],
+    FormsModule,
+    ReactiveFormsModule,
+    MatTooltipModule,
+    MatSelectModule,
+  ],
   providers: [
     FormularioServiceImpl,
     ProgramaServiceImpl,
@@ -23,6 +31,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     DialogService,
     DocenteServiceImpl,
     ToasterService,
+    DirectorServiceImpl,
   ],
   entryComponents: [
   ]

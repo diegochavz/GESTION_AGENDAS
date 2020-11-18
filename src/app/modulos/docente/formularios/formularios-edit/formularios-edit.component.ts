@@ -130,15 +130,11 @@ export class FormulariosEditComponent implements OnInit {
   consultarProgramas() {
     if (this.editFormulario != null && this.editFormulario != undefined) {
       const aux = new Array<number>();
-      console.log(" listar programas ini -> " + new Date())
-
       this.formularioService.getProgramasByFormulario(this.editFormulario.id).subscribe((res: Array<Programa>) => {
           for (let i of res) {
             aux.push(i.id);
           }
           this.formEditFormulario.get('programas').setValue(aux)
-          console.log(" listar programas fin -> " + new Date())
-
         }
       )
     }

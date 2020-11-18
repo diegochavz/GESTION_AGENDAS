@@ -16,7 +16,7 @@
   <div id="row">
     <div class="col-xl-12 order-xl-1">
       <div class="card bg-secondary shadow">
-        <a class="title-admin" [routerLink]="['/listar-formularios']"><h3><i class="fas fa-sign-in-alt"></i> &nbsp;&nbsp;&nbsp; Regresar</h3></a>
+        <a class="title-admin" [routerLink]="['../listar-formularios']"><h3><i class="fas fa-sign-in-alt"></i> &nbsp;&nbsp;&nbsp; Regresar</h3></a>
         <div class="card-body">
           <mat-progress-bar mode="indeterminate" color="accent" [hidden]="!loading"></mat-progress-bar>
           <form [formGroup]="formAddFormulario">
@@ -356,7 +356,7 @@
                 <div class="btn-stepper">
                   <div>
                     <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <a mat-raised-button color="warn" [routerLink]="['/listar-formularios']" (click)="onFormSubmit()" matStepperNext>Guardar</a>
+                    <a mat-raised-button color="warn" [routerLink]="['../listar-formularios']" (click)="onFormSubmit()" matStepperNext>Guardar</a>
                   </div>
                 </div>
               </mat-step>

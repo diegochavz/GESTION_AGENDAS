@@ -30,9 +30,6 @@ import * as moment from 'moment';
 import {DefaultMatCalendarRangeStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY} from "@angular/material/datepicker";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {ToasterService} from "../../../../core/services/toaster.service";
-//https://www.npmjs.com/package/uuid
-// https://stackoverflow.com/questions/52836247/how-to-generate-uuid-in-angular-6/52840488
-
 
 @Component({
   selector: 'formulario-add',

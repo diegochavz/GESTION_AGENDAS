@@ -1,29 +1,60 @@
-import { NgModule } from '@angular/core';
-import { CommonModule, } from '@angular/common';
-import { BrowserModule  } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
-
+import {NgModule} from '@angular/core';
+import {CommonModule,} from '@angular/common';
+import {BrowserModule} from '@angular/platform-browser';
+import {Routes, RouterModule} from '@angular/router';
 import {DocenteComponent} from "./modulos/docente/docente.component";
-import { CrearFormularioDocenteComponent} from "./modulos/docente/formularios/formularios_add/formulario_add.component";
+import {SuperComponent} from "./modulos/super_usuario/super.component";
+import {EstudianteComponent} from "./modulos/estudiante/estudiante.component";
 
-const routes: Routes =[
+const routes: Routes = [
   {
     path: '',
-    redirectTo: 'principal',
+    redirectTo: 'super',
     pathMatch: 'full',
-  }, {
-    path: '',
+  },
+  {
+    path: 'estudiante',
+    component: EstudianteComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('src/app/modulos/estudiante/estudiante.module').then(m => m.EstudianteModule)
+      },
+    ]
+  }
+  , {
+    path: 'super',
+    component: SuperComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('src/app/modulos/super_usuario/super.module').then(m => m.SuperModule)
+      },
+    ]
+  }
+  , {
+    path: 'docente',
     component: DocenteComponent,
     children: [
       {
         path: '',
-        /*loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteModule)*/
         loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteModule)
       }
     ]
-  }, {
+  },
+  {
+    path: 'director',
+    component: DocenteComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('src/app/modulos/director/director.module').then(m => m.DirectorModule)
+      }
+    ]
+  }
+  , {
     path: '**',
-    redirectTo: 'principal'
+    redirectTo: 'main'
   }
 ];
 
@@ -31,11 +62,11 @@ const routes: Routes =[
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule.forRoot(routes,{
+    RouterModule.forRoot(routes, {
       useHash: true
     })
   ],
-  exports: [
-  ],
+  exports: [],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

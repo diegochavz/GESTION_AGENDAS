@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Registrar estudiante</h1>
+<div mat-dialog-content>
+  <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+  <form [formGroup]="formAddEstudiante">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field class="fluid" appearance="fill">
+            <mat-label>Código programa</mat-label>
+            <input matInput formControlName="codigo_programa" type="number" required>
+            <mat-icon matSuffix><a matTooltip="Ingresar el codigo del programa ácademico" matTooltipPosition="after">
+              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field class="fluid" appearance="fill">
+            <mat-label>Nombre programa</mat-label>
+            <input matInput formControlName="nombre_programa" type="text" required>
+            <mat-icon matSuffix><a matTooltip="Ingresar el nombre del programa ácademico" matTooltipPosition="after">
+              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="registrarEstudiante()">Guardar</a>
+  <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
+</div>
+

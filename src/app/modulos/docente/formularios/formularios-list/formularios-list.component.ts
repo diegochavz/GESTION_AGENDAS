@@ -7,7 +7,6 @@ import Formulario from "../../../../core/models/formulario.model";
 import {IProgramaService} from "../../../../core/http/programa.service.interface";
 import {DataFormularioService} from "../../../../core/services/data_formulario.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDialogComponent} from "../../../../shared/confirmdialog/confirmdialog.component";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import Horario from "../../../../core/models/horario.model";
 import Pregunta from "../../../../core/models/pregunta.model";
@@ -125,30 +124,5 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
 
       }
     });
-
-    /**
-     const dialogRef = this.dialog.open(FormulariosDeleteComponent, {
-      width: '250px',
-      data: '¿Estas seguro de borrar el formulario?'
-    });
-
-     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      if(result){
-        this.formularioService.delete(formulario.id+"").subscribe(
-          (newForm) => {
-            console.log(newForm)
-            //this.toasterService.openSnackBar('Etapa creada exitosamente.', ToasterService.CERRAR_ACTION);
-          },
-          (error) => {
-          },
-          ()=>{
-            this.loading = false;
-          });
-      }
-
-    });**/
-
-
   }
 }
