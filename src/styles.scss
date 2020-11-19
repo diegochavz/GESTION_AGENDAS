@@ -183,3 +183,30 @@ table {
 .pd-subTitle-modal{
   margin-top: 20px!important;
 }
+
+.inicio-sesion-bg{
+  height: 100%!important;
+  width: 100% !important;
+  background-attachment: fixed;
+}
+
+.logo-login img{
+  margin-top: 20px;
+  width: 100%;
+}
+
+.text-login-logo{
+  font-size: 25px;
+  color: #B51755;
+  font-weight: 300;
+}
+
+.bg-ini-login{
+  background-image: url("assets/img/theme/bg-ini-for.jpeg");
+  background-size: cover;
+  background-position: center;
+  padding-top: 100px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+}

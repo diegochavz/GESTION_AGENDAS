@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule} from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,11 @@ import {ComponentsModule} from "./components/components.module";
 import {CoreModule} from "./core/core.module";
 import {EstudianteComponent} from "./modulos/estudiante/estudiante.component";
 import {DirectorComponent} from "./modulos/director/director.component";
+import { LoginComponent } from './security/login/login.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   imports: [
@@ -24,6 +29,12 @@ import {DirectorComponent} from "./modulos/director/director.component";
     RouterModule,
     AppRoutingModule,
     CoreModule,
+    MatSelectModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
   ],
   declarations: [
     AppComponent,
@@ -31,6 +42,7 @@ import {DirectorComponent} from "./modulos/director/director.component";
     SuperComponent,
     EstudianteComponent,
     DirectorComponent,
+    LoginComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -5,13 +5,19 @@ import {Routes, RouterModule} from '@angular/router';
 import {DocenteComponent} from "./modulos/docente/docente.component";
 import {SuperComponent} from "./modulos/super_usuario/super.component";
 import {EstudianteComponent} from "./modulos/estudiante/estudiante.component";
+import {LoginComponent} from "./security/login/login.component";
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'super',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
+  {
+    path: 'login',
+    component: LoginComponent,
+  }
+  ,
   {
     path: 'estudiante',
     component: EstudianteComponent,
@@ -54,7 +60,7 @@ const routes: Routes = [
   }
   , {
     path: '**',
-    redirectTo: 'main'
+    redirectTo: 'login'
   }
 ];
 
