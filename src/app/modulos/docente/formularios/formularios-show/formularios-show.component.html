@@ -86,7 +86,7 @@
                     <div class="col-lg-8">
                       <div *ngFor="let horario of listHorariosDisponibles; let i = index;">
                         <button mat-stroked-button class="btn-horario-list fluid" (click)="selectedHorario(horario)">
-                          {{horario}}
+                          {{horario.inicio_horario}} - {{horario.fin_horario}}
                         </button>
 
                       </div>
@@ -151,7 +151,7 @@
                         (change)="cargarArchivo($event)">
                     </div>
                   </div>
-                  <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría academica</h3><br/></div>
+                  <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría académica</h3><br/></div>
                   <div class="row">
                     <div class="form-group">
                       <mat-radio-group formControlName="lugar">

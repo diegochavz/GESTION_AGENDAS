@@ -34,7 +34,7 @@ export class FormulariosShowComponent implements OnInit {
 
   //Form
   formularioAddAsesoria: FormGroup;
-  listHorariosDisponibles: Array<string>;
+  listHorariosDisponibles: Array<Horario>;
 
   //Archivo cargado por el estudiante
   loadFile: FileList;
@@ -161,7 +161,7 @@ export class FormulariosShowComponent implements OnInit {
           if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
             ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
             (moment(newD).year() == moment(fechaSeleccionada).year())) {
-            this.listHorariosDisponibles.push(horarios[i].inicio_horario)
+            this.listHorariosDisponibles.push(horarios[i])
           }
         }
       }

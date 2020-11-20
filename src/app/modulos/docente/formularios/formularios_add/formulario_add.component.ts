@@ -30,6 +30,7 @@ import * as moment from 'moment';
 import {DefaultMatCalendarRangeStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY} from "@angular/material/datepicker";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {ToasterService} from "../../../../core/services/toaster.service";
+import Horario from "../../../../core/models/horario.model";
 
 @Component({
   selector: 'formulario-add',
@@ -63,7 +64,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   listProgramas: Array<Programa>;
 
-  idDocente = "4";
+  idDocente = "13";
 
   constructor(private _adapter: DateAdapter<any>,
               private _formBuilder: FormBuilder,
@@ -241,17 +242,30 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   onShowFormulario() {
     this.newFormulario = <Formulario>Object.assign({}, this.formAddFormulario.value);
-    this.newFormulario.enlace_uuid_formulario = uuidv4();
+    this.newFormulario.enlace_uuid_formulario = "http://23.251.145.118:8081/" + uuidv4();
     this.minDate = new Date(this.newFormulario.disponibilidad_inicio_formulario);
     this.maxDate = new Date(this.newFormulario.disponibilidad_fin_formulario);
-
     this.newFormulario.disponibilidad_inicio_formulario = moment(this.newFormulario.disponibilidad_inicio_formulario).format("YYYY-MM-DD")
     this.newFormulario.disponibilidad_fin_formulario = moment(this.newFormulario.disponibilidad_fin_formulario).format("YYYY-MM-DD")
+    this.newFormulario.docente = this.idDocente;
 
-   this.newFormulario.docente = this.idDocente;
+    const horariosCal = this.newFormulario.horarios;
+    let horarioListAux = new Array<Horario>();
+    let duracionAux = this.newFormulario.duracion;
+    let intervaloAux = this.newFormulario.intervalo;
 
-    for (let i = 0; i < this.newFormulario.horarios.length; i++) {
-      this.newFormulario.horarios[i].fecha_horario = moment(this.newFormulario.horarios[i].fecha_horario).format("YYYY-MM-DD")
+    for (let i = 0; i < horariosCal.length; i++) {
+      const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
+      const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
+      let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
+
+      while(horaFinal.isAfter(horaVariable)){
+        let newH = horaVariable.clone().add(duracionAux, "minutes")
+        horarioListAux.push(new Horario(dateHorario,horaVariable.format("HH:mm"),newH.format("HH:mm")))
+        newH = newH.clone().add(intervaloAux, "minutes")
+        horaVariable = newH;
+      }
+      this.newFormulario.horarios = horarioListAux;
     }
   }
 
