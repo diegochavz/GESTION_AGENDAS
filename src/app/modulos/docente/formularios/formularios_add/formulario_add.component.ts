@@ -109,8 +109,8 @@ export class CrearFormularioDocenteComponent implements OnInit {
       preguntas: this._formBuilder.array([]),
     });
     this.formAddFormulario.valueChanges.subscribe(res => {
-      if (res.disponibilidad_inicio_formulario>=res.disponibilidad_fin_formulario &&
-        res.disponibilidad_fin_formulario !=='') {
+      if (res.disponibilidad_inicio_formulario >= res.disponibilidad_fin_formulario &&
+        res.disponibilidad_fin_formulario !== '') {
         this.formAddFormulario.get('disponibilidad_fin_formulario').setErrors({'error': true})
       } else {
         this.formAddFormulario.get('disponibilidad_fin_formulario').setErrors(null)
@@ -209,7 +209,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
       fin_horario: ['', [Validators.required]],
     });
     horario.valueChanges.subscribe(res => {
-      if (res.inicio_horario>=res.fin_horario) {
+      if (res.inicio_horario >= res.fin_horario) {
         horario.get('fin_horario').setErrors({'error': true})
       } else {
         horario.get('fin_horario').setErrors(null)
@@ -249,12 +249,13 @@ export class CrearFormularioDocenteComponent implements OnInit {
       const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
       const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
       let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
-
-      while (horaFinal.isAfter(horaVariable)) {
-        let newH = horaVariable.clone().add(duracionAux, "minutes")
-        horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
-        newH = newH.clone().add(intervaloAux, "minutes")
-        horaVariable = newH;
+      if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
+        while (horaFinal.isAfter(horaVariable)) {
+          let newH = horaVariable.clone().add(duracionAux, "minutes")
+          horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
+          newH = newH.clone().add(intervaloAux, "minutes")
+          horaVariable = newH;
+        }
       }
       this.newFormulario.horarios = horarioListAux;
     }

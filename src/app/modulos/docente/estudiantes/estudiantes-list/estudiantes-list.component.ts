@@ -24,7 +24,7 @@ export class EstudiantesListComponent implements OnInit {
 
   estudiantes: Array<Estudiante>;
 
-  idDocente = 2;
+  idDocente = 3;
 
   constructor(private  estudianteService: EstudianteServiceImpl,
               private docenteService: DocenteServiceImpl,

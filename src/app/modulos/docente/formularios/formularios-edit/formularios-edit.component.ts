@@ -103,7 +103,7 @@ export class FormulariosEditComponent implements OnInit {
         });
 
       horario.valueChanges.subscribe(res => {
-        if (res.inicio_horario>=res.fin_horario) {
+        if (res.inicio_horario >= res.fin_horario) {
           horario.get('fin_horario').setErrors({'error': true})
         } else {
           horario.get('fin_horario').setErrors(null)
@@ -147,8 +147,8 @@ export class FormulariosEditComponent implements OnInit {
       });
 
       this.formEditFormulario.valueChanges.subscribe(res => {
-        if (res.disponibilidad_inicio_formulario>=res.disponibilidad_fin_formulario &&
-          res.disponibilidad_fin_formulario !=='') {
+        if (res.disponibilidad_inicio_formulario >= res.disponibilidad_fin_formulario &&
+          res.disponibilidad_fin_formulario !== '') {
           this.formEditFormulario.get('disponibilidad_fin_formulario').setErrors({'error': true})
         } else {
           this.formEditFormulario.get('disponibilidad_fin_formulario').setErrors(null)
@@ -319,7 +319,7 @@ export class FormulariosEditComponent implements OnInit {
       fin_horario: '',
     });
     horario.valueChanges.subscribe(res => {
-      if (res.inicio_horario>=res.fin_horario) {
+      if (res.inicio_horario >= res.fin_horario) {
         horario.get('fin_horario').setErrors({'error': true})
       } else {
         horario.get('fin_horario').setErrors(null)
@@ -361,7 +361,6 @@ export class FormulariosEditComponent implements OnInit {
 
     this.minDate = new Date(this.editFormulario.disponibilidad_inicio_formulario);
     this.maxDate = new Date(this.editFormulario.disponibilidad_fin_formulario);
-
     this.editFormulario.disponibilidad_inicio_formulario = moment(this.editFormulario.disponibilidad_inicio_formulario).format("YYYY-MM-DD")
     this.editFormulario.disponibilidad_fin_formulario = moment(this.editFormulario.disponibilidad_fin_formulario).format("YYYY-MM-DD")
 
@@ -370,37 +369,44 @@ export class FormulariosEditComponent implements OnInit {
 
   }
 
-  getHorariosFromForm(){
+  getHorariosFromForm() {
     let horariosAux = new Array<Horario>();
     for (let i = 0; i < this.horarios.controls.length; i++) {
       let aux = this.horarios.controls[i].value;
-      let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario);
-      hor.id = aux.id_horario;
+      let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario, aux.id_horario);
       horariosAux.push(hor)
     }
     this.editFormulario.horarios = horariosAux;
 
+    this.calcularNuevosHorarios();
+  }
+
+  calcularNuevosHorarios() {
     const horariosCal = this.editFormulario.horarios;
     let horarioListAux = new Array<Horario>();
     let duracionAux = this.editFormulario.duracion;
     let intervaloAux = this.editFormulario.intervalo;
 
     for (let i = 0; i < horariosCal.length; i++) {
+
       const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
       const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
       let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
 
-      while(horaFinal.isAfter(horaVariable)){
-        let newH = horaVariable.clone().add(duracionAux, "minutes")
-        horarioListAux.push(new Horario(dateHorario,horaVariable.format("HH:mm"),newH.format("HH:mm")))
-        newH = newH.clone().add(intervaloAux, "minutes")
-        horaVariable = newH;
+      if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
+        while (horaFinal.isAfter(horaVariable)) {
+          let newH = horaVariable.clone().add(duracionAux, "minutes")
+          horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
+          newH = newH.clone().add(intervaloAux, "minutes")
+          horaVariable = newH;
+        }
       }
-      this.editFormulario.horarios = horarioListAux;
     }
+
+    this.editFormulario.horarios = horarioListAux;
   }
 
-  getPreguntasFromForm(){
+  getPreguntasFromForm() {
     let preguntasAux = new Array<Pregunta>();
     for (let i = 0; i < this.preguntas.controls.length; i++) {
       let aux = this.preguntas.controls[i].value;
@@ -408,30 +414,14 @@ export class FormulariosEditComponent implements OnInit {
       preguntasAux.push(pre)
     }
     this.editFormulario.preguntas = preguntasAux;
+    console.log("preguntas ", this.editFormulario.preguntas)
   }
 
   onFormSubmit() {
     this.loading = true;
-    console.log("INFORMACIÓN IMPORTANTE EDITAR: " + JSON.stringify(this.editFormulario))
 
-    //ACTUALIZAR HORARIOS
-    for(let horario of this.editFormulario.horarios){
-      if(horario.id == null){
-        this.formularioService.addHorariobyFormulario(this.editFormulario.id, horario).subscribe(()=>{});
-      } else {
-        this.formularioService.updateHorarioByFormulario(horario.id , horario).subscribe(()=>{});
-      }
-    }
-
-    //ACTUALIZAR PREGUNTAS
-    for(let pregunta of this.editFormulario.preguntas){
-      if(pregunta.id == null){
-        console.log("NUEVA PREGUNTA",JSON.stringify(pregunta))
-        this.formularioService.addPreguntabyFormulario(this.editFormulario.id, pregunta).subscribe(()=>{});
-      } else {
-        this.formularioService.updatePreguntaByFormulario(pregunta.id , pregunta).subscribe(()=>{});
-      }
-    }
+    this.registrarHorarioAtencion();
+    this.registrarPreguntas();
 
     this.editFormulario.horarios = null;
     this.editFormulario.preguntas = null;
@@ -452,5 +442,35 @@ export class FormulariosEditComponent implements OnInit {
       () => {
         console.log("carga")
       });
+  }
+
+  registrarHorarioAtencion() {
+    //BORRADO DE HORARIOS VIEJOS
+    for (let horarioControl of this.horarios.controls) {
+      if (horarioControl.get('id_horario').value != null) {
+        this.formularioService.deleteHorarioById(horarioControl.get('id_horario').value).subscribe(() => {
+        });
+      }
+    }
+
+    //REGISTRO NUEVOS HORARIOS
+    for (let horarioList of this.editFormulario.horarios) {
+      this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
+      });
+    }
+  }
+
+  registrarPreguntas() {
+    //ACTUALIZAR PREGUNTAS
+    for (let pregunta of this.editFormulario.preguntas) {
+      if (pregunta.id == null) {
+        console.log("NUEVA PREGUNTA", JSON.stringify(pregunta))
+        this.formularioService.addPreguntabyFormulario(this.editFormulario.id, pregunta).subscribe(() => {
+        });
+      } else {
+        this.formularioService.updatePreguntaByFormulario(pregunta.id, pregunta).subscribe(() => {
+        });
+      }
+    }
   }
 }

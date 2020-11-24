@@ -37,7 +37,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
   loading: boolean;
 
   //Identificador docente provisional
-  idDocente = 2;
+  idDocente = 3;
 
   formularios: Array<Formulario>;
 

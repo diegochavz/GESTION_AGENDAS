@@ -62,6 +62,8 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
 
   updateHorarioByFormulario(idHorario, horario):Observable<any>{
     const path = `horarios/${idHorario}`;
+    console.log("PUT HORARIOS --> ", JSON.stringify(horario))
+    console.log(this.getFullPath()+path)
     return this.httpClient.put(this.getFullPath()+path, horario) as Observable<any>;
   }
 

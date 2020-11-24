@@ -16,6 +16,8 @@ import {TIPO_CAMPO} from "../../../../core/constants/tipo_campo.constants";
 import Pregunta from "../../../../core/models/pregunta.model";
 import {Observable, Observer} from "rxjs";
 import {CrearFormularioDocenteComponent} from "../formularios_add/formulario_add.component";
+import Programa from "../../../../core/models/programa.model";
+import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 
 @Component({
   selector: 'app-formularios-show',
@@ -38,37 +40,33 @@ export class FormulariosShowComponent implements OnInit {
   loadFile: FileList;
   step = 0;
 
-  programas: string;
+  listProgramas: Array<Programa>;
 
-  constructor(private _adapter: DateAdapter<any>, private _formBuilder: FormBuilder) {
+  constructor(private _adapter: DateAdapter<any>,
+              private _formBuilder: FormBuilder,
+              private programaService: ProgramaServiceImpl) {
     this._adapter.setLocale('es');
     this.showFormulario = new Formulario();
     this.listHorariosDisponibles = [];
     this.startAt = new Date();
     this.minDateCalendar = new Date();
     this.maxDateCalendar = new Date();
-    this.programas = '';
   }
 
 
-  ngOnInit(){
-    this.getProgramasNames();
+  ngOnInit() {
+    console.log("Entre a supervisar")
     this.crearFormAddAsesoria();
     this.agregarIntegrante();
+    this.listarProgramas();
   }
 
   /****CARGA VALORES INICIALES***/
-
-  getProgramasNames() {
-    /**if (this.showFormulario != null && this.showFormulario != undefined) {
-      let size = this.showFormulario.programas.length - 1;
-      for (let i = 0; i < size; i = i++) {
-        this.programas += this.showFormulario.programas[i].nombre_programa + ", ";
-      }
-      this.programas += this.showFormulario.programas[size - 1].nombre_programa;
-    }
-     ESTO CAMBIA DEBIDO A QUE AHORA SOLO RECIBO LOS CODIGOS
-     **/
+  listarProgramas() {
+    this.listProgramas = [];
+    this.programaService.getAll().subscribe((res: Array<Programa>) => {
+      this.listProgramas = res;
+    })
   }
 
   crearFormAddAsesoria() {
@@ -78,7 +76,7 @@ export class FormulariosShowComponent implements OnInit {
       preguntas: this._formBuilder.array([]),
       integrantes: this._formBuilder.array([]),
       file: '',
-      lugar: false,
+      es_virtual: false,
     })
   }
 
@@ -103,7 +101,7 @@ export class FormulariosShowComponent implements OnInit {
     return false;
   }
 
-  get lugarPreencial(): string {
+  get lugarPresencial(): string {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       return this.showFormulario.ubicacion_formulario + "";
     }
@@ -134,7 +132,7 @@ export class FormulariosShowComponent implements OnInit {
       if (this.showFormulario.horarios != null && this.showFormulario.horarios != undefined) {
         for (let i of this.showFormulario.horarios) {
           let dateAux = i.fecha_horario.split("-");
-          let newD = new Date(+dateAux[0],(+dateAux[1]-1),+dateAux[2])
+          let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
           newFechasDisponibles.push(newD);
         }
       }
@@ -155,7 +153,7 @@ export class FormulariosShowComponent implements OnInit {
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
           let dateAux = horarios[i].fecha_horario.split("-");
-          let newD = new Date(+dateAux[0],(+dateAux[1]-1),+dateAux[2])
+          let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
           if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
             ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
             (moment(newD).year() == moment(fechaSeleccionada).year())) {
@@ -177,9 +175,10 @@ export class FormulariosShowComponent implements OnInit {
 
   agregarIntegrante() {
     const newIntegrante = this._formBuilder.group({
-      nombre: '',
-      correo: '',
-      codigo:'',
+      nombre: ['', [Validators.required]],
+      correo: ['', [Validators.required]],
+      codigo: ['', [Validators.required]],
+      id_programa: ['', [Validators.required]],
     });
     this.integrantes.push(newIntegrante);
   }

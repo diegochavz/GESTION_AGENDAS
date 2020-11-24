@@ -76,7 +76,7 @@
                       <div class="col-lg-12">
                         <a class="fluid" mat-icon-button color="primary" (click)="agregarHorario()">
                           <p class="icon-input"><i class="fas fa-plus-circle"></i> Agregar un nuevo horario
-                            <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <mat-icon matSuffix><a matTooltip="Agrega un nuevo horario de atención de acuerdo a tu disponibilidad" matTooltipPosition="after">
                               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                           </p>
                         </a>
@@ -89,7 +89,7 @@
                         <mat-form-field form appearance="fill" class="fluid">
                           <mat-label>Nombre del formulario</mat-label>
                           <input matInput formControlName="nombre_formulario" required>
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <mat-icon matSuffix><a matTooltip="Nombre relacionado al asunto de la asesoría" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
@@ -100,7 +100,7 @@
                           <mat-label>Ubicación presencial
                           </mat-label>
                           <input matInput formControlName="ubicacion_formulario" required>
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <mat-icon matSuffix><a matTooltip="Donde se realizará la asesoría" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
@@ -114,7 +114,7 @@
                                  placeholder="Fecha inicio">
                           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                           <mat-datepicker #picker2></mat-datepicker>
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <mat-icon matSuffix><a matTooltip="Las asesorías serán agendadas a partir de esta fecha" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
@@ -124,7 +124,7 @@
                                  placeholder="Fecha finalización">
                           <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                           <mat-datepicker #picker3></mat-datepicker>
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <mat-icon matSuffix><a matTooltip="Las asesorías estarán disponibles hasta esta fecha" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
@@ -142,8 +142,8 @@
                           <mat-label>Tiempo mínimo
                           </mat-label>
                           <input matInput formControlName="tiempo_minimo" type="number" required placeholder="MINUTOS">
-                          <mat-icon matSuffix><a matTooltip="El tiempo mínimo debé ser en minutos"
-                                                 matTooltipPosition="after">
+                          <mat-icon matSuffix><a matTooltip="Tiempo dentro del cual no se podran agendar asesorías"
+                                                 matTooltipPosition="right">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
@@ -152,7 +152,7 @@
                           <mat-label>Intervalo
                           </mat-label>
                           <input matInput formControlName="intervalo" type="number" required placeholder="MINUTOS">
-                          <mat-icon matSuffix><a matTooltip="El intervalo debé ser en minutos"
+                          <mat-icon matSuffix><a matTooltip="Tiempo de receso entre asesorías"
                                                  matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
@@ -164,7 +164,7 @@
                           <mat-label>Duración
                           </mat-label>
                           <input matInput formControlName="duracion" type="number" required placeholder="MINUTOS">
-                          <mat-icon matSuffix><a matTooltip="La duración debé ser en minutos"
+                          <mat-icon matSuffix><a matTooltip="Tiempo dedicado a la asesoría"
                                                  matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
@@ -183,7 +183,7 @@
                       <div class="col-lg-12">
                         <mat-checkbox formControlName="carga_archivos" class="fluid"> El formulario permite carga de
                           archivos
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="below">
+                          <mat-icon matSuffix><a matTooltip="Permite cargar archivos a la solicitud de asesoría" matTooltipPosition="right">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-checkbox>
                       </div>
@@ -192,7 +192,7 @@
                       <div class="col-lg-12">
                         <mat-checkbox formControlName="restringe_estudiantes" class="fluid">Restringir solicitudes a mis
                           estudiantes
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="below">
+                          <mat-icon matSuffix><a matTooltip="Las solicitudes de tus estudiantes deberán ser autorizadas" matTooltipPosition="right">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-checkbox>
                       </div>
@@ -201,7 +201,7 @@
                       <div class="col-lg-12">
                         <mat-checkbox formControlName="restringe_otros_estudiantes" class="fluid">Restringir solicitudes
                           a otros estudiantes
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="below">
+                          <mat-icon matSuffix><a matTooltip="Las solicitudes de otros estudiantes deberán ser autorizadas" matTooltipPosition="right">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-checkbox>
                       </div>
@@ -214,7 +214,7 @@
                           mat-raised-button
                           color="warn"
                           matStepperNext
-                          [disabled]="this.formEditFormulario.invalid">
+                          [disabled]="formEditFormulario.invalid">
                     Siguiente
                   </button>
                 </div>
@@ -241,7 +241,7 @@
                                     <mat-form-field appearance="fill" class="fluid">
                                       <mat-label>Nombre del campo</mat-label>
                                       <input matInput formControlName="nombre_campo" required>
-                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                      <mat-icon matSuffix><a matTooltip="Nombre del campo que verán los estudiantes"
                                                              matTooltipPosition="after">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-form-field>
@@ -255,7 +255,7 @@
                                         <mat-option *ngFor="let tipo of listTipoCampos"
                                                     [value]="tipo">{{tipo.replace('_',' ')}}</mat-option>
                                       </mat-select>
-                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                      <mat-icon matSuffix><a matTooltip="Cuadro de texto para entradas escritas o combobox para múltiples opciones"
                                                              matTooltipPosition="below">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-form-field>
@@ -267,7 +267,7 @@
                                         <mat-option *ngFor="let tipo of listTipoDatos"
                                                     [value]="tipo">{{tipo}}</mat-option>
                                       </mat-select>
-                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                      <mat-icon matSuffix><a matTooltip="El cuadro de texto solo admitirá texto o números"
                                                              matTooltipPosition="below">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-form-field>
@@ -277,7 +277,7 @@
                                       <mat-label>Longitud
                                       </mat-label>
                                       <input matInput formControlName="longitud">
-                                      <mat-icon matSuffix><a matTooltip="Info about the action"
+                                      <mat-icon matSuffix><a matTooltip="Limita la cantidad de caracteres del campo"
                                                              matTooltipPosition="after">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-form-field>
@@ -301,8 +301,8 @@
                                   </div>
                                   <div class="col-lg-2">
                                     <mat-checkbox formControlName="obligatoria" class="">Obligatorio
-                                      <mat-icon matSuffix><a matTooltip="Info about the action"
-                                                             matTooltipPosition="below">
+                                      <mat-icon matSuffix><a matTooltip="te campo deberá se diligenciado obligatoriamente"
+                                                             matTooltipPosition="right">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-checkbox>
                                   </div>
@@ -322,7 +322,7 @@
                       <div class="col-lg-12">
                         <a class="fluid" mat-icon-button color="primary" (click)="agregarPregunta()">
                           <p class="icon-input"><i class="fas fa-plus-circle"></i> Agregar pregunta
-                            <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                            <mat-icon matSuffix><a matTooltip="Añade otra pregunta a ofrecer a los estudiantes" matTooltipPosition="after">
                               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                           </p>
                         </a>
@@ -336,7 +336,7 @@
                     <button mat-flat-button matStepperPrevious>Regresar</button>
                     <button mat-raised-button color="warn"
                             (click)="onShowFormulario()"
-                            [disabled]="this.formPreguntasFormulario.invalid"
+                            [disabled]="formPreguntasFormulario.invalid"
                             matStepperNext>Siguiente
                     </button>
                   </div>
@@ -345,7 +345,8 @@
             </mat-step>
             <mat-step label="Visualización del formulario">
               <app-formularios-show [showFormulario]="editFormulario" [minDateCalendar]="minDate"
-                                    [maxDateCalendar]="maxDate"></app-formularios-show>
+                                    [maxDateCalendar]="maxDate"
+              ></app-formularios-show>
               <mat-divider class="m-lg-3"></mat-divider>
               <div class="btn-stepper">
                 <div>

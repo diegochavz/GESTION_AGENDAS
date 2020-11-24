@@ -17,7 +17,7 @@ export class EstudiantesAddComponent implements OnInit {
 
 //DATOS PROVICIONAL
   idPrograma = 1;
-  idDocente = 2;
+  idDocente = 3;
 
   constructor(private estudianteService: EstudianteServiceImpl,
               public dialogRef: MatDialogRef<EstudiantesAddComponent>,
