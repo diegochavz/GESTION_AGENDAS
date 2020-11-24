@@ -62,7 +62,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   listProgramas: Array<Programa>;
 
-  idDocente = "2";
+  idDocente = "3";
 
   urlFormulario: string;
 
@@ -260,7 +260,6 @@ export class CrearFormularioDocenteComponent implements OnInit {
     }
     this.urlFormulario = "http://localhost:4200/#/formulario/" + this.newFormulario.enlace_uuid_formulario;
 
-    console.log(JSON.stringify(this.newFormulario))
   }
 
   onFormSubmit() {
