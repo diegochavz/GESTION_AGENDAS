@@ -12,6 +12,12 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSelectModule} from "@angular/material/select";
 import {DirectorServiceImpl} from "./http/implement/director.service.impl";
+import {AuthenticationServiceImpl} from "./http/implement/authentication.service.impl";
+import {HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import {JwtInterceptor} from "./helpers/jwt.interceptor";
+import {ErrorInterceptor} from "./helpers/error.interceptor";
+import {EstudianteServiceImpl} from "./http/implement/estudiante.service.impl";
+import {SolicitudServiceImpl} from "./http/implement/solicitud.service.impl";
 
 @NgModule({
   declarations: [],
@@ -22,8 +28,11 @@ import {DirectorServiceImpl} from "./http/implement/director.service.impl";
     ReactiveFormsModule,
     MatTooltipModule,
     MatSelectModule,
+    HttpClientModule,
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     FormularioServiceImpl,
     ProgramaServiceImpl,
     ServiceImpl,
@@ -32,6 +41,9 @@ import {DirectorServiceImpl} from "./http/implement/director.service.impl";
     DocenteServiceImpl,
     ToasterService,
     DirectorServiceImpl,
+    AuthenticationServiceImpl,
+    EstudianteServiceImpl,
+    SolicitudServiceImpl,
   ],
   entryComponents: [
   ]

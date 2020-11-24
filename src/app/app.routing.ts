@@ -6,21 +6,38 @@ import {DocenteComponent} from "./modulos/docente/docente.component";
 import {SuperComponent} from "./modulos/super_usuario/super.component";
 import {EstudianteComponent} from "./modulos/estudiante/estudiante.component";
 import {LoginComponent} from "./security/login/login.component";
+import {VisualizarFormulariosComponent} from "./modulos/estudiante/visualizar-formularios/visualizar-formularios.component";
+import {AuthGuard} from "./core/helpers/auth.guard";
+import {DirectorModule} from "./modulos/director/director.module";
+import {DirectorComponent} from "./modulos/director/director.component";
+import {ViewFormularioComponent} from "./modulos/estudiante/view-formulario/view-formulario.component";
+import {NotPageComponent} from "./modulos/estudiante/not-page/not-page.component";
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
-  {
+    component: VisualizarFormulariosComponent,
+    pathMatch:"full",
+  }
+  , {
     path: 'login',
     component: LoginComponent,
-  }
-  ,
+    pathMatch:"full",
+  },
   {
+    path: 'formulario/:enlace',
+    component: ViewFormularioComponent,
+    pathMatch:"full",
+  },
+  {
+    path: 'not-page',
+    component: NotPageComponent,
+    pathMatch:"full",
+  }
+  , {
     path: 'estudiante',
     component: EstudianteComponent,
+    //canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -31,6 +48,7 @@ const routes: Routes = [
   , {
     path: 'super',
     component: SuperComponent,
+    //canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -40,6 +58,7 @@ const routes: Routes = [
   }
   , {
     path: 'docente',
+   // canActivate: [AuthGuard],
     component: DocenteComponent,
     children: [
       {
@@ -47,10 +66,11 @@ const routes: Routes = [
         loadChildren: () => import('src/app/modulos/docente/docente.module').then(m => m.DocenteModule)
       }
     ]
-  },
-  {
+  }
+  , {
     path: 'director',
-    component: DocenteComponent,
+   // canActivate: [AuthGuard],
+    component: DirectorComponent,
     children: [
       {
         path: '',
@@ -60,7 +80,7 @@ const routes: Routes = [
   }
   , {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: ''
   }
 ];
 

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import Asesoria from "../../../../core/models/asesoria.model";
+import Asesoria from "../../../../core/models/solicitud.model";
 import Formulario from "../../../../core/models/formulario.model";
-import {AsesoriaServiceImpl} from "../../../../core/http/implement/asesoria.service.impl";
+import {SolicitudServiceImpl} from "../../../../core/http/implement/solicitud.service.impl";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormularioServiceImpl} from "../../../../core/http/implement/formulario.service.impl";
 
@@ -35,10 +35,13 @@ export class FormulariosDeleteComponent implements OnInit {
     this.loading = false;
     console.log("id FORMULRIO -> " + this.idFormulario)
     this.formularioService.delete(this.idFormulario).subscribe(
-      () => {
+      (res) => {
+        console.log("uno",res)
         this.dialogRef.close(true);
       },
-      (error) => {},
+      (error) => {
+        console.log("dos", JSON.stringify(error))
+      },
       ()=>{
         this.loading = true;
       });

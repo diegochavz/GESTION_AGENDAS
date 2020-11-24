@@ -24,16 +24,18 @@ export class DocentesDeleteComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   borrar():void{
     this.loading = false;
     this.docenteService.delete(this.idDocente).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
-      (error) => {},
+      (error) => {
+        this.dialogRef.close(2);
+      },
       ()=>{
         this.loading = true;
       });

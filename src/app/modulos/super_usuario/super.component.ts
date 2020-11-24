@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ROUTES_CONST_SUPER} from "../../core/constants/routes.constants";
+import RouteModel from "../../core/models/route.model";
 
 @Component({
   selector: 'app-super',
@@ -6,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SuperComponent implements OnInit {
 
-  constructor() { }
+  router: RouteModel[];
+
+  constructor() {
+    this.router = ROUTES_CONST_SUPER;
+  }
 
   ngOnInit(): void {
   }

@@ -46,7 +46,10 @@ import { EstudiantesListComponent } from './estudiantes/estudiantes-list/estudia
 import { EstudiantesAddComponent } from './estudiantes/estudiantes-add/estudiantes-add.component';
 import { EstudiantesEditComponent } from './estudiantes/estudiantes-edit/estudiantes-edit.component';
 import { EstudiantesDeleteComponent } from './estudiantes/estudiantes-delete/estudiantes-delete.component';
-
+import { SolicitudesListComponent } from './solicitudes/solicitudes-list/solicitudes-list.component';
+import { SolicitudesShowComponent } from './solicitudes/solicitudes-show/solicitudes-show.component';
+import { SolicitudesDeleteComponent } from './solicitudes/solicitudes-delete/solicitudes-delete.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   imports: [
@@ -79,6 +82,8 @@ import { EstudiantesDeleteComponent } from './estudiantes/estudiantes-delete/est
     MatPaginatorModule,
     MatSortModule,
     MatListModule,
+    MatDialogModule,
+    MatCardModule,
   ],
   declarations: [
     MainDocenteComponent,
@@ -91,12 +96,17 @@ import { EstudiantesDeleteComponent } from './estudiantes/estudiantes-delete/est
     EstudiantesAddComponent,
     EstudiantesEditComponent,
     EstudiantesDeleteComponent,
+    SolicitudesListComponent,
+    SolicitudesShowComponent,
+    SolicitudesDeleteComponent,
   ],
   entryComponents:[
     FormulariosDeleteComponent,
     EstudiantesAddComponent,
     EstudiantesEditComponent,
-    EstudiantesDeleteComponent,]
+    EstudiantesDeleteComponent,
+    SolicitudesShowComponent,
+    SolicitudesDeleteComponent,]
   ,
   providers:[
     {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
@@ -106,6 +116,7 @@ import { EstudiantesDeleteComponent } from './estudiantes/estudiantes-delete/est
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+
   ]
 })
 

@@ -120,16 +120,16 @@
                           <mat-label>{{pregunta.nombre_campo}}</mat-label>
                           <input *ngIf="validarIsTipoDato(pregunta.tipo_dato) == 0" matInput
                                  formControlName="{{crearControlFormPregunta(i)}}" type="text"
-                                 maxlength="{{pregunta.longitud}}" required="{{pregunta.obligatorio}}">
+                                 maxlength="{{(pregunta.longitud!=0)? pregunta.longitud:1000}}" required="{{pregunta.obligatoria}}">
                           <input *ngIf="validarIsTipoDato(pregunta.tipo_dato) == 1" matInput
                                  formControlName="{{crearControlFormPregunta(i)}}" type="number"
-                                 maxlength="{{pregunta.longitud}}" required="{{pregunta.obligatorio}}">
+                                 maxlength="{{(pregunta.longitud!=0)? pregunta.longitud:1000}}" required="{{pregunta.obligatoria}}">
                         </mat-form-field>
                         <mat-form-field class="fluid" appearance="legacy"
                                         *ngIf="validarIsTipoCampo(pregunta.tipo_campo) == 1">
                           <mat-label>{{pregunta.nombre_campo}}</mat-label>
                           <mat-select formControlName="{{crearControlFormPregunta(i)}}"
-                                      required="{{pregunta.obligatorio}}">
+                                      required="{{pregunta.obligatoria}}">
                             <mat-option *ngFor="let opc of pregunta.selecciones"
                                         [value]="opc">{{opc}}</mat-option>
                           </mat-select>
@@ -198,13 +198,19 @@
                       <div *ngFor="let integrante of integrantes.controls; let i = index;">
                         <div [formGroupName]="i">
                           <div class="row form-group">
-                            <div class="col-lg-6">
+                            <div class="col-lg-3">
+                              <mat-form-field class="fluid" appearance="legacy">
+                                <mat-label>Código</mat-label>
+                                <input matInput formControlName="codigo" type="number" required>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-lg-4">
                               <mat-form-field class="fluid" appearance="legacy">
                                 <mat-label>Nombre</mat-label>
                                 <input matInput formControlName="nombre" type="text" required>
                               </mat-form-field>
                             </div>
-                            <div class="col-lg-5">
+                            <div class="col-lg-4">
                               <mat-form-field class="fluid" appearance="legacy">
                                 <mat-label>Correo
                                 </mat-label>

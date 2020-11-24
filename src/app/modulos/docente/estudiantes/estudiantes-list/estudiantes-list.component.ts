@@ -4,6 +4,7 @@ import Estudiante from "../../../../core/models/estudiante.model";
 import {DialogService} from "../../../../core/services/dialogs.service";
 import {ToasterService} from "../../../../core/services/toaster.service";
 import {EstudianteServiceImpl} from "../../../../core/http/implement/estudiante.service.impl";
+import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 
 @Component({
   selector: 'app-estudiantes-list',
@@ -23,7 +24,10 @@ export class EstudiantesListComponent implements OnInit {
 
   estudiantes: Array<Estudiante>;
 
+  idDocente = 2;
+
   constructor(private  estudianteService: EstudianteServiceImpl,
+              private docenteService: DocenteServiceImpl,
               private dialogService: DialogService,
               private toasterService: ToasterService) {
     this.loading = true;
@@ -43,7 +47,7 @@ export class EstudiantesListComponent implements OnInit {
     this.loading = false;
     this.estudiantes = [];
     //Este método debe ser estudiantes por progama
-    this.estudianteService.getAll().subscribe(
+    this.docenteService.getEstudiantesByDocente(this.idDocente).subscribe(
       (listEstudiantes: Array<Estudiante>) => {
         this.estudiantes = listEstudiantes;
         this.dataSource = new MatTableDataSource(this.estudiantes);
@@ -66,10 +70,15 @@ export class EstudiantesListComponent implements OnInit {
 
   eliminarEstudiante(idEstudiante: number) {
     this.dialogService.deleteEstudianteDialog(idEstudiante).subscribe(res => {
-      if (res) {
+      if (res==1) {
         this.getEstudiantes();
         this.toasterService.openSnackBar(
           'Estudiante eliminado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      }else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL ELIMINAR ESTUDIANTE',
           ToasterService.CERRAR_ACTION
         );
       }
@@ -78,10 +87,15 @@ export class EstudiantesListComponent implements OnInit {
 
   agregarEstudiante() {
     this.dialogService.addEstudianteDialog().subscribe(res => {
-      if (res) {
+      if (res == 1) {
         this.getEstudiantes();
         this.toasterService.openSnackBar(
           'Estudiante agregado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL AGREGAR ESTUDIANTE',
           ToasterService.CERRAR_ACTION
         );
       }
@@ -90,10 +104,15 @@ export class EstudiantesListComponent implements OnInit {
 
   editarEstudiante(estudiante: Estudiante) {
     this.dialogService.editEstudianteDialog(estudiante).subscribe(res => {
-      if (res) {
+      if (res == 1) {
         this.getEstudiantes();
         this.toasterService.openSnackBar(
           'Estudiante editado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL EDITAR ESTUDIANTE',
           ToasterService.CERRAR_ACTION
         );
       }

@@ -3,8 +3,8 @@ import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.serv
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import Programa from "../../../../core/models/programa.model";
-import Docente from "../../../../core/models/docente.model";
-import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
+import {DirectorServiceImpl} from "../../../../core/http/implement/director.service.impl";
+import DirectorResponse from "../../../../core/models/director_response.model";
 
 @Component({
   selector: 'app-programas-add',
@@ -17,14 +17,14 @@ export class ProgramasAddComponent implements OnInit {
 
   formAddPrograma: FormGroup;
 
-  listDocentes: Array<Docente>;
+  listDirectores: Array<DirectorResponse>;
 
   constructor(private programaService: ProgramaServiceImpl,
-              private docenteService: DocenteServiceImpl,
+              private directorService: DirectorServiceImpl,
               public dialogRef: MatDialogRef<ProgramasAddComponent>,
               private _formBuilder: FormBuilder,) {
-    this.listDocentes = [];
-    this.loading = false;
+    this.listDirectores = [];
+    this.loading = true;
   }
 
   ngOnInit(): void {
@@ -33,19 +33,21 @@ export class ProgramasAddComponent implements OnInit {
       nombre_programa: ['', [Validators.required]],
       director: [null, [Validators.required]],
     });
-    this.listarDocentes();
+    this.listarDirectores();
   }
 
-  listarDocentes() {
-    this.listDocentes = [];
-    this.docenteService.getAll().subscribe((res: Array<Docente>)=>{
-      this.listDocentes = res;
-      console.log(JSON.stringify(res))
+  listarDirectores() {
+    this.listDirectores = [];
+    this.loading = false;
+    this.directorService.getAll().subscribe((res: Array<DirectorResponse>)=>{
+      this.listDirectores = res;
+    },()=>{},()=>{
+      this.loading = true;
     })
   }
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   registrarPrograma(): void {
@@ -54,9 +56,10 @@ export class ProgramasAddComponent implements OnInit {
     console.log(newPrograma)
     this.programaService.save(newPrograma).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
       (error) => {
+        this.dialogRef.close(2);
       },
       () => {
         this.loading = true;

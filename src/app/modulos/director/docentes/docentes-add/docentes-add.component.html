@@ -9,7 +9,7 @@
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Código docente</mat-label>
             <input matInput formControlName="codigo_docente" type="number" required>
-            <mat-icon matSuffix><a matTooltip="Ingresar el codigo del docente" matTooltipPosition="after">
+            <mat-icon matSuffix><a matTooltip="Ingresar el código del docente" matTooltipPosition="after">
               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
           </mat-form-field>
         </div>
@@ -45,7 +45,7 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <a mat-raised-button color="warn" class="btn-modal" (click)="registrarDocente()">Guardar</a>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="registrarDocente()" [disabled]="formAddDocente.invalid">Guardar</a>
   <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
 </div>
 

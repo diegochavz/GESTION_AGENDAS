@@ -9,7 +9,7 @@
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Código programa</mat-label>
             <input matInput formControlName="codigo_programa" type="number" required>
-            <mat-icon matSuffix><a matTooltip="Ingresar el codigo del programa ácademico" matTooltipPosition="after">
+            <mat-icon matSuffix><a matTooltip="Ingresar el código del programa ácademico" matTooltipPosition="after">
               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
           </mat-form-field>
         </div>
@@ -27,8 +27,8 @@
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Docentes</mat-label>
             <mat-select formControlName="director">
-              <mat-option *ngFor="let docente of listDocentes" [value]="docente.usuario.id">
-                {{docente.usuario.nombre}}
+              <mat-option *ngFor="let director of listDirectores" [value]="director.usuario.id">
+                {{director.usuario.nombre}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -39,6 +39,6 @@
 
 </div>
 <div mat-dialog-actions>
-  <a mat-raised-button color="warn" class="btn-modal" (click)="editarPrograma()">Guardar</a>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="editarPrograma()" [disabled]="formEditPrograma.invalid">Guardar</a>
   <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
 </div>

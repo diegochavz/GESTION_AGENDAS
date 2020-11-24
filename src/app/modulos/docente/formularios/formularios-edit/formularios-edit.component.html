@@ -6,7 +6,7 @@
       <div class="col-lg-12 col-md-10">
         <h1 class="display-3 text-white">EDITAR FORMULARIO DE ASESORÍA</h1>
         <p class="text-white mt-0 mb-8 subtitle-crear-formulario">A continuación podrás editar el formulario de asesoría
-          academica </p>
+          académica </p>
       </div>
     </div>
   </div>
@@ -15,12 +15,13 @@
   <div id="row">
     <div class="col-xl-12 order-xl-1">
       <div class="card bg-secondary shadow">
-        <a class="title-admin" [routerLink]="['../listar-formularios']"><h3><i class="fas fa-sign-in-alt"></i> &nbsp;&nbsp;&nbsp; Regresar</h3></a>
+        <a class="title-admin" [routerLink]="['../listar-formularios']"><h3><i class="fas fa-sign-in-alt"></i> &nbsp;&nbsp;&nbsp;
+          Regresar</h3></a>
         <div class="card-body">
-          <mat-progress-bar mode="indeterminate" color="accent" [hidden]="!loading"></mat-progress-bar>
-          <form [formGroup]="formEditFormulario">
-            <mat-horizontal-stepper>
-              <mat-step label="Horario de atención">
+          <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+          <mat-horizontal-stepper>
+            <mat-step label="Horario de atención">
+              <form [formGroup]="formEditFormulario">
                 <div class="row">
                   <div class="col-lg-12">
                     <h1 class="display-4">Configuración de horarios de atención</h1>
@@ -46,19 +47,24 @@
                                 <mat-form-field class="fluid" appearance="legacy">
                                   <mat-label>Hora inicio
                                   </mat-label>
-                                  <input matInput formControlName="inicio_horario" type="time" required>
+                                  <input matInput formControlName="inicio_horario" type="time" #timeInicio required>
                                 </mat-form-field>
                               </div>
                               <div class="col-lg-3">
                                 <mat-form-field class="fluid" appearance="legacy">
                                   <mat-label>Hora fin</mat-label>
-                                  <input matInput formControlName="fin_horario" type="time" required>
+                                  <input matInput formControlName="fin_horario" type="time" #timeFin required>
                                 </mat-form-field>
                               </div>
                               <div class="col-lg-1">
                                 <a mat-icon-button color="primary" (click)="borrarHorario(i)">
                                   <p class="icon-input"><i class="fas fa-trash"></i></p>
                                 </a>
+                              </div>
+                            </div>
+                            <div class="row msn-error-h" *ngIf="timeInicio.value>=timeFin.value && timeFin.value != 0">
+                              <div class="col-12">
+                                <p class="msn-error-p">La hora fin es inferior o igual a la hora inicio</p>
                               </div>
                             </div>
                           </div>
@@ -102,7 +108,6 @@
                     <h6 class="heading-small text-muted mb-4 titulo-general-elementos">Disponibilidad del
                       formulario</h6>
                     <div class="row">
-
                       <div class="col-lg-6">
                         <mat-form-field class="fluid">
                           <input matInput formControlName="disponibilidad_inicio_formulario" [matDatepicker]="picker2"
@@ -124,13 +129,21 @@
                         </mat-form-field>
                       </div>
                     </div>
+                    <div class="row msn-error-h"
+                         *ngIf="this.formEditFormulario.get('disponibilidad_fin_formulario').hasError('error')">
+                      <div class="col-12">
+                        <p class="msn-error-p">La fecha de finalización es inferior o igual a la fecha inicio</p>
+                      </div>
+                    </div>
+
                     <div class="row">
                       <div class="col-lg-6">
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Tiempo mínimo
                           </mat-label>
-                          <input matInput formControlName="tiempo_minimo" type="number" required>
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <input matInput formControlName="tiempo_minimo" type="number" required placeholder="MINUTOS">
+                          <mat-icon matSuffix><a matTooltip="El tiempo mínimo debé ser en minutos"
+                                                 matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
@@ -138,8 +151,9 @@
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Intervalo
                           </mat-label>
-                          <input matInput formControlName="intervalo" type="number" required>
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <input matInput formControlName="intervalo" type="number" required placeholder="MINUTOS">
+                          <mat-icon matSuffix><a matTooltip="El intervalo debé ser en minutos"
+                                                 matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
@@ -149,15 +163,16 @@
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Duración
                           </mat-label>
-                          <input matInput formControlName="duracion" type="number" required>
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <input matInput formControlName="duracion" type="number" required placeholder="MINUTOS">
+                          <mat-icon matSuffix><a matTooltip="La duración debé ser en minutos"
+                                                 matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </mat-form-field>
                       </div>
                       <div class="col-lg-6">
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Programas académicos</mat-label>
-                          <mat-select formControlName="programas" multiple >
+                          <mat-select formControlName="programas" multiple>
                             <mat-option *ngFor="let programa of listProgramas"
                                         [value]="programa.id">{{programa.nombre_programa}}</mat-option>
                           </mat-select>
@@ -195,12 +210,18 @@
                 </div>
                 <mat-divider class="m-lg-3"></mat-divider>
                 <div class="btn-stepper">
-                  <button type="submit" mat-raised-button color="warn" matStepperNext [disabled]="isDisable_1">
+                  <button type="submit"
+                          mat-raised-button
+                          color="warn"
+                          matStepperNext
+                          [disabled]="this.formEditFormulario.invalid">
                     Siguiente
                   </button>
                 </div>
-              </mat-step>
-              <mat-step label="Formulario de información">
+              </form>
+            </mat-step>
+            <mat-step label="Formulario de información">
+              <form [formGroup]="formPreguntasFormulario">
                 <div class="row">
                   <div class="col-lg-12">
                     <h1 class="display-4">Configuración del formulario</h1>
@@ -232,7 +253,7 @@
                                       <mat-label>Tipo de campo</mat-label>
                                       <mat-select formControlName="tipo_campo" required>
                                         <mat-option *ngFor="let tipo of listTipoCampos"
-                                                    [value]="tipo">{{tipo}}</mat-option>
+                                                    [value]="tipo">{{tipo.replace('_',' ')}}</mat-option>
                                       </mat-select>
                                       <mat-icon matSuffix><a matTooltip="Info about the action"
                                                              matTooltipPosition="below">
@@ -271,10 +292,10 @@
                                           <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
                                         </mat-chip>
                                         <input
-                                               [matChipInputFor]="chipList"
-                                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                               [matChipInputAddOnBlur]="true"
-                                               (matChipInputTokenEnd)="agregarItemCombobox($event, i)">
+                                          [matChipInputFor]="chipList"
+                                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                          [matChipInputAddOnBlur]="true"
+                                          (matChipInputTokenEnd)="agregarItemCombobox($event, i)">
                                       </mat-chip-list>
                                     </mat-form-field>
                                   </div>
@@ -313,54 +334,58 @@
                 <div class="btn-stepper">
                   <div>
                     <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <button mat-raised-button color="warn" (click)="onShowFormulario()" [disabled]="isDisable_2"
+                    <button mat-raised-button color="warn"
+                            (click)="onShowFormulario()"
+                            [disabled]="this.formPreguntasFormulario.invalid"
                             matStepperNext>Siguiente
                     </button>
                   </div>
                 </div>
-              </mat-step>
-              <mat-step label="Visualización del formulario">
-                <app-formularios-show [showFormulario]="editFormulario" [minDateCalendar]="minDate"
-                                      [maxDateCalendar]="maxDate"></app-formularios-show>
-                <mat-divider class="m-lg-3"></mat-divider>
-                <div class="btn-stepper">
-                  <div>
-                    <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <button mat-raised-button color="warn" matStepperNext>Siguiente
-                    </button>
-                  </div>
+              </form>
+            </mat-step>
+            <mat-step label="Visualización del formulario">
+              <app-formularios-show [showFormulario]="editFormulario" [minDateCalendar]="minDate"
+                                    [maxDateCalendar]="maxDate"></app-formularios-show>
+              <mat-divider class="m-lg-3"></mat-divider>
+              <div class="btn-stepper">
+                <div>
+                  <button mat-flat-button matStepperPrevious>Regresar</button>
+                  <button mat-raised-button color="warn" matStepperNext>Siguiente
+                  </button>
                 </div>
-              </mat-step>
-              <mat-step label="URL del formulario">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <h1 class="display-4">URL del formulario</h1>
-                    <p class="m-t-subtitle-stepper">Con la siguiente URL tus estudiantes podran ingresan al formulario de asesoría </p>
-                  </div>
+              </div>
+            </mat-step>
+            <mat-step label="URL del formulario">
+              <div class="row">
+                <div class="col-lg-12">
+                  <h1 class="display-4">URL del formulario</h1>
+                  <p class="m-t-subtitle-stepper">Con la siguiente URL tus estudiantes podran ingresan al formulario de
+                    asesoría </p>
                 </div>
-                <div class="row bnm-center">
-                  <div class="col-lg-2"></div>
-                  <div class="col-lg-6 ">
-                    <mat-form-field class="fluid" appearance="fill" >
-                      <mat-label>Url formulario</mat-label>
-                      <input matInput value="{{urlFormulario}}" disabled>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-lg-2">
-                    <a mat-raised-button color="warn">Copiar</a>
-                  </div>
-                  <div class="col-lg-2"></div>
+              </div>
+              <div class="row bnm-center">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-6 ">
+                  <mat-form-field class="fluid" appearance="fill">
+                    <mat-label>Url formulario</mat-label>
+                    <input matInput value="{{urlFormulario}}" disabled>
+                  </mat-form-field>
                 </div>
-                <mat-divider class="m-lg-3"></mat-divider>
-                <div class="btn-stepper">
-                  <div>
-                    <button mat-flat-button matStepperPrevious>Regresar</button>
-                    <a mat-raised-button color="warn" [routerLink]="['../listar-formularios']" (click)="onFormSubmit()" matStepperNext>Guardar</a>
-                  </div>
+                <div class="col-lg-2 btn-copy">
+                  <button mat-raised-button color="warn" (click)="copiarURL()">Copiar URL</button>
                 </div>
-              </mat-step>
-            </mat-horizontal-stepper>
-          </form>
+                <div class="col-lg-2"></div>
+              </div>
+              <mat-divider class="m-lg-3"></mat-divider>
+              <div class="btn-stepper">
+                <div>
+                  <button mat-flat-button matStepperPrevious>Regresar</button>
+                  <a mat-raised-button color="warn" [routerLink]="['../listar-formularios']" (click)="onFormSubmit()"
+                     matStepperNext>Guardar</a>
+                </div>
+              </div>
+            </mat-step>
+          </mat-horizontal-stepper>
         </div>
       </div>
     </div>

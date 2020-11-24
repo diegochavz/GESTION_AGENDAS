@@ -30,7 +30,7 @@ export class DirectoresAddComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   registrarDirector(): void {
@@ -39,9 +39,10 @@ export class DirectoresAddComponent implements OnInit {
     console.log(newDirector)
     this.directorService.save(newDirector).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
       (error) => {
+        this.dialogRef.close(2);
       },
       () => {
         this.loading = true;

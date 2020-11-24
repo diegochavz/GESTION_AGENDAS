@@ -6,7 +6,7 @@
           <img src="./assets/img/brand/logo_ufps.png" class="img-fluid">
         </div>
         <div class="col-md-6 order-md-2 inicio-sesion">
-          <a class="ico-input-color"><p><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp; Inicio de sesión</p></a>
+          <a [routerLink]="['../login']" class="ico-input-color"><p><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp; Inicio de sesión</p></a>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
                   <div class="row">
                     <div class="col-6">
                       <mat-form-field appearance="fill">
-                        <mat-label>Favorite food</mat-label>
+                        <mat-label>Programas académicos</mat-label>
                         <mat-select>
                           <mat-option *ngFor="let food of foods" [value]="food.value">
                             {{food.viewValue}}
@@ -50,7 +50,7 @@
                     </div>
                     <div class="col-6">
                       <mat-form-field appearance="fill">
-                        <mat-label>Favorite food</mat-label>
+                        <mat-label>Docentes</mat-label>
                         <mat-select>
                           <mat-option *ngFor="let food of foods" [value]="food.value">
                             {{food.viewValue}}
@@ -190,13 +190,13 @@
         <div class="col-xl-6">
           <ul class="nav nav-footer justify-content-center justify-content-xl-end">
             <li class="nav-item">
-              <p>Estudiante 1</p>
+              <p class="i-pd-f">Yhuver Quintero</p>
             </li>
             <li class="nav-item">
-              <p>Estudiante 2</p>
+              <p class="i-pd-f">Alvaro Perez</p>
             </li>
             <li class="nav-item">
-              <p>Estudiante 3</p>
+              <p class="i-pd-f">Diego Chavez</p>
             </li>
           </ul>
         </div>

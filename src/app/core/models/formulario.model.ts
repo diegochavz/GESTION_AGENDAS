@@ -1,6 +1,5 @@
 import Horario from "./horario.model";
 import Pregunta from "./pregunta.model";
-import Programa from "./programa.model";
 
 export default class Formulario {
 

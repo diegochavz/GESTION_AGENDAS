@@ -28,7 +28,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
   //@ViewChild(MatSort) sort: MatSort;
 
   //columnas de la tabla
-  displayedColumns: string[] = ['fecha_registro','nombre_formulario', 'opciones'];
+  displayedColumns: string[] = ['fecha_registro', 'nombre_formulario', 'opciones'];
 
   //Datos a exponer en la tabla
   dataSource: MatTableDataSource<Formulario>;
@@ -37,7 +37,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
   loading: boolean;
 
   //Identificador docente provisional
-  idDocente = 4;
+  idDocente = 2;
 
   formularios: Array<Formulario>;
 
@@ -54,7 +54,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.getFormularios();
   }
 
@@ -88,25 +88,9 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  aplicarFormatoFecha(formulario:Formulario):string{
+  aplicarFormatoFecha(formulario: Formulario): string {
     return moment(formulario.fecha_registro).format("YYYY-MM-DD");
   }
-
-  /**
-
-   consultarProgramas(formulario: Formulario): string {
-    let aux = '';
-    console.log("Consultando Programas list....")
-    this.formularioService.getProgramasByFormulario(formulario.id).subscribe((res: Array<Programa>) => {
-        for (let i of res) {
-          aux += i.nombre_programa + ","
-        }
-      }
-    )
-    return "aux";
-  }
-   **/
-
 
   setFormulario(form: Formulario) {
     this.dataFormularioService.setDataFormulario(form);

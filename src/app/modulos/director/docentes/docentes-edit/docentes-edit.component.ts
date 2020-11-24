@@ -7,6 +7,7 @@ import {DocenteServiceImpl} from "../../../../core/http/implement/docente.servic
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import DocenteResponse from "../../../../core/models/docente_response.model";
 import Usuario from "../../../../core/models/usuario.model";
+import FormularioResponse from "../../../../core/models/formulario_response.model";
 
 @Component({
   selector: 'app-docentes-edit',
@@ -23,6 +24,8 @@ export class DocentesEditComponent implements OnInit {
 
   docente: DocenteResponse;
 
+  listProgramasUso: number[];
+
   constructor(private programaService: ProgramaServiceImpl,
               private docenteService: DocenteServiceImpl,
               public dialogRef: MatDialogRef<DocentesEditComponent>,
@@ -31,6 +34,7 @@ export class DocentesEditComponent implements OnInit {
     this.listProgramas = [];
     this.loading = true;
     this.docente = data.docenteResponse;
+    this.listProgramasUso = [];
   }
 
   ngOnInit(): void {
@@ -58,21 +62,37 @@ export class DocentesEditComponent implements OnInit {
       this.loading = false;
       this.docenteService.getProgramasByDocente(this.docente.usuario.id).subscribe((res: Array<Programa>) => {
           for (let i of res) {
+            console.log("docente -> "+ i.id)
             aux.push(i.id);
           }
           this.formEditDocente.get('programas').setValue(aux)
+          this.consultarProgramasEnUso(aux);
         },
         () => {
         },
         () => {
+
           this.loading = true;
         }
       )
     }
   }
 
+  consultarProgramasEnUso(listIDs: number[]) {
+    if (listIDs.length != 0) {
+      for (let i = 0; i < listIDs.length; i++) {
+        this.programaService.getFormulariosByPrograma(listIDs[i]).subscribe((res: FormularioResponse[]) => {
+          if (res.length > 0) {
+            console.log("uso -> "+ listIDs[i])
+            this.listProgramasUso.push(listIDs[i])
+          }
+        })
+      }
+    }
+  }
+
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   editarDocente(): void {
@@ -80,7 +100,7 @@ export class DocentesEditComponent implements OnInit {
     let editDocente = new DocenteResponse();
     let editUsuario = new Usuario();
     editUsuario.id = this.docente.usuario.id;
-    editDocente.usuario = editUsuario ;
+    editDocente.usuario = editUsuario;
     editDocente.codigo_docente = this.formEditDocente.value.codigo_docente + '';
     editDocente.usuario.nombre = this.formEditDocente.value.nombre;
     editDocente.nombre = this.formEditDocente.value.nombre;
@@ -90,9 +110,10 @@ export class DocentesEditComponent implements OnInit {
     console.log(JSON.stringify(editDocente))
     this.docenteService.update(editDocente.usuario.id, editDocente).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
       (error) => {
+        this.dialogRef.close(2);
       },
       () => {
         this.loading = true;

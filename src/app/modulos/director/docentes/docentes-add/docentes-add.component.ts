@@ -46,7 +46,7 @@ export class DocentesAddComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   registrarDocente(): void {
@@ -55,9 +55,10 @@ export class DocentesAddComponent implements OnInit {
     console.log(newDocente)
     this.docenteService.save(newDocente).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
       (error) => {
+        this.dialogRef.close(2);
       },
       () => {
         this.loading = true;

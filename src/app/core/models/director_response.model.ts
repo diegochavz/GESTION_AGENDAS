@@ -5,4 +5,7 @@ export default class DirectorResponse {
   usuario: Usuario;
   fecha_registro:Date;
   fecha_actualizacion: Date;
+  correo:string;
+  contrasena:string;
+  nombre:string;
 }

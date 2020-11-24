@@ -65,11 +65,17 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
   }
 
   eliminarPrograma(idPrograma: number) {
+    console.log(idPrograma)
     this.dialogService.deleteProgramaDialog(idPrograma).subscribe(res => {
-      if (res) {
+      if (res==1) {
         this.getProgramas();
         this.toasterService.openSnackBar(
           'Programa eliminado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL ELIMINAR PROGRAMA',
           ToasterService.CERRAR_ACTION
         );
       }
@@ -78,10 +84,15 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   agregarPrograma() {
     this.dialogService.addProgramaDialog().subscribe(res => {
-      if (res) {
+      if (res==1) {
         this.getProgramas();
         this.toasterService.openSnackBar(
           'Programa agregado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL AGREGAR PROGRAMA',
           ToasterService.CERRAR_ACTION
         );
       }
@@ -90,10 +101,15 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   editarPrograma(programa: Programa) {
     this.dialogService.editProgramaDialog(programa).subscribe(res => {
-      if (res) {
+      if (res==1) {
         this.getProgramas();
         this.toasterService.openSnackBar(
           'Programa editado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL BORRAR PROGRAMA',
           ToasterService.CERRAR_ACTION
         );
       }

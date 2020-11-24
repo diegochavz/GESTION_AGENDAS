@@ -32,11 +32,9 @@ export class FormulariosShowComponent implements OnInit {
 
   startAt: Date;
 
-  //Form
   formularioAddAsesoria: FormGroup;
   listHorariosDisponibles: Array<Horario>;
 
-  //Archivo cargado por el estudiante
   loadFile: FileList;
   step = 0;
 
@@ -121,7 +119,7 @@ export class FormulariosShowComponent implements OnInit {
 
   /****CONFIGURACIÓN DEL CALENDARIO***/
 
-  //Personalización de días en el calendar
+  //Pintar días en el calendar
   dateClass() {
     return (date: Date): MatCalendarCellCssClasses => {
       let listFechasDisponibles = this.fechasDisponibles();
@@ -168,7 +166,7 @@ export class FormulariosShowComponent implements OnInit {
     }
   }
 
-  selectedHorario(horario: string) {
+  selectedHorario(horario: Horario) {
   }
 
   /****CONFIGURACIÓN DE INTEGRANTES***/
@@ -181,6 +179,7 @@ export class FormulariosShowComponent implements OnInit {
     const newIntegrante = this._formBuilder.group({
       nombre: '',
       correo: '',
+      codigo:'',
     });
     this.integrantes.push(newIntegrante);
   }

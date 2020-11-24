@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import Docente from "../../../../core/models/docente.model";
 import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import DirectorResponse from "../../../../core/models/director_response.model";
+import {DirectorServiceImpl} from "../../../../core/http/implement/director.service.impl";
 
 @Component({
   selector: 'app-programas-edit',
@@ -17,17 +18,17 @@ export class ProgramasEditComponent implements OnInit {
 
   formEditPrograma: FormGroup;
 
-  listDocentes: Array<Docente>;
+  listDirectores: Array<DirectorResponse>;
 
   programa: Programa;
 
   constructor(private programaService: ProgramaServiceImpl,
-              private docenteService: DocenteServiceImpl,
+              private directorService: DirectorServiceImpl,
               public dialogRef: MatDialogRef<ProgramasEditComponent>,
               private _formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.listDocentes = [];
-    this.loading = false;
+    this.listDirectores = [];
+    this.loading = true;
     this.programa = data.programa;
   }
 
@@ -42,31 +43,36 @@ export class ProgramasEditComponent implements OnInit {
         nombre_programa: [this.programa.nombre_programa, [Validators.required]],
         director: [null, [Validators.required]]
       });
-      this.docenteService.get(this.programa.director).subscribe((res: Docente) => {
-        this.formEditPrograma.get('director').setValue(res);
-        this.listarDocentes();
+      this.loading = false;
+      this.directorService.get(this.programa.director).subscribe((res: DirectorResponse) => {
+        this.formEditPrograma.get('director').setValue(res.usuario.id);
+        this.listarDirectores();
+        this.loading = true;
       })
     }
   }
 
-  listarDocentes() {
-
+  listarDirectores() {
+    this.listDirectores = [];
+    this.directorService.getAll().subscribe((res: Array<DirectorResponse>)=>{
+      this.listDirectores = res;
+    })
   }
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   editarPrograma(): void {
     this.loading = false;
     let editPrograma = <Programa>Object.assign({}, this.formEditPrograma.value);
     editPrograma.id = this.programa.id;
-    console.log(editPrograma)
     this.programaService.update(editPrograma.id,editPrograma).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
       (error) => {
+        this.dialogRef.close(2);
       },
       () => {
         this.loading = true;

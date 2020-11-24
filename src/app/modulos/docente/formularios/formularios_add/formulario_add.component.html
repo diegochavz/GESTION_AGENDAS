@@ -255,7 +255,7 @@
                                       <mat-label>Tipo de campo</mat-label>
                                       <mat-select formControlName="tipo_campo" required>
                                         <mat-option *ngFor="let tipo of listTipoCampos"
-                                                    [value]="tipo">{{tipo}}</mat-option>
+                                                    [value]="tipo">{{tipo.replace('_',' ')}}</mat-option>
                                       </mat-select>
                                       <mat-icon matSuffix><a matTooltip="Info about the action"
                                                              matTooltipPosition="below">

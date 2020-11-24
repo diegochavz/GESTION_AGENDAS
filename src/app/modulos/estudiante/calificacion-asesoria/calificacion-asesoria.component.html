@@ -1,0 +1,118 @@
+<main class="profile-page">
+  <section class="section-profile-cover section-shaped my-0">
+    <div class="position-relative">
+      <section class="section section-lg section-shaped pb-250 bg-ini-2">
+        <div class="container py-lg-md d-flex">
+          <div class="col px-0 ">
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                <h1 class="mat-display-1 text-white">GESTIÓN DE ASESORÍAS ACADÉMICAS <br>
+                  <h3 class="mat-display-3 text-white">Encuesta de satisfacción <br>
+                    <p class="lead text-white">A continuación diligencia esta pequeña encuesta de satisfacción de la
+                      asesoría recibida.</p>
+                  </h3>
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container mb-cal">
+      <div class="card card-profile shadow mt--250">
+        <div class="px-4">
+          <div class="row justify-content-center">
+            <div class="col-lg-2 order-lg-2">
+              <div class="card-profile-image">
+                <a href="javascript:void(0)"(click)="onSelection(1)">
+                  <img src="./assets/img/theme/ico_fc_5.jpg">
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-2 order-lg-2">
+              <div class="card-profile-image">
+                <a href="javascript:void(0)" (click)="onSelection(2)">
+                  <img src="./assets/img/theme/ico_fc_4.jpg" class="card">
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-2 order-lg-2">
+              <div class="card-profile-image">
+                <a href="javascript:void(0)" (click)="onSelection(3)">
+                  <img src="./assets/img/theme/ico_fc_3.jpg">
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-2 order-lg-2">
+              <div class="card-profile-image">
+                <a href="javascript:void(0)" (click)="onSelection(4)">
+                  <img src="./assets/img/theme/ico_fc_2.jpg">
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-2 order-lg-2">
+              <div class="card-profile-image">
+                <a href="javascript:void(0)" (click)="onSelection(5)">
+                  <img src="./assets/img/theme/ico_fc_1.jpg">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-5 py-7 mb--125 justify-content-center">
+            <div class="col-8">
+              <p class="mat-display-1">
+               RESPUESTA: <span class="calificacion-ase">{{eleccion}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="row py-3 border-top text-center">
+            <div class="row justify-content-center">
+              <div class="col-lg-9">
+                <p>Si tienes algún comentario con relación a la asesoría académica recibida por el docente podrás
+                  dejarlo a continuación.</p>
+                <form>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Déjanos tú comentario</mat-label>
+                    <textarea matInput maxlength="300" #postalCode></textarea>
+                    <mat-hint align="end">{{postalCode.value.length}} / 300</mat-hint>
+                  </mat-form-field>
+                  <button class="float-rigth btn-m-c" mat-raised-button color="warn">Enviar respuesta</button>
+                </form>
+
+              </div>
+              <p class="pt-min"> Esta observación se guardara de manera anónima y será utilizada para el
+                mejoramiento de las orientaciones educativas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section pb-0">
+    <div class="container pd-footer">
+      <div class="row align-items-center justify-content-xl-between">
+        <div class="col-xl-6">
+          <div class="copyright text-center text-xl-left text-muted">
+            <p> &copy; {{ test | date: "yyyy" }} Curso de profundización</p>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <ul class="nav nav-footer justify-content-center justify-content-xl-end">
+            <li class="nav-item">
+              <p class="i-pd-f">Yhuver Quintero</p>
+            </li>
+            <li class="nav-item">
+              <p class="i-pd-f">Alvaro Perez</p>
+            </li>
+            <li class="nav-item">
+              <p class="i-pd-f">Diego Chavez</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>

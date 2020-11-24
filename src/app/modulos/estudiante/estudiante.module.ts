@@ -37,6 +37,9 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatListModule} from "@angular/material/list";
 import {VisualizarFormulariosComponent} from "./visualizar-formularios/visualizar-formularios.component";
 import {EstudianteRoutes} from "./estudiante.routing";
+import { CalificacionAsesoriaComponent } from './calificacion-asesoria/calificacion-asesoria.component';
+import { ViewFormularioComponent } from './view-formulario/view-formulario.component';
+import { NotPageComponent } from './not-page/not-page.component';
 
 @NgModule({
   imports: [
@@ -69,7 +72,10 @@ import {EstudianteRoutes} from "./estudiante.routing";
     MatListModule,
   ],
   declarations: [
-    VisualizarFormulariosComponent
+    VisualizarFormulariosComponent,
+    CalificacionAsesoriaComponent,
+    ViewFormularioComponent,
+    NotPageComponent
   ],
   entryComponents: [  ],
   providers: [

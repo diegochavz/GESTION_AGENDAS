@@ -1,13 +1,11 @@
 import {Injectable} from "@angular/core";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {AsesoriaShowComponent} from "../../modulos/docente/asesorias/asesorias-show/asesorias-show.component";
 import {FormulariosDeleteComponent} from "../../modulos/docente/formularios/formularios-delete/formularios-delete.component";
 import {ProgramasDeleteComponent} from "../../modulos/super_usuario/programas/programas-delete/programas-delete.component";
 import Programa from "../models/programa.model";
 import {ProgramasEditComponent} from "../../modulos/super_usuario/programas/programas-edit/programas-edit.component";
 import {ProgramasAddComponent} from "../../modulos/super_usuario/programas/programas-add/programas-add.component";
 import {DocentesDeleteComponent} from "../../modulos/director/docentes/docentes-delete/docentes-delete.component";
-import Docente from "../models/docente.model";
 import {DocentesEditComponent} from "../../modulos/director/docentes/docentes-edit/docentes-edit.component";
 import {DocentesAddComponent} from "../../modulos/director/docentes/docentes-add/docentes-add.component";
 import Estudiante from "../models/estudiante.model";
@@ -16,10 +14,12 @@ import {EstudiantesEditComponent} from "../../modulos/docente/estudiantes/estudi
 import {EstudiantesAddComponent} from "../../modulos/docente/estudiantes/estudiantes-add/estudiantes-add.component";
 import {DirectoresAddComponent} from "../../modulos/super_usuario/directores/directores-add/directores-add.component";
 import {DirectoresDeleteComponent} from "../../modulos/super_usuario/directores/directores-delete/directores-delete.component";
-import Director from "../models/director.model";
 import {DirectoresEditComponent} from "../../modulos/super_usuario/directores/directores-edit/directores-edit.component";
 import DirectorResponse from "../models/director_response.model";
 import DocenteResponse from "../models/docente_response.model";
+import SolicitudResponse from "../models/solicitud_response.model";
+import {SolicitudesShowComponent} from "../../modulos/docente/solicitudes/solicitudes-show/solicitudes-show.component";
+import {SolicitudesDeleteComponent} from "../../modulos/docente/solicitudes/solicitudes-delete/solicitudes-delete.component";
 
 @Injectable()
 export class DialogService {
@@ -29,14 +29,6 @@ export class DialogService {
   ) {
   }
 
-
-  showAsesoriaDialog(idAsesoria) {
-    let dialogRef: MatDialogRef<AsesoriaShowComponent>;
-    dialogRef = this.matDialog.open(AsesoriaShowComponent, {
-      data: { idAsesoria }
-    });
-    return dialogRef.afterClosed();
-  }
 
   deleteFormularioDialog(idFormulario: number) {
     let dialogRef: MatDialogRef<FormulariosDeleteComponent>;
@@ -133,4 +125,21 @@ export class DialogService {
     dialogRef = this.matDialog.open(DirectoresAddComponent);
     return dialogRef.afterClosed();
   }
+
+  showSolicitudDialog(solicitudResponse: SolicitudResponse) {
+    let dialogRef: MatDialogRef<SolicitudesShowComponent>;
+    dialogRef = this.matDialog.open(SolicitudesShowComponent, {
+      data: { solicitudResponse }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  deleteSolicitudDialog(idSolicitud: number) {
+    let dialogRef: MatDialogRef<SolicitudesDeleteComponent>;
+    dialogRef = this.matDialog.open(SolicitudesDeleteComponent, {
+      data: { idSolicitud }
+    });
+    return dialogRef.afterClosed();
+  }
+
 }

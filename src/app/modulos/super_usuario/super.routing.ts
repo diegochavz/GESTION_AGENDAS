@@ -4,7 +4,7 @@ import {MainSuperComponent} from "./main/main-super.component";
 import {DirectoresListComponent} from "./directores/directores-list/directores-list.component";
 
 export const SuperRoutes: Routes = [
-  { path: 'main',      component: MainSuperComponent },
-  { path: 'listar-programas',      component: DirectoresListComponent },
+  { path: 'main-super',      component: MainSuperComponent },
+  { path: 'listar-programas',      component: ProgramasListComponent },
   { path: 'listar-directores',      component: DirectoresListComponent },
 ];

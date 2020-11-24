@@ -21,7 +21,7 @@ export class EstudiantesEditComponent implements OnInit {
               public dialogRef: MatDialogRef<EstudiantesEditComponent>,
               private _formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.loading = false;
+    this.loading = true;
     this.estudiante = data.estudiante;
   }
 
@@ -32,28 +32,32 @@ export class EstudiantesEditComponent implements OnInit {
   cargaDatosEstudiante() {
     if (this.estudiante != null && this.estudiante != undefined) {
       this.formEditEstudiante = this._formBuilder.group({
-        codigo_programa: [this.estudiante.nombre, [Validators.required]],
-        nombre_programa: [this.estudiante.codigo, [Validators.required]],
-        director: [null, [Validators.required]]
+        codigo_estudiante: [this.estudiante.codigo_estudiante, [Validators.required]],
+        nombre_estudiante: [this.estudiante.nombre_estudiante, [Validators.required]],
+        correo_estudiante: [this.estudiante.correo_estudiante, [Validators.required]],
       });
     }
   }
 
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   editarEstudiante(): void {
     this.loading = false;
-    let editEstudiante = <Estudiante>Object.assign({}, this.formEditEstudiante.value);
-    editEstudiante.id = this.estudiante.id;
-    console.log(editEstudiante)
-    this.estudianteService.update(editEstudiante.id,editEstudiante).subscribe(
+
+    this.estudiante.codigo_estudiante = this.formEditEstudiante.value.codigo_estudiante;
+    this.estudiante.nombre_estudiante = this.formEditEstudiante.value.nombre_estudiante;
+    this.estudiante.correo_estudiante = this.formEditEstudiante.value.correo_estudiante;
+    this.estudiante.docentes = this.estudiante.ids_docentes;
+    console.log(JSON.stringify(this.estudiante))
+    this.estudianteService.update( this.estudiante.id, this.estudiante).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
       (error) => {
+        this.dialogRef.close(2);
       },
       () => {
         this.loading = true;

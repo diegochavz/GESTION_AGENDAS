@@ -15,9 +15,9 @@ export class VisualizarFormulariosComponent implements OnInit {
   test: Date = null;
 
   foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
+    {value: 'steak-0', viewValue: 'Item 1'},
+    {value: 'pizza-1', viewValue: 'Item 2'},
+    {value: 'tacos-2', viewValue: 'Item 3'}
   ];
 
   focus: any;

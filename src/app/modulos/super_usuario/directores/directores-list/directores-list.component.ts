@@ -66,10 +66,15 @@ export class DirectoresListComponent implements OnInit {
 
   eliminarDirector(idDirector: number) {
     this.dialogService.deleteDirectorDialog(idDirector).subscribe(res => {
-      if (res) {
+      if (res == 1) {
         this.getDirectores();
         this.toasterService.openSnackBar(
           'Director eliminado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL ELIMINAR DOCENTE',
           ToasterService.CERRAR_ACTION
         );
       }
@@ -78,10 +83,15 @@ export class DirectoresListComponent implements OnInit {
 
   agregarDirector() {
     this.dialogService.addDirectorDialog().subscribe(res => {
-      if (res) {
+      if (res == 1) {
         this.getDirectores();
         this.toasterService.openSnackBar(
           'Director agregado Exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL CREAR DIRECTOR',
           ToasterService.CERRAR_ACTION
         );
       }
@@ -90,10 +100,15 @@ export class DirectoresListComponent implements OnInit {
 
   editarDirector(directorResponse: DirectorResponse) {
     this.dialogService.editDirectorDialog(directorResponse).subscribe(res => {
-      if (res) {
+      if (res==1) {
         this.getDirectores();
         this.toasterService.openSnackBar(
-          'Director editado Exitosamente.',
+          'Director editado exitosamente.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL EDITAR DIRECTOR',
           ToasterService.CERRAR_ACTION
         );
       }

@@ -15,10 +15,14 @@ export class EstudiantesAddComponent implements OnInit {
 
   formAddEstudiante: FormGroup;
 
+//DATOS PROVICIONAL
+  idPrograma = 1;
+  idDocente = 2;
+
   constructor(private estudianteService: EstudianteServiceImpl,
               public dialogRef: MatDialogRef<EstudiantesAddComponent>,
-              private _formBuilder: FormBuilder,) {
-    this.loading = false;
+              private _formBuilder: FormBuilder) {
+    this.loading = true;
   }
 
 
@@ -26,23 +30,27 @@ export class EstudiantesAddComponent implements OnInit {
     this.formAddEstudiante = this._formBuilder.group({
       codigo_estudiante: ['', [Validators.required]],
       nombre_estudiante: ['', [Validators.required]],
-      correo: [null, [Validators.required]],
+      correo_estudiante: ['', [Validators.required]],
     });
   }
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(0);
   }
 
   registrarEstudiante(): void {
     this.loading = false;
     let newEstudiante = <Estudiante>Object.assign({}, this.formAddEstudiante.value);
-    console.log(newEstudiante)
+    newEstudiante.programa = this.idPrograma;
+    newEstudiante.ids_docentes = [this.idDocente]
+    newEstudiante.docentes = [this.idDocente]
+    console.log(JSON.stringify(newEstudiante))
     this.estudianteService.save(newEstudiante).subscribe(
       () => {
-        this.dialogRef.close(true);
+        this.dialogRef.close(1);
       },
       (error) => {
+        this.dialogRef.close(2);
       },
       () => {
         this.loading = true;

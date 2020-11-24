@@ -137,6 +137,15 @@ table {
   padding: 100px;
 }
 
+.bg-ini-2{
+  padding: 100px;
+}
+
+.bg-ini-3{
+  padding-top: 100px;
+}
+
+
 .img-header img{
   width: 50%;
 }
@@ -180,6 +189,15 @@ table {
   padding: 20px!important;
 }
 
+.pd-modals-content{
+  padding: 10px!important;
+}
+
+.modal-title-item{
+  margin-bottom: 20px!important;
+  font-size: 20px;
+}
+
 .pd-subTitle-modal{
   margin-top: 20px!important;
 }
@@ -209,4 +227,117 @@ table {
   padding-left: 10px;
   padding-right: 10px;
 
+}
+
+.i-pd-f{
+  margin-left: 5px!important;
+  margin-right: 5px!important;
+}
+
+.section-profile-cover {
+  height: 580px;
+  background-size: cover;
+  background-position: center center;
+  background-image: url("assets/img/theme/bg-ini-2.jpg");
+}
+
+.section-not-found {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-image: url("assets/img/theme/bg-ini-2.jpg");
+}
+
+.profile-page {
+  .card-profile {
+    margin-top: -150px;
+
+    .card-profile-image {
+      position: relative;
+      //min-height: 130px;
+
+      img {
+        max-width: 160px;
+        transform: translate(-50%,-30%);
+        position: absolute;
+        left: 50%;
+
+        &:hover {
+          transform: translate(-50%, -33%);
+        }
+      }
+    }
+
+    .card-profile-stats {
+      padding: 1rem 0;
+
+      > div {
+        text-align: center;
+        margin-right: 1rem;
+        padding: .875rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .heading {
+          font-size: 1.1rem;
+          font-weight: bold;
+          display: block;
+        }
+        .description {
+          font-size: .875rem;
+        }
+      }
+    }
+
+    .card-profile-actions {
+      padding: .875rem;
+    }
+  }
+}
+
+.calificacion-ase{
+  color: #bc0017;
+}
+
+.pt-min{
+  padding-top: 20px!important;
+}
+
+.bg-cal-stat{
+  width: 100%!important;
+}
+
+.mb-cal{
+  margin-bottom: 70px!important;
+}
+
+.btn-m-c{
+  margin-top: 15px!important;
+}
+
+.pd-form-view{
+  padding-right: 100px!important;
+  padding-left: 100px!important;
+}
+
+.mb-modals{
+  margin-bottom: 15px!important;
+}
+
+.btn-copy{
+  margin-top: -20px!important;
+}
+
+.msn-error-h{
+  color: red!important;
+  text-align: center!important;
+  margin-top: -8px!important;
+  margin-bottom: -10px!important;
+}
+
+.msn-error-p{
+  font-size: 15px!important;
 }
