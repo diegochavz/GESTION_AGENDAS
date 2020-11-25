@@ -340,7 +340,10 @@ export class FormulariosEditComponent implements OnInit {
     if (aux.id_horario != null) {
       this.formularioService.deleteHorarioById(+aux.id_horario).subscribe(res => {
       }, () => {
-        console.log("Marque error")
+        this.toasterService.openSnackBar(
+          'ERROR AL ELIMINAR HORARIO',
+          ToasterService.CERRAR_ACTION
+        );
       })
     }
     this.horarios.removeAt(indice)
@@ -410,6 +413,7 @@ export class FormulariosEditComponent implements OnInit {
     }
 
     this.editFormulario.horarios = horarioListAux;
+    console.log(this.editFormulario.horarios)
   }
 
   getPreguntasFromForm() {
@@ -420,7 +424,6 @@ export class FormulariosEditComponent implements OnInit {
       preguntasAux.push(pre)
     }
     this.editFormulario.preguntas = preguntasAux;
-    console.log("preguntas ", this.editFormulario.preguntas)
   }
 
   onFormSubmit() {
@@ -451,18 +454,25 @@ export class FormulariosEditComponent implements OnInit {
   }
 
   registrarHorarioAtencion() {
+    for (let horarioControl of this.horarios.controls) {
+      console.log("horarios viejos ",  horarioControl.value)
+    }
+
+    console.log("horarios nuevos ", this.editFormulario.horarios)
+
     //BORRADO DE HORARIOS VIEJOS
     for (let horarioControl of this.horarios.controls) {
       if (horarioControl.get('id_horario').value != null) {
-        this.formularioService.deleteHorarioById(horarioControl.get('id_horario').value).subscribe(() => {
-        });
+        console.log("borrare esto", horarioControl.get('id_horario').value)
+       /** this.formularioService.deleteHorarioById(horarioControl.get('id_horario').value).subscribe(() => {
+        });**/
       }
     }
 
     //REGISTRO NUEVOS HORARIOS
     for (let horarioList of this.editFormulario.horarios) {
-      this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
-      });
+      /*this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
+      });*/
     }
   }
 
