@@ -17,7 +17,7 @@ export class JwtInterceptor implements HttpInterceptor {
     console.log(user)
     if (user != null ) {
       console.log('Bearer '+ user.access)
-      request = request.clone({headers: request.headers.set(TOKEN_HEADER_KEY,'Bearer '+ user.access)})
+     // request = request.clone({headers: request.headers.set(TOKEN_HEADER_KEY,'Bearer '+ user.access)})
     }
     return next.handle(request);
   }
