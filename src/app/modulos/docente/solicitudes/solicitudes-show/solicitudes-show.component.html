@@ -1,0 +1,75 @@
+<h1 mat-dialog-title>Registrar director</h1>
+<mat-dialog-content class="mat-typography">
+  <div class="row">
+    <div class="col-12">
+      <div class="pd-modals">
+        <h1> Formulario de asesoría <p class="mat-display-1">{{solicitud.formulario_data.nombre_formulario}}</p></h1>
+      </div>
+    </div>
+  </div>
+  <div class="row mt--70">
+    <div class="col-12">
+      <mat-card class="pd-modals mb-modals">
+        <div mat-subheader class="modal-title-item">Información asesoría</div>
+        <mat-list-item>
+          <div class="row">
+            <div class="col-lg-3">
+              <div mat-line>Nombre formulario: <p>{{nombreFormulario}}</p></div>
+            </div>
+            <div class="col-lg-3">
+              <div mat-line>Tipo asesoría:<p>{{tipoAsesoria ? 'Virtual' : 'Presencial'}}</p></div>
+            </div>
+            <div class="col-lg-3">
+              <div mat-line>Ubicación:<p>{{tipoAsesoria ? 'enlace Google Meet' : ubicacion}}</p></div>
+            </div>
+            <div class="col-lg-3">
+              <div mat-line>Fecha asesoría:<p>{{fechaAsesoria}}</p></div>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="pd-modals mb-modals">
+        <div mat-subheader class="modal-title-item">Información preguntas</div>
+        <mat-list-item>
+          <div class="row" *ngFor="let res of listRespuestas">
+            <div class="col-lg-12">
+              <div mat-line>{{res.nombre_pregunta}}: <p>{{res.respuesta}}</p></div>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="pd-modals mb-modals">
+        <div mat-subheader class="modal-title-item">Información estudiantes</div>
+        <mat-list-item>
+          <div class="row" *ngFor="let est of listEstudiantes">
+            <div class="col-lg-3">
+              <div mat-line>Código: <p>{{est.codigo_estudiante}}</p></div>
+            </div>
+            <div class="col-lg-3">
+              <div mat-line>Nombre:<p>{{est.nombre_estudiante}}</p></div>
+            </div>
+            <div class="col-lg-3">
+              <div mat-line>Correo:<p>{{est.correo_estudiante}}</p></div>
+            </div>
+            <div class="col-lg-3">
+              <div mat-line>Programa:<p>{{est.nombre_programa}}</p></div>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-card>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" class="btn-modal" (click)="salir()">Salir</button>
+</mat-dialog-actions>
+

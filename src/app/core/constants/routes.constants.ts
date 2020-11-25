@@ -1,20 +1,27 @@
 import RouteModel from "../models/route.model";
+import {SolicitudesListComponent} from "../../modulos/docente/solicitudes/solicitudes-list/solicitudes-list.component";
 
-export const ROUTES_CONST = {};
+export const ROUTES_CONST_DOCENTE: RouteModel[] = [
+  {path: '/docente/main-docente', title: 'Inicio', icon: 'ni-tv-2 text-primary'},
+  {path: '/docente/listar-formularios', title: 'Gestionar formularios', icon: 'ni-tv-2 text-primary'},
+  {path: '/docente/listar-estudiantes', title: 'Gestionar estudiantes', icon: 'ni-tv-2 text-primary'},
+  {path: '/docente/listar-asesorias', title: 'Gestionar asesorías', icon: 'ni-tv-2 text-primary'},
 
-/**
- LOGIN: <RouteModel>{ name: 'Login', routerLink: '/security/login', path: 'security/login' },
- FORBIDDEN: <RouteModel>{ name: 'Forbidden', routerLink: '/security/403', path: 'security/403' },
- HOME: <RouteModel>{ name: 'Inicio', routerLink: '/main/dashboard', path: 'main/dashboard' },
- PERFIL: <RouteModel>{ name: 'Perfil', routerLink: '/security/perfil', path: 'security/perfil' },
- STUDENTS: <RouteModel>{ name: 'Estudiantes', routerLink: '/estudiantes', path: 'estudiantes' },
- STUDENTS_NEW: <RouteModel>{ name: 'Nuevo Estudiante', routerLink: '/estudiantes/nuevo', path: 'estudiantes/nuevo' },
- STUDENTS_EDIT: <RouteModel>{ name: 'Editar Estudiante', routerLink: '/estudiantes/editar/', path: 'estudiantes/editar/' },
- AUDITORIA: <RouteModel>{ name: 'Auditoria', routerLink: '/demo/auditoria', path: 'demo/auditoria' },
- PROGRAMA: <RouteModel>{ name: 'Programas', routerLink: '/pre-academico/programas', path: 'pre-academico/programas' },
- PROGRAMA_CONFIG: <RouteModel>{
-		name: 'Configuracion de Programa',
-		routerLink: '/main/pre-academico/programas/configuracion/',
-		path: 'main/pre-academico/programas/configuracion/'
-	},
- **/
+];
+
+export const ROUTES_CONST_DIRECTOR: RouteModel[] = [
+  {path: '/director/main-director', title: 'Inicio', icon: 'ni-tv-2 text-primary'},
+  {path: '/director/listar-docentes', title: 'Gestionar docentes', icon: 'ni-tv-2 text-primary'},
+  {path: '/director/listar-formularios', title: 'Gestionar formularios', icon: 'ni-tv-2 text-primary'},
+  {path: '/director/listar-estudiantes', title: 'Gestionar estudiantes', icon: 'ni-tv-2 text-primary'},
+  {path: '/director/listar-asesorias', title: 'Gestionar asesorías', icon: 'ni-tv-2 text-primary'},
+
+];
+
+export const ROUTES_CONST_SUPER: RouteModel[] = [
+  {path: '/super/main-super', title: 'Inicio', icon: 'ni-tv-2 text-primary'},
+  {path: '/super/listar-programas', title: 'Gestionar programas', icon: 'ni-tv-2 text-primary'},
+  {path: '/super/listar-directores', title: 'Gestionar directores', icon: 'ni-tv-2 text-primary'},
+];
+
+

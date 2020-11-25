@@ -22,7 +22,7 @@ export class ServiceImpl<T> implements IService<T> {
     return this.httpClient.get(this.getFullPath()) as Observable<Array<T>>;
   }
 
-  get(id: string): Observable<T> {
+  get(id: number): Observable<T> {
     return this.httpClient.get(this.getFullPath() + id) as Observable<T>;
   }
 
@@ -30,7 +30,7 @@ export class ServiceImpl<T> implements IService<T> {
     return this.httpClient.post(this.getFullPath(), data) as Observable<T>;
   }
 
-  update(id:number, data: T): Observable<T> {
+    update(id:number, data: T): Observable<T> {
     const path = this.getFullPath()+`${id}/`;
     return this.httpClient.put(path, data) as Observable<T>;
   }

@@ -1,0 +1,50 @@
+<h1 mat-dialog-title>Editar docente</h1>
+<div mat-dialog-content>
+  <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+  <form [formGroup]="formEditDocente">
+    <p class="pd-subTitle-modal">Diligencia los datos solicitados a continuación</p>
+    <div class="container-fluid pd-modals">
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field class="fluid" appearance="fill">
+            <mat-label>Código docente</mat-label>
+            <input matInput formControlName="codigo_docente" type="number" required>
+            <mat-icon matSuffix><a matTooltip="Ingresar el código del docente" matTooltipPosition="after">
+              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field class="fluid" appearance="fill">
+            <mat-label>Nombre docente</mat-label>
+            <input matInput formControlName="nombre" type="text" required>
+            <mat-icon matSuffix><a matTooltip="Ingresar el nombre del docente" matTooltipPosition="after">
+              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field class="fluid" appearance="fill">
+            <mat-label>Correo</mat-label>
+            <input matInput formControlName="correo" type="email" required>
+            <mat-icon matSuffix><a matTooltip="Ingresar el correo del docente" matTooltipPosition="after">
+              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field class="fluid" appearance="fill">
+            <mat-label>Programas académicos</mat-label>
+            <mat-select formControlName="programas" multiple>
+              <mat-option *ngFor="let programa of listProgramas"
+                          [value]="programa.id" [disabled]="listProgramasUso.includes(programa.id)">{{programa.nombre_programa}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="editarDocente()" [disabled]="formEditDocente.invalid">Guardar</a>
+  <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
+</div>

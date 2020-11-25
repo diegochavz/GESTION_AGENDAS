@@ -16,6 +16,11 @@ import {v4 as uuidv4} from "uuid";
 import * as moment from "moment";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {ToasterService} from "../../../../core/services/toaster.service";
+import {ClipboardService} from "ngx-clipboard";
+import SeleccionesDataResponse from "../../../../core/models/selecciones_data_response.model";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-formularios-edit',
@@ -26,6 +31,8 @@ export class FormulariosEditComponent implements OnInit {
 
   //Form
   formEditFormulario: FormGroup;
+
+  formPreguntasFormulario: FormGroup;
 
   //Barra de carga del mat-progress-bar
   loading: boolean;
@@ -41,12 +48,6 @@ export class FormulariosEditComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
 
-  //Impide el paso del Step 1
-  isDisable_1 = true;
-
-  //Impide el paso del Step 2
-  isDisable_2 = true;
-
   listProgramas: Array<Programa>;
 
   urlFormulario: string;
@@ -57,7 +58,11 @@ export class FormulariosEditComponent implements OnInit {
               private programaService: ProgramaServiceImpl,
               private dataFormularioService: DataFormularioService,
               private docenteService: DocenteServiceImpl,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private clipboardService: ClipboardService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
     this.editFormulario = this.dataFormularioService.getDataFormulario();
     this.minDate = new Date();
@@ -74,13 +79,46 @@ export class FormulariosEditComponent implements OnInit {
     this.crearFormEditFormulario();
     this.listTipoDatos = this.getTipoDatos();
     this.listTipoCampos = this.getTipoCampos();
-    this.formEditFormulario.valueChanges.subscribe(rst => {
-      this.validarGrupoHorarioAtencion();
-      this.validarGrupoPreguntas();
-    })
   }
 
   /****CARGA VALORES INICIALES***/
+  consultarHorarios() {
+    if (this.editFormulario != null && this.editFormulario != undefined) {
+      this.loading = false;
+      this.formularioService.getHorariosByFormulario(this.editFormulario.id).subscribe(res => {
+          console.log("listado de horarios", res)
+          this.listarHorarios(res);
+        }, () => {
+        }, () => {
+          this.loading = true;
+        }
+      )
+    }
+  }
+
+  listarHorarios(restHorarios: Horario[]) {
+    for (let i = 0; i < restHorarios.length; i++) {
+      let dateHorario = restHorarios[i].fecha_horario.split("-")
+      let dateAux = new Date(+dateHorario[0], +dateHorario[1] - 1, +dateHorario[2])
+      const horario = this._formBuilder.group(
+        {
+          id_horario: restHorarios[i].id,
+          fecha_horario: dateAux,
+          inicio_horario: restHorarios[i].inicio_horario,
+          fin_horario: restHorarios[i].fin_horario,
+        });
+
+      horario.valueChanges.subscribe(res => {
+        if (res.inicio_horario >= res.fin_horario) {
+          horario.get('fin_horario').setErrors({'error': true})
+        } else {
+          horario.get('fin_horario').setErrors(null)
+          horario.get('fin_horario').setValidators([Validators.required])
+        }
+      });
+      this.horarios.push(horario);
+    }
+  }
 
   establecerFechaMaxMin() {
     if (this.editFormulario != null && this.editFormulario != undefined) {
@@ -107,15 +145,22 @@ export class FormulariosEditComponent implements OnInit {
         restringe_estudiantes: [this.editFormulario.restringe_estudiantes],
         restringe_otros_estudiantes: [this.editFormulario.restringe_otros_estudiantes],
         horarios: this._formBuilder.array([]),
-        preguntas: this._formBuilder.array([]),
         carga_archivos: [this.editFormulario.carga_archivos],
       });
 
-      let dateIni = this.editFormulario.disponibilidad_inicio_formulario.split("-")
-      this.formEditFormulario.get('disponibilidad_inicio_formulario').setValue(new Date(+dateIni[0], +dateIni[1] - 1, +dateIni[2]))
+      this.formPreguntasFormulario = this._formBuilder.group({
+        preguntas: this._formBuilder.array([]),
+      });
 
-      let dateFin = this.editFormulario.disponibilidad_fin_formulario.split("-")
-      this.formEditFormulario.get('disponibilidad_fin_formulario').setValue(new Date(+dateFin[0], +dateFin[1] - 1, +dateFin[2]))
+      this.formEditFormulario.valueChanges.subscribe(res => {
+        if (res.disponibilidad_inicio_formulario >= res.disponibilidad_fin_formulario &&
+          res.disponibilidad_fin_formulario !== '') {
+          this.formEditFormulario.get('disponibilidad_fin_formulario').setErrors({'error': true})
+        } else {
+          this.formEditFormulario.get('disponibilidad_fin_formulario').setErrors(null)
+          this.formEditFormulario.get('disponibilidad_fin_formulario').setValidators([Validators.required])
+        }
+      });
 
       this.docenteService.getProgramasByDocente(this.editFormulario.docente).subscribe(
         (programas: Array<Programa>) => {
@@ -123,31 +168,25 @@ export class FormulariosEditComponent implements OnInit {
           this.consultarProgramas()
         }
       );
-      this.urlFormulario = this.editFormulario.enlace_uuid_formulario;
+
+      let dateIni = this.editFormulario.disponibilidad_inicio_formulario.split("-")
+      this.formEditFormulario.get('disponibilidad_inicio_formulario').setValue(new Date(+dateIni[0], +dateIni[1] - 1, +dateIni[2]))
+
+      let dateFin = this.editFormulario.disponibilidad_fin_formulario.split("-")
+      this.formEditFormulario.get('disponibilidad_fin_formulario').setValue(new Date(+dateFin[0], +dateFin[1] - 1, +dateFin[2]))
+
+      this.urlFormulario = "http://localhost:4200/#/formulario/" + this.editFormulario.enlace_uuid_formulario;
     }
   }
 
   consultarProgramas() {
     if (this.editFormulario != null && this.editFormulario != undefined) {
       const aux = new Array<number>();
-      console.log(" listar programas ini -> " + new Date())
-
       this.formularioService.getProgramasByFormulario(this.editFormulario.id).subscribe((res: Array<Programa>) => {
           for (let i of res) {
             aux.push(i.id);
           }
           this.formEditFormulario.get('programas').setValue(aux)
-          console.log(" listar programas fin -> " + new Date())
-
-        }
-      )
-    }
-  }
-
-  consultarHorarios() {
-    if (this.editFormulario != null && this.editFormulario != undefined) {
-      this.formularioService.getHorariosByFormulario(this.editFormulario.id).subscribe(res => {
-          this.listarHorarios(res);
         }
       )
     }
@@ -155,8 +194,13 @@ export class FormulariosEditComponent implements OnInit {
 
   consultarPreguntas() {
     if (this.editFormulario != null && this.editFormulario != undefined) {
+      this.loading = false;
       this.formularioService.getPreguntasByFormulario(this.editFormulario.id).subscribe(res => {
+          console.log(res)
           this.listarPreguntas(res);
+        }, () => {
+        }, () => {
+          this.loading = true;
         }
       )
     }
@@ -165,6 +209,7 @@ export class FormulariosEditComponent implements OnInit {
   listarPreguntas(resPreguntas: Pregunta[]) {
     for (let i = 0; i < resPreguntas.length; i++) {
       const pregunta = this._formBuilder.group({
+        id: resPreguntas[i].id,
         nombre_campo: [resPreguntas[i].nombre_campo, [Validators.required]],
         tipo_campo: [resPreguntas[i].tipo_campo, [Validators.required]],
         tipo_dato: [resPreguntas[i].tipo_dato],
@@ -180,20 +225,6 @@ export class FormulariosEditComponent implements OnInit {
           this.preguntas.controls[i].value['selecciones'].push(j.value)
         }
       }
-    }
-  }
-
-  listarHorarios(restHorarios: Horario[]) {
-    console.log("length -> " + restHorarios.length)
-    for (let i = 0; i < restHorarios.length; i++) {
-      let dateHorario = restHorarios[i].fecha_horario.split("-")
-      let dateAux = new Date(+dateHorario[0], +dateHorario[1] - 1, +dateHorario[2])
-      const horario = this._formBuilder.group({
-        fecha_horario: dateAux,
-        inicio_horario: restHorarios[i].inicio_horario,
-        fin_horario: restHorarios[i].fin_horario,
-      });
-      this.horarios.push(horario);
     }
   }
 
@@ -229,11 +260,12 @@ export class FormulariosEditComponent implements OnInit {
   }
 
   get preguntas(): FormArray {
-    return this.formEditFormulario.get('preguntas') as FormArray;
+    return this.formPreguntasFormulario.get('preguntas') as FormArray;
   }
 
   agregarPregunta() {
     const pregunta = this._formBuilder.group({
+      id: null,
       nombre_campo: ['', [Validators.required]],
       tipo_campo: [TIPO_CAMPO.CUADRO_TEXTO, [Validators.required]],
       tipo_dato: [TIPO_DATO.ALFANUMERICO],
@@ -242,7 +274,6 @@ export class FormulariosEditComponent implements OnInit {
       selecciones: this._formBuilder.array([]),
     });
     this.preguntas.push(pregunta);
-    this.isDisable_2 = true;
   }
 
   listarItems(indice: number): Array<string> {
@@ -260,7 +291,17 @@ export class FormulariosEditComponent implements OnInit {
     }
   }
 
-  borrarPregunta(indice: number) {
+  borrarPregunta(indice) {
+    let aux = this.preguntas.controls[indice].value;
+    if (aux.id != null) {
+      console.log("Estoy llenito")
+      this.formularioService.deletePreguntaById(+aux.id).subscribe(res => {
+      }, () => {
+        console.log("Marque error")
+      })
+    } else {
+      console.log("Estoy vacio")
+    }
     this.preguntas.removeAt(indice)
   }
 
@@ -278,87 +319,164 @@ export class FormulariosEditComponent implements OnInit {
 
   agregarHorario() {
     const horario = this._formBuilder.group({
+      id_horario: null,
       fecha_horario: '',
       inicio_horario: '',
       fin_horario: '',
     });
+    horario.valueChanges.subscribe(res => {
+      if (res.inicio_horario >= res.fin_horario) {
+        horario.get('fin_horario').setErrors({'error': true})
+      } else {
+        horario.get('fin_horario').setErrors(null)
+        horario.get('fin_horario').setValidators([Validators.required])
+      }
+    });
     this.horarios.push(horario);
-    this.isDisable_1 = true;
   }
 
-  borrarHorario(indice: number) {
+  borrarHorario(indice) {
+    let aux = this.horarios.controls[indice].value
+    if (aux.id_horario != null) {
+      this.formularioService.deleteHorarioById(+aux.id_horario).subscribe(res => {
+      }, () => {
+        console.log("Marque error")
+      })
+    }
     this.horarios.removeAt(indice)
   }
 
-  /****VALIDADORES STEPPER***/
-
-  validarGrupoPreguntas() {
-    if (!this.formEditFormulario.controls["preguntas"].invalid) {
-      this.isDisable_2 = false;
-    } else {
-      this.isDisable_2 = true;
-    }
-  }
-
-  validarGrupoHorarioAtencion() {
-    if (
-      !this.formEditFormulario.controls["nombre_formulario"].invalid &&
-      !this.formEditFormulario.controls["ubicacion_formulario"].invalid &&
-      !this.formEditFormulario.controls["disponibilidad_inicio_formulario"].invalid &&
-      !this.formEditFormulario.controls["disponibilidad_fin_formulario"].invalid &&
-      !this.formEditFormulario.controls["tiempo_minimo"].invalid &&
-      !this.formEditFormulario.controls["intervalo"].invalid &&
-      !this.formEditFormulario.controls["duracion"].invalid &&
-      !this.formEditFormulario.controls["horarios"].invalid &&
-      !this.formEditFormulario.controls["programas"].invalid
-    ) {
-      this.isDisable_1 = false;
-    } else {
-      this.isDisable_1 = true;
-    }
+  copiarURL() {
+    this.clipboardService.copyFromContent(this.urlFormulario);
   }
 
   /****ENVIO Y EDICIÓN DE INFORMACIÓN***/
 
   onShowFormulario() {
-    let idDocente = this.editFormulario.docente;
-    let idFormulario = this.editFormulario.id;
-    this.editFormulario = <Formulario>Object.assign({}, this.formEditFormulario.value);
-    this.editFormulario.docente = idDocente;
-    this.editFormulario.id = idFormulario;
+    this.editFormulario.nombre_formulario = this.formEditFormulario.get('nombre_formulario').value
+    this.editFormulario.ubicacion_formulario = this.formEditFormulario.get('ubicacion_formulario').value
+    this.editFormulario.disponibilidad_inicio_formulario = this.formEditFormulario.get('disponibilidad_inicio_formulario').value
+    this.editFormulario.disponibilidad_fin_formulario = this.formEditFormulario.get('disponibilidad_fin_formulario').value
+    this.editFormulario.tiempo_minimo = this.formEditFormulario.get('tiempo_minimo').value
+    this.editFormulario.intervalo = this.formEditFormulario.get('intervalo').value
+    this.editFormulario.duracion = this.formEditFormulario.get('duracion').value
+    this.editFormulario.restringe_estudiantes = this.formEditFormulario.get('restringe_estudiantes').value
+    this.editFormulario.restringe_otros_estudiantes = this.formEditFormulario.get('restringe_otros_estudiantes').value
+    this.editFormulario.programas = this.formEditFormulario.get('programas').value
+    this.editFormulario.carga_archivos = this.formEditFormulario.get('carga_archivos').value
 
     this.minDate = new Date(this.editFormulario.disponibilidad_inicio_formulario);
     this.maxDate = new Date(this.editFormulario.disponibilidad_fin_formulario);
-
     this.editFormulario.disponibilidad_inicio_formulario = moment(this.editFormulario.disponibilidad_inicio_formulario).format("YYYY-MM-DD")
     this.editFormulario.disponibilidad_fin_formulario = moment(this.editFormulario.disponibilidad_fin_formulario).format("YYYY-MM-DD")
 
-    for (let i = 0; i < this.editFormulario.horarios.length; i++) {
-      this.editFormulario.horarios[i].fecha_horario = moment(this.editFormulario.horarios[i].fecha_horario).format("YYYY-MM-DD")
+    this.getHorariosFromForm();
+    this.getPreguntasFromForm();
+
+  }
+
+  getHorariosFromForm() {
+    let horariosAux = new Array<Horario>();
+    for (let i = 0; i < this.horarios.controls.length; i++) {
+      let aux = this.horarios.controls[i].value;
+      let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario, aux.id_horario);
+      horariosAux.push(hor)
     }
+    this.editFormulario.horarios = horariosAux;
+
+    this.calcularNuevosHorarios();
+  }
+
+  calcularNuevosHorarios() {
+    const horariosCal = this.editFormulario.horarios;
+    let horarioListAux = new Array<Horario>();
+    let duracionAux = this.editFormulario.duracion;
+    let intervaloAux = this.editFormulario.intervalo;
+
+    for (let i = 0; i < horariosCal.length; i++) {
+
+      const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
+      const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
+      let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
+
+      if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
+        while (horaFinal.isAfter(horaVariable)) {
+          let newH = horaVariable.clone().add(duracionAux, "minutes")
+          horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
+          newH = newH.clone().add(intervaloAux, "minutes")
+          horaVariable = newH;
+        }
+      }
+    }
+
+    this.editFormulario.horarios = horarioListAux;
+  }
+
+  getPreguntasFromForm() {
+    let preguntasAux = new Array<Pregunta>();
+    for (let i = 0; i < this.preguntas.controls.length; i++) {
+      let aux = this.preguntas.controls[i].value;
+      let pre = <Pregunta>Object.assign({}, aux);
+      preguntasAux.push(pre)
+    }
+    this.editFormulario.preguntas = preguntasAux;
+    console.log("preguntas ", this.editFormulario.preguntas)
   }
 
   onFormSubmit() {
     this.loading = true;
-    console.log("INFORMACIÓN IMPORTANTE EDITAR: " + JSON.stringify(this.editFormulario))
+
+    this.registrarHorarioAtencion();
+    this.registrarPreguntas();
+
+    this.editFormulario.horarios = null;
+    this.editFormulario.preguntas = null;
+
     this.formularioService.update(this.editFormulario.id, this.editFormulario).subscribe(
       (newForm) => {
         this.toasterService.openSnackBar(
           'Formulario editado Exitosamente.',
           ToasterService.CERRAR_ACTION
         );
-        this.loading = false;
       },
       (error) => {
         this.toasterService.openSnackBar(
           'Ha ocurrido un error inesperado',
           ToasterService.CERRAR_ACTION
         );
-        this.loading = false;
       },
       () => {
         console.log("carga")
-        this.loading = false;
       });
+  }
+
+  registrarHorarioAtencion() {
+    //BORRADO DE HORARIOS VIEJOS
+    for (let horarioControl of this.horarios.controls) {
+      if (horarioControl.get('id_horario').value != null) {
+        this.formularioService.deleteHorarioById(horarioControl.get('id_horario').value).subscribe(() => {
+        });
+      }
+    }
+
+    //REGISTRO NUEVOS HORARIOS
+    for (let horarioList of this.editFormulario.horarios) {
+      this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
+      });
+    }
+  }
+
+  registrarPreguntas() {
+    //ACTUALIZAR PREGUNTAS
+    for (let pregunta of this.editFormulario.preguntas) {
+      if (pregunta.id == null) {
+        console.log("NUEVA PREGUNTA", JSON.stringify(pregunta))
+        this.formularioService.addPreguntabyFormulario(this.editFormulario.id, pregunta).subscribe(() => {
+        });
+      } else {
+        this.formularioService.updatePreguntaByFormulario(pregunta.id, pregunta).subscribe(() => {
+        });
+      }
+    }
   }
 }

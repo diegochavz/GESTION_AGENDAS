@@ -10,7 +10,6 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
     this.test = new Date();
-    console.log("Hola entre en footer")
   }
 
 }

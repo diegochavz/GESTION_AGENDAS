@@ -1,5 +1,3 @@
-import Director from "./director.model";
-
 export default class Programa{
 
   id:number;

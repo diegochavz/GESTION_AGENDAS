@@ -1,0 +1,62 @@
+<div class="bg-ini-login inicio-sesion-bg">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-12  col-sm-12">
+        <div class="card bg-secondary shadow border-1">
+          <div class="card-header bg-white align-items-center">
+            <div class="row ">
+              <div class="col-12 logo-login ">
+                <p class="text-center text-login-logo">
+                  <img src="assets/img/brand/logo_complex.png" alt="">
+                </p>
+              </div>
+            </div>
+          </div>
+          <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+          <div class="card-body">
+
+            <div class="text-center mb-4">
+              <h1>Inicio de seisón<br>
+                <h3>Diligencia los datos solicitados a continuación</h3>
+              <h4 class="msn-error" *ngIf="error">{{error}}</h4>
+              </h1>
+            </div>
+            <form [formGroup]="formLogin">
+              <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                  <mat-form-field  appearance="fill">
+                    <mat-label>Correo </mat-label>
+                    <input formControlName="username" type="email" matInput>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Contraseña</mat-label>
+                    <input formControlName="password" type="password" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field  appearance="fill">
+                    <mat-label>Selecciona tu cargo</mat-label>
+                    <mat-select formControlName="tipo_usuario">
+                      <mat-option value="2">Docente</mat-option>
+                      <mat-option value="1">Director académico</mat-option>
+                      <mat-option value="0">Super usuario</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="btn-stepper">
+                <a [routerLink]="['..//']" mat-button>Regresar</a>
+                <button mat-raised-button color="warn" (click)="onFormSubmit()" >Ingresar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

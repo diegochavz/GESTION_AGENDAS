@@ -7,7 +7,6 @@ import Formulario from "../../../../core/models/formulario.model";
 import {IProgramaService} from "../../../../core/http/programa.service.interface";
 import {DataFormularioService} from "../../../../core/services/data_formulario.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDialogComponent} from "../../../../shared/confirmdialog/confirmdialog.component";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import Horario from "../../../../core/models/horario.model";
 import Pregunta from "../../../../core/models/pregunta.model";
@@ -17,6 +16,10 @@ import {ToasterService} from "../../../../core/services/toaster.service";
 import Programa from "../../../../core/models/programa.model";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import * as moment from "moment";
+import {ClipboardService} from "ngx-clipboard";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-formularios-list',
@@ -29,7 +32,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
   //@ViewChild(MatSort) sort: MatSort;
 
   //columnas de la tabla
-  displayedColumns: string[] = ['fecha_registro','nombre_formulario', 'opciones'];
+  displayedColumns: string[] = ['fecha_registro', 'nombre_formulario', 'opciones'];
 
   //Datos a exponer en la tabla
   dataSource: MatTableDataSource<Formulario>;
@@ -38,7 +41,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
   loading: boolean;
 
   //Identificador docente provisional
-  idDocente = 4;
+  idDocente : number;
 
   formularios: Array<Formulario>;
 
@@ -47,7 +50,11 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
               private docenteService: DocenteServiceImpl,
               private dataFormularioService: DataFormularioService,
               private dialogService: DialogService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = true;
     // Assign the data to the data source for the table to render
     this.formularios = [];
@@ -55,7 +62,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.getFormularios();
   }
 
@@ -89,25 +96,9 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  aplicarFormatoFecha(formulario:Formulario):string{
+  aplicarFormatoFecha(formulario: Formulario): string {
     return moment(formulario.fecha_registro).format("YYYY-MM-DD");
   }
-
-  /**
-
-   consultarProgramas(formulario: Formulario): string {
-    let aux = '';
-    console.log("Consultando Programas list....")
-    this.formularioService.getProgramasByFormulario(formulario.id).subscribe((res: Array<Programa>) => {
-        for (let i of res) {
-          aux += i.nombre_programa + ","
-        }
-      }
-    )
-    return "aux";
-  }
-   **/
-
 
   setFormulario(form: Formulario) {
     this.dataFormularioService.setDataFormulario(form);
@@ -125,30 +116,5 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
 
       }
     });
-
-    /**
-     const dialogRef = this.dialog.open(FormulariosDeleteComponent, {
-      width: '250px',
-      data: '¿Estas seguro de borrar el formulario?'
-    });
-
-     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      if(result){
-        this.formularioService.delete(formulario.id+"").subscribe(
-          (newForm) => {
-            console.log(newForm)
-            //this.toasterService.openSnackBar('Etapa creada exitosamente.', ToasterService.CERRAR_ACTION);
-          },
-          (error) => {
-          },
-          ()=>{
-            this.loading = false;
-          });
-      }
-
-    });**/
-
-
   }
 }

@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
-import {DocenteDashboardRoutes} from "./docente.routing";
-import {Principal_docenteComponent} from "./main/principal_docente.component";
+import {DocenteRoutes} from "./docente.routing";
+import {MainDocenteComponent} from "./main/main_docente.component";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CrearFormularioDocenteComponent } from './formularios/formularios_add/formulario_add.component';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -39,17 +39,22 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import { FormulariosEditComponent } from './formularios/formularios-edit/formularios-edit.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import { AsesoriasListComponent } from './asesorias/asesorias-list/asesorias-list.component';
-import { AsesoriaShowComponent } from './asesorias/asesorias-show/asesorias-show.component';
 import {MatListModule} from '@angular/material/list';
 import { FormulariosDeleteComponent } from './formularios/formularios-delete/formularios-delete.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-
+import { EstudiantesListComponent } from './estudiantes/estudiantes-list/estudiantes-list.component';
+import { EstudiantesAddComponent } from './estudiantes/estudiantes-add/estudiantes-add.component';
+import { EstudiantesEditComponent } from './estudiantes/estudiantes-edit/estudiantes-edit.component';
+import { EstudiantesDeleteComponent } from './estudiantes/estudiantes-delete/estudiantes-delete.component';
+import { SolicitudesListComponent } from './solicitudes/solicitudes-list/solicitudes-list.component';
+import { SolicitudesShowComponent } from './solicitudes/solicitudes-show/solicitudes-show.component';
+import { SolicitudesDeleteComponent } from './solicitudes/solicitudes-delete/solicitudes-delete.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(DocenteDashboardRoutes),
+    RouterModule.forChild(DocenteRoutes),
     FormsModule,
     HttpClientModule,
     NgbModule,
@@ -77,18 +82,31 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatPaginatorModule,
     MatSortModule,
     MatListModule,
+    MatDialogModule,
+    MatCardModule,
   ],
   declarations: [
-    Principal_docenteComponent,
+    MainDocenteComponent,
     CrearFormularioDocenteComponent,
     FormulariosShowComponent,
     FormulariosListComponent,
     FormulariosEditComponent,
-    AsesoriasListComponent,
-    AsesoriaShowComponent,
     FormulariosDeleteComponent,
+    EstudiantesListComponent,
+    EstudiantesAddComponent,
+    EstudiantesEditComponent,
+    EstudiantesDeleteComponent,
+    SolicitudesListComponent,
+    SolicitudesShowComponent,
+    SolicitudesDeleteComponent,
   ],
-  entryComponents:[FormulariosDeleteComponent]
+  entryComponents:[
+    FormulariosDeleteComponent,
+    EstudiantesAddComponent,
+    EstudiantesEditComponent,
+    EstudiantesDeleteComponent,
+    SolicitudesShowComponent,
+    SolicitudesDeleteComponent,]
   ,
   providers:[
     {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
@@ -98,6 +116,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+
   ]
 })
 

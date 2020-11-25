@@ -4,7 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import Programa from "../../models/programa.model";
 import {IProgramaService} from "../programa.service.interface";
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import FormularioResponse from "../../models/formulario_response.model";
+import Pregunta from "../../models/pregunta.model";
 
 @Injectable()
 export class ProgramaServiceImpl extends ServiceImpl<Programa> implements IProgramaService {
@@ -13,6 +14,11 @@ export class ProgramaServiceImpl extends ServiceImpl<Programa> implements IProgr
     super();
     this.httpClient = http;
     this.resource = 'programa/';
+  }
+
+  getFormulariosByPrograma(idPrograma): Observable<FormularioResponse[]>{
+    const path = `${idPrograma}/formularios`;
+    return this.executeGet(path) as Observable<FormularioResponse[]>;
   }
 
 }

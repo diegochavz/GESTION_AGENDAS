@@ -5,7 +5,7 @@ export interface IService<T> {
 
   getAll(): Observable<Array<T>>;
 
-  get(id: string): Observable<T>;
+  get(id: number): Observable<T>;
 
   save(data: any): Observable<T>;
 

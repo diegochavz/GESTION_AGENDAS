@@ -1,15 +1,23 @@
-<div class="header bg-gradient-danger py-7 py-lg-8">
-  <div class="container-fluid d-flex align-items-center">
-    <div class="row ">
-      <div class="col-lg-12 col-md-10">
-        <h1 class="display-3 text-white">Visualización formulario de asesoría</h1>
-        <p class="text-white subtitle-crear-formulario">A continuación podrás ver como quedara tu formulario de asesoría
-      </div>
+<div>
+  <section class="section-profile-cover section-shaped my-0">
+    <div class="position-relative">
+      <section class="section section-lg section-shaped bg-ini-3">
+        <div class="container py-lg-md d-flex">
+          <div class="col px-0 ">
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                <h1 class="mat-display-1 text-white">GESTIÓN DE ASESORÍAS ACADÉMICAS <br>
+                  <h3 class="mat-display-3 text-white">Formulario de asesoría <br>
+                  </h3>
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
-</div>
-
-<div class="container-fluid mt--7">
+  </section>
+<div class="container-fluid mt--300">
   <div class="row">
     <div class="col-xl-4 order-xl-1 mb-5 mb-xl-0">
       <div class="card card-profile shadow">
@@ -45,9 +53,6 @@
 
                 </div>
                 <hr class="my-4"/>
-                <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>Formulario disponible para los programas: {{programas}}
-                </div>
               </div>
             </div>
           </div>
@@ -84,12 +89,13 @@
                   <div class="row">
                     <div class="col-lg-2"></div>
                     <div class="col-lg-8">
-                      <div *ngFor="let horario of listHorariosDisponibles; let i = index;">
-                        <button mat-stroked-button class="btn-horario-list fluid" (click)="selectedHorario(horario)">
-                          {{horario}}
-                        </button>
-
-                      </div>
+                      <mat-radio-group class="text-center">
+                        <div *ngFor="let horario of listHorariosDisponibles" (click)="selectedHorario(horario)" >
+                          <mat-radio-button class="border-circle card" value="{{horario.inicio_horario}}">
+                            {{horario.inicio_horario}} - {{horario.fin_horario}}
+                          </mat-radio-button>
+                        </div>
+                      </mat-radio-group>
                     </div>
                     <div class="col-lg-2"></div>
                   </div>
@@ -120,16 +126,16 @@
                           <mat-label>{{pregunta.nombre_campo}}</mat-label>
                           <input *ngIf="validarIsTipoDato(pregunta.tipo_dato) == 0" matInput
                                  formControlName="{{crearControlFormPregunta(i)}}" type="text"
-                                 maxlength="{{pregunta.longitud}}" required="{{pregunta.obligatorio}}">
+                                 maxlength="{{(pregunta.longitud!=0)? pregunta.longitud:1000}}" required="{{pregunta.obligatoria}}">
                           <input *ngIf="validarIsTipoDato(pregunta.tipo_dato) == 1" matInput
                                  formControlName="{{crearControlFormPregunta(i)}}" type="number"
-                                 maxlength="{{pregunta.longitud}}" required="{{pregunta.obligatorio}}">
+                                 maxlength="{{(pregunta.longitud!=0)? pregunta.longitud:1000}}" required="{{pregunta.obligatoria}}">
                         </mat-form-field>
                         <mat-form-field class="fluid" appearance="legacy"
                                         *ngIf="validarIsTipoCampo(pregunta.tipo_campo) == 1">
                           <mat-label>{{pregunta.nombre_campo}}</mat-label>
                           <mat-select formControlName="{{crearControlFormPregunta(i)}}"
-                                      required="{{pregunta.obligatorio}}">
+                                      required="{{pregunta.obligatoria}}">
                             <mat-option *ngFor="let opc of pregunta.selecciones"
                                         [value]="opc">{{opc}}</mat-option>
                           </mat-select>
@@ -138,7 +144,6 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="row" *ngIf="cargaArchivo">
                     <h3 class="pr-2">¿Deseas subir archivos?</h3><br/>
                     <div class="form-group">
@@ -151,25 +156,23 @@
                         (change)="cargarArchivo($event)">
                     </div>
                   </div>
-                  <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría academica</h3><br/></div>
+                  <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría académica</h3><br/></div>
                   <div class="row">
                     <div class="form-group">
-                      <mat-radio-group formControlName="lugar">
-                        <mat-radio-button value="1">Presencial</mat-radio-button>
-                        <mat-radio-button value="2">Virtual</mat-radio-button>
+                      <mat-radio-group formControlName="es_virtual">
+                        <mat-radio-button [value]="false">Presencial</mat-radio-button>
+                        <mat-radio-button [value]="true">Virtual</mat-radio-button>
                       </mat-radio-group>
                     </div>
                   </div>
 
                   <div class="row">
-                    <p *ngIf="formularioAddAsesoria.controls['lugar'].value ==1">
-                      Lugar de asesoría: {{lugarPreencial}}
+                    <p *ngIf="formularioAddAsesoria.controls['es_virtual'].value ==false">
+                      Lugar de asesoría: {{lugarPresencial}}
                     </p>
-
-                    <p *ngIf="formularioAddAsesoria.controls['lugar'].value ==2">
-                      Lugar de asesoría: Virtual
+                    <p *ngIf="formularioAddAsesoria.controls['es_virtual'].value ==true">
+                      Lugar de asesoría: Se te envíara un enlace al correo
                     </p>
-
                   </div>
 
                 </div>
@@ -197,26 +200,48 @@
                     <div formArrayName='integrantes'>
                       <div *ngFor="let integrante of integrantes.controls; let i = index;">
                         <div [formGroupName]="i">
-                          <div class="row form-group">
-                            <div class="col-lg-6">
-                              <mat-form-field class="fluid" appearance="legacy">
-                                <mat-label>Nombre</mat-label>
-                                <input matInput formControlName="nombre" type="text" required>
-                              </mat-form-field>
+                          <div class="row">
+                            <div class="col-11">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <mat-form-field class="fluid" appearance="legacy">
+                                    <mat-label>Correo
+                                    </mat-label>
+                                    <input matInput formControlName="correo" type="email" required>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-lg-6">
+                                  <mat-form-field class="fluid" appearance="legacy">
+                                    <mat-label>Nombre</mat-label>
+                                    <input matInput formControlName="nombre" type="text" required>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-6 mb-b-cor">
+                                  <mat-form-field class="fluid" appearance="legacy">
+                                    <mat-label>Código</mat-label>
+                                    <input matInput formControlName="codigo" type="number" required>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-lg-6">
+                                  <mat-form-field class="fluid" appearance="fill">
+                                    <mat-label>Programas académicos</mat-label>
+                                    <mat-select formControlName="id_programa">
+                                      <mat-option *ngFor="let programa of listProgramas"
+                                                  [value]="programa.id">{{programa.nombre_programa}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                              </div>
                             </div>
-                            <div class="col-lg-5">
-                              <mat-form-field class="fluid" appearance="legacy">
-                                <mat-label>Correo
-                                </mat-label>
-                                <input matInput formControlName="correo" type="email" required>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-lg-1">
+                            <div class="col-1">
                               <a mat-icon-button color="primary" (click)="borrarIntegrante(i)">
-                                <p class="ico-input-color"><i class="fas fa-trash"></i></p>
+                                <p class="ico-input-color mg-j-l"><i class="fas fa-trash"></i></p>
                               </a>
                             </div>
                           </div>
+                          <mat-divider class="m-lg-3"></mat-divider>
                         </div>
                       </div>
                     </div>
@@ -224,8 +249,8 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <a class="fluid" mat-icon-button color="primary" (click)="agregarIntegrante()">
-                        <p class="ico-input-color"><i class="fas fa-plus-circle"></i> Agregar un nuevo integrante
-                          <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                        <p class="ico-input-color"><i class="fas fa-plus-circle"></i> Agregar integrante
+                          <mat-icon matSuffix><a matTooltip="Incluir nuevo integrante a la asesoría" matTooltipPosition="after">
                             <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                         </p>
                       </a>
@@ -244,4 +269,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>
