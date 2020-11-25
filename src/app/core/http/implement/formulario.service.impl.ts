@@ -72,4 +72,9 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
     return this.httpClient.put(this.getFullPath()+path, pregunta) as Observable<any>;
   }
 
+ getHorariosByIdDocenteAndIdFormulario(idDocente, idFormulario, fecha):Observable<any>{
+    const path = `turnos-formulaio`;
+    return this.httpClient.post(this.apiUrl +path, {"id_docente": idDocente, "id_formulario":idFormulario, "fecha": fecha}) as Observable<any>;
+  }
+
 }

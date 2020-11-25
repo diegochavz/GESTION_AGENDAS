@@ -17,7 +17,7 @@ export class ValidateUser {
       case 1:
         this.router.navigate(['/director']);
         break;
-      case 3:
+      case 2:
         this.router.navigate(['/docente']);
         break;
     }
@@ -26,6 +26,7 @@ export class ValidateUser {
   validateTipoUser(tipo_user:number, tipo_user_module: number){
     if( (tipo_user == tipo_user_module) ||
       ((tipo_user == 1) && (tipo_user_module==2)) ){
+      console.log("entre en return")
       return;
     }
     this.validateUser(tipo_user);

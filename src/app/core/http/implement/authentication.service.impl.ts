@@ -30,6 +30,7 @@ export class AuthenticationServiceImpl extends ServiceImpl<any> implements IAuth
     return this.save(user).pipe(map((user: UserResponse) => {
       console.log(user)
       if(user){
+        console.log("Guarde user")
         this.guardarSesionUser( user);
         this.currentUserSubject.next(user);
       }

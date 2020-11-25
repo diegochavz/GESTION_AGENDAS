@@ -10,6 +10,7 @@ export default class SolicitudResponse {
   formulario: number;
   docente: string;
   hora_solicitada: string;
+  fecha:string
   es_virtual: boolean;
   archivo: string;
   estado: number;

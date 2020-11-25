@@ -27,4 +27,6 @@ export interface IFormularioService extends IService<any>{
 
   updatePreguntaByFormulario(idPregunta, pregunta):Observable<any>
 
+  //getHorariosByIdDocenteAndIdFormulario(idDocente, idFormulario):Observable<any>;
+
 }
