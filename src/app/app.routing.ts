@@ -37,7 +37,6 @@ const routes: Routes = [
   , {
     path: 'estudiante',
     component: EstudianteComponent,
-    //canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -48,7 +47,7 @@ const routes: Routes = [
   , {
     path: 'super',
     component: SuperComponent,
-    //canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -58,7 +57,7 @@ const routes: Routes = [
   }
   , {
     path: 'docente',
-   // canActivate: [AuthGuard],
+   canActivate: [AuthGuard],
     component: DocenteComponent,
     children: [
       {
@@ -69,7 +68,7 @@ const routes: Routes = [
   }
   , {
     path: 'director',
-   // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: DirectorComponent,
     children: [
       {

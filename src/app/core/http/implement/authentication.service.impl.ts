@@ -3,40 +3,56 @@ import {ServiceImpl} from "./service.impl";
 import {HttpClient} from "@angular/common/http";
 import {IAuthenticationService} from "../authentication.service.interface";
 import {BehaviorSubject, Observable} from "rxjs";
-import User from "../../models/user.model";
 import {map} from "rxjs/operators";
+import UserResponse from "../../models/user_response.model";
+import User from "../../models/user.model";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationServiceImpl extends ServiceImpl<any> implements IAuthenticationService {
 
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+
+  private currentUserSubject: BehaviorSubject<UserResponse>;
+  public currentUser: Observable<UserResponse>;
 
   constructor(private http: HttpClient) {
     super();
     this.httpClient = http;
-    this.resource = 'nosesabe/';
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('CURRENT_USER')));
+    this.resource = 'login/';
+    this.currentUserSubject = new BehaviorSubject<UserResponse>(JSON.parse(localStorage.getItem('CURRENT_USER')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  get currentUserValue(): User {
+  get currentUserValue(): UserResponse {
     return this.currentUserSubject.value;
   }
 
-  login(user: User) {
-    return this.save(user).pipe(map(user => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem('CURRENT_USER', JSON.stringify(user))
-      this.currentUserSubject.next(user);
+  login(user: User){
+    return this.save(user).pipe(map((user: UserResponse) => {
+      console.log(user)
+      if(user){
+        this.guardarSesionUser( user);
+        this.currentUserSubject.next(user);
+      }
       return user;
     }))
   }
 
   logout(){
-    // remove user from local storage to log user out
-    localStorage.removeItem('CURRENT_USER');
+    this.eliminarSesionUser()
     this.currentUserSubject.next(null);
+  }
+
+
+  get logeado(): boolean {
+    return (localStorage.getItem('CURRENT_USER') !== null);
+  }
+
+  private guardarSesionUser(user: UserResponse):void{
+    localStorage.setItem('CURRENT_USER', JSON.stringify(user))
+  }
+
+  private eliminarSesionUser(): void{
+    localStorage.removeItem('CURRENT_USER');
   }
 
 }

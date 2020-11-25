@@ -16,6 +16,10 @@ import {ToasterService} from "../../../../core/services/toaster.service";
 import Programa from "../../../../core/models/programa.model";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import * as moment from "moment";
+import {ClipboardService} from "ngx-clipboard";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-formularios-list',
@@ -37,7 +41,7 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
   loading: boolean;
 
   //Identificador docente provisional
-  idDocente = 3;
+  idDocente : number;
 
   formularios: Array<Formulario>;
 
@@ -46,7 +50,11 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
               private docenteService: DocenteServiceImpl,
               private dataFormularioService: DataFormularioService,
               private dialogService: DialogService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = true;
     // Assign the data to the data source for the table to render
     this.formularios = [];

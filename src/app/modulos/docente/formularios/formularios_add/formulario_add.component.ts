@@ -32,6 +32,9 @@ import {DocenteServiceImpl} from "../../../../core/http/implement/docente.servic
 import {ToasterService} from "../../../../core/services/toaster.service";
 import Horario from "../../../../core/models/horario.model";
 import {ClipboardService} from "ngx-clipboard";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'formulario-add',
@@ -62,7 +65,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   listProgramas: Array<Programa>;
 
-  idDocente = "3";
+  idDocente : number;
 
   urlFormulario: string;
 
@@ -71,8 +74,12 @@ export class CrearFormularioDocenteComponent implements OnInit {
               private formularioService: FormularioServiceImpl,
               private docenteService: DocenteServiceImpl,
               private toasterService: ToasterService,
-              private clipboardService: ClipboardService) {
+              private clipboardService: ClipboardService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
+    this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = false;
     this.minDate = new Date();
     this.maxDate = new Date();
@@ -238,7 +245,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
     this.maxDate = new Date(this.newFormulario.disponibilidad_fin_formulario);
     this.newFormulario.disponibilidad_inicio_formulario = moment(this.newFormulario.disponibilidad_inicio_formulario).format("YYYY-MM-DD")
     this.newFormulario.disponibilidad_fin_formulario = moment(this.newFormulario.disponibilidad_fin_formulario).format("YYYY-MM-DD")
-    this.newFormulario.docente = this.idDocente;
+    this.newFormulario.docente = this.idDocente+"";
 
     const horariosCal = this.newFormulario.horarios;
     let horarioListAux = new Array<Horario>();

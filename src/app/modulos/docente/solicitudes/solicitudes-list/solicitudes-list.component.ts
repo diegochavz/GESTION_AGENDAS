@@ -7,6 +7,10 @@ import {ToasterService} from "../../../../core/services/toaster.service";
 import SolicitudEstudiante from "../../../../core/models/solicitud_estudiante.model";
 import Docente from "../../../../core/models/docente.model";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
+import {ClipboardService} from "ngx-clipboard";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-solicitudes-list',
@@ -27,11 +31,15 @@ export class SolicitudesListComponent implements OnInit {
   solicitudes: Array<SolicitudResponse>;
 
   //provicional
-  idDocente = 2;
+  idDocente : number ;
 
   constructor(private docenteService: DocenteServiceImpl,
               private dialogService: DialogService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.idDocente = this.authenticationService.currentUserValue.user_id;
     this.loading = true;
     this.solicitudes = [];
     this.dataSource = new MatTableDataSource(this.solicitudes);
@@ -50,7 +58,7 @@ export class SolicitudesListComponent implements OnInit {
     this.solicitudes = [];
     this.docenteService.getSolicitudesByDocente(this.idDocente).subscribe(
       (listsolitudes: Array<SolicitudResponse>) => {
-        console.log(JSON.stringify(listsolitudes))
+        //console.log(JSON.stringify(listsolitudes))
         this.solicitudes = listsolitudes;
         this.dataSource = new MatTableDataSource(this.solicitudes);
       },

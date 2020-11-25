@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {EstudianteServiceImpl} from "../../../../core/http/implement/estudiante.service.impl";
 import Estudiante from "../../../../core/models/estudiante.model";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 
 @Component({
   selector: 'app-estudiantes-add',
@@ -16,12 +17,15 @@ export class EstudiantesAddComponent implements OnInit {
   formAddEstudiante: FormGroup;
 
 //DATOS PROVICIONAL
-  idPrograma = 1;
-  idDocente = 3;
+  idPrograma : number;
+  idDocente :number;
 
   constructor(private estudianteService: EstudianteServiceImpl,
               public dialogRef: MatDialogRef<EstudiantesAddComponent>,
+              private authenticationService : AuthenticationServiceImpl,
               private _formBuilder: FormBuilder) {
+    this.idDocente = authenticationService.currentUserValue.user_id;
+    this.idPrograma = authenticationService.currentUserValue.programas[0].id;
     this.loading = true;
   }
 

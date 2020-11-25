@@ -4,6 +4,9 @@ import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import {DialogService} from "../../../../core/services/dialogs.service";
 import {ToasterService} from "../../../../core/services/toaster.service";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-programas-list',
@@ -13,7 +16,7 @@ import {ToasterService} from "../../../../core/services/toaster.service";
 export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   //columnas de la tabla
-  displayedColumns: string[] = ['codigo_programa','nombre_programa', 'opciones'];
+  displayedColumns: string[] = ['codigo_programa', 'nombre_programa', 'opciones'];
 
   //Datos a exponer en la tabla
   dataSource: MatTableDataSource<Programa>;
@@ -25,14 +28,17 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   constructor(private  programaService: ProgramaServiceImpl,
               private dialogService: DialogService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.SUPER_USUARIO)
     this.loading = true;
     // Assign the data to the data source for the table to render
     this.programas = [];
     this.dataSource = new MatTableDataSource(this.programas);
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.getProgramas();
   }
 
@@ -67,13 +73,13 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
   eliminarPrograma(idPrograma: number) {
     console.log(idPrograma)
     this.dialogService.deleteProgramaDialog(idPrograma).subscribe(res => {
-      if (res==1) {
+      if (res == 1) {
         this.getProgramas();
         this.toasterService.openSnackBar(
           'Programa eliminado Exitosamente.',
           ToasterService.CERRAR_ACTION
         );
-      } else if(res==2){
+      } else if (res == 2) {
         this.toasterService.openSnackBar(
           'ERROR AL ELIMINAR PROGRAMA',
           ToasterService.CERRAR_ACTION
@@ -84,13 +90,13 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   agregarPrograma() {
     this.dialogService.addProgramaDialog().subscribe(res => {
-      if (res==1) {
+      if (res == 1) {
         this.getProgramas();
         this.toasterService.openSnackBar(
           'Programa agregado Exitosamente.',
           ToasterService.CERRAR_ACTION
         );
-      } else if(res==2){
+      } else if (res == 2) {
         this.toasterService.openSnackBar(
           'ERROR AL AGREGAR PROGRAMA',
           ToasterService.CERRAR_ACTION
@@ -101,13 +107,13 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   editarPrograma(programa: Programa) {
     this.dialogService.editProgramaDialog(programa).subscribe(res => {
-      if (res==1) {
+      if (res == 1) {
         this.getProgramas();
         this.toasterService.openSnackBar(
           'Programa editado Exitosamente.',
           ToasterService.CERRAR_ACTION
         );
-      } else if(res==2){
+      } else if (res == 2) {
         this.toasterService.openSnackBar(
           'ERROR AL BORRAR PROGRAMA',
           ToasterService.CERRAR_ACTION

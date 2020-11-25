@@ -4,6 +4,9 @@ import {DialogService} from "../../../../core/services/dialogs.service";
 import {ToasterService} from "../../../../core/services/toaster.service";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import DocenteResponse from "../../../../core/models/docente_response.model";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-docentes-list',
@@ -26,12 +29,16 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
 
   constructor(private  docenteService: DocenteServiceImpl,
               private dialogService: DialogService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private authenticationService: AuthenticationServiceImpl,
+              private validateUser: ValidateUser) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario,TIPO_USER.DIRECTOR)
     this.loading = true;
     this.docentes = [];
     this.dataSource = new MatTableDataSource(this.docentes);
 
   }
+
 
   ngOnInit():void {
     this.getDocentes();

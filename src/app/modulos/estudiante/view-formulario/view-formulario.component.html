@@ -1,4 +1,4 @@
-<div class="">
+<div>
   <section class="section-profile-cover section-shaped my-0">
     <div class="position-relative">
       <section class="section section-lg section-shaped bg-ini-3">
@@ -44,7 +44,6 @@
                   </h3>
                   <hr class="my-4"/>
                   <div>
-
                     <mat-calendar *ngIf="showCalendar"
                                   [startAt]=" startAt"
                                   [minDate]="minDateCalendar"
@@ -52,7 +51,6 @@
                                   [dateClass]="dateClass()"
                                   (selectedChange)="onSelect($event)">
                     </mat-calendar>
-
                   </div>
                   <hr class="my-4"/>
                 </div>
@@ -173,7 +171,7 @@
                     </div>
                     <div class="row">
                       <p *ngIf="formularioAddAsesoria.controls['es_virtual'].value ==false">
-                        Lugar de asesoría: {{lugarPreencial}}
+                        Lugar de asesoría: {{lugarPresencial}}
                       </p>
 
                       <p *ngIf="formularioAddAsesoria.controls['es_virtual'].value ==true">
@@ -255,8 +253,8 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <a class="fluid" mat-icon-button color="primary" (click)="agregarIntegrante()">
-                          <p class="ico-input-color"><i class="fas fa-plus-circle"></i> Agregar un nuevo integrante
-                            <mat-icon matSuffix><a matTooltip="Info about the action" matTooltipPosition="after">
+                          <p class="ico-input-color"><i class="fas fa-plus-circle"></i> Agregar integrante
+                            <mat-icon matSuffix><a matTooltip="Incluir nuevo integrante a la asesoría" matTooltipPosition="after">
                               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                           </p>
                         </a>

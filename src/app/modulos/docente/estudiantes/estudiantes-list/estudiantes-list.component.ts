@@ -5,6 +5,10 @@ import {DialogService} from "../../../../core/services/dialogs.service";
 import {ToasterService} from "../../../../core/services/toaster.service";
 import {EstudianteServiceImpl} from "../../../../core/http/implement/estudiante.service.impl";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
+import {ClipboardService} from "ngx-clipboard";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-estudiantes-list',
@@ -24,12 +28,16 @@ export class EstudiantesListComponent implements OnInit {
 
   estudiantes: Array<Estudiante>;
 
-  idDocente = 3;
+  idDocente :number;
 
   constructor(private  estudianteService: EstudianteServiceImpl,
               private docenteService: DocenteServiceImpl,
               private dialogService: DialogService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = true;
     this.estudiantes = [];
     this.dataSource = new MatTableDataSource(this.estudiantes);

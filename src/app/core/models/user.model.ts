@@ -1,7 +1,5 @@
 export default class User {
-  id:number;
-  correo:string;
-  contrasena:string;
-  cargo:number;
-  token?:string;
+  username:string;
+  password:string;
+  tipo_usuario:number;
 }

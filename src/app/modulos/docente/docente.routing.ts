@@ -7,7 +7,7 @@ import {EstudiantesListComponent} from "./estudiantes/estudiantes-list/estudiant
 import {SolicitudesListComponent} from "./solicitudes/solicitudes-list/solicitudes-list.component";
 
 export const DocenteRoutes: Routes = [
-  { path: 'main-docente',      component: MainDocenteComponent },
+  { path: '',component: MainDocenteComponent },
   { path: 'crear-formulario',      component: CrearFormularioDocenteComponent },
   { path: 'editar-formulario',      component: FormulariosEditComponent },
   { path: 'listar-formularios',      component: FormulariosListComponent },

@@ -119,7 +119,6 @@ export class ViewFormularioComponent implements OnInit {
   }
 
   getFormulario(uuid) {
-    console.log("uuid ->" + uuid)
     this.loading = false;
     this.formularioService.getFormularioByEnlace(uuid).subscribe((res: Array<FormularioResponse>) => {
       if (res != null && res != undefined) {
@@ -208,7 +207,7 @@ export class ViewFormularioComponent implements OnInit {
     return false;
   }
 
-  get lugarPreencial(): string {
+  get lugarPresencial(): string {
     if (this.formulario != null && this.formulario != undefined) {
       return this.formulario.ubicacion_formulario + "";
     }
@@ -220,7 +219,7 @@ export class ViewFormularioComponent implements OnInit {
       this.loading = false;
       this.formularioService.getPreguntasByFormulario(this.formulario.id).subscribe((res: Array<Pregunta>) => {
         this.listPreguntasFormulario = res;
-        console.log(JSON.stringify(res))
+       // console.log(JSON.stringify(res))
       }, () => {
       }, () => {
         this.loading = true;
@@ -360,48 +359,56 @@ export class ViewFormularioComponent implements OnInit {
   }
 
   onFormSubmit() {
-    this.nextStep();
-
+    console.log("Entre aquíi")
     let formData = new FormData();
-    formData.append('id_formulario',this.formulario.id+"")
-    formData.append('id_docente', this.formulario.docente+"")
+    formData.append('id_formulario', this.formulario.id + "")
+    formData.append('id_docente', this.formulario.docente + "")
     formData.append('fecha', this.horarioAsesoria.fecha_horario)
     formData.append('hora', this.formatHora(this.horarioAsesoria.inicio_horario))
-    formData.append('archivo',this.archivo)
+    formData.append('archivo', this.archivo)
 
     let resAux = new Array<Respuesta>()
     for (let i = 0; i < this.preguntas.controls.length; i++) {
       let res = new Respuesta();
       res.id_pregunta = this.listPreguntasFormulario[i].id;
       res.respuesta = this.formularioAddAsesoria.value.preguntas[i];
-     resAux.push(res);
+      resAux.push(res);
     }
-    formData.append('respuestas',JSON.stringify(resAux))
+    formData.append('respuestas', JSON.stringify(resAux))
 
     let auxEstudiantes = new Array<EstudianteResponse>()
     for (let i = 0; i < this.integrantes.controls.length; i++) {
       auxEstudiantes.push(<EstudianteResponse>Object.assign({}, this.integrantes.controls[i].value))
     }
-    formData.append('estudiantes',JSON.stringify(auxEstudiantes))
+    formData.append('estudiantes', JSON.stringify(auxEstudiantes))
 
-    formData.append('es_virtual',this.formularioAddAsesoria.get('es_virtual').value)
+    formData.append('es_virtual', this.formularioAddAsesoria.get('es_virtual').value)
 
-    console.log(JSON.stringify(formData))
+    console.log(" ----> DatofORM ", formData.get('id_formulario'))
+    console.log(" ----> DatofORM ", formData.get('id_docente'))
+    console.log(" ----> DatofORM ", formData.get('fecha'))
+    console.log(" ----> DatofORM ", formData.get('hora'))
+    console.log(" ----> DatofORM ", formData.get('archivo'))
+    console.log(" ----> DatofORM ", formData.get('respuestas'))
+    console.log(" ----> DatofORM ", formData.get('estudiantes'))
+    console.log(" ----> DatofORM ", formData.get('es_virtual'))
 
-    this.solicitudService.saveSolicitud(formData).subscribe(
-      () => {
+     this.solicitudService.saveSolicitud(formData).subscribe(
+     () => {
+        console.log("Pase bien")
         this.toasterService.openSnackBar(
           'ASESORÍA AGENDADA CORRECTAMENTE',
           ToasterService.CERRAR_ACTION
         );
       },
-      (error) => {
+     (error) => {
+        console.log("Ingrese error", JSON.stringify(error))
         this.toasterService.openSnackBar(
           'ERROR INESPERADO',
           ToasterService.CERRAR_ACTION
         );
       },
-      () => {
+     () => {
         this.loading = true;
       });
   }

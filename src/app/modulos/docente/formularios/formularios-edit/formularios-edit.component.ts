@@ -18,6 +18,9 @@ import {DocenteServiceImpl} from "../../../../core/http/implement/docente.servic
 import {ToasterService} from "../../../../core/services/toaster.service";
 import {ClipboardService} from "ngx-clipboard";
 import SeleccionesDataResponse from "../../../../core/models/selecciones_data_response.model";
+import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
   selector: 'app-formularios-edit',
@@ -56,7 +59,10 @@ export class FormulariosEditComponent implements OnInit {
               private dataFormularioService: DataFormularioService,
               private docenteService: DocenteServiceImpl,
               private toasterService: ToasterService,
-              private clipboardService: ClipboardService) {
+              private clipboardService: ClipboardService,
+              private validateUser: ValidateUser,
+              private authenticationService: AuthenticationServiceImpl) {
+    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
     this.editFormulario = this.dataFormularioService.getDataFormulario();
     this.minDate = new Date();
