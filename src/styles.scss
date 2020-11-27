@@ -1,0 +1,369 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file.
+@import '~bootstrap/scss/bootstrap';
+@import "assets/scss/argon";
+*/
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.fluid {
+  width: 100% !important;
+}
+
+.icon-input {
+  color: #B51755;
+  padding-top: 30px !important;
+  margin-left: -30px !important;
+}
+
+.ico-input-color {
+  color: #B51755;
+}
+.ico-input-color:hover {
+  color: #B51755;
+}
+
+.float-bottom {
+  float: bottom !important;
+}
+
+.float-rigth {
+  float: right !important;
+}
+
+.btn-stepper {
+  margin-bottom: 20px !important;
+  float: right !important;
+}
+.btn-modal {
+  margin: 5px !important;
+  float: right !important;
+}
+
+.m-t-subtitle-stepper {
+  margin-top: -20px !important;
+}
+
+.pd-form-show{
+  padding-top: 40px;
+  padding-bottom: 20px;
+
+}
+.text-form-show {
+  margin-bottom: -10px !important;
+  margin-top: -10px !important;
+}
+
+.img-form-show-logo{
+  width: 70%!important;
+}
+
+.text-title-form{
+  margin-top: -15px !important;
+}
+
+.btn-horario-list{
+  margin: 5px!important;
+}
+.ask-list{
+  margin: 5px!important;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+/*****TABLAS****/
+table {
+  width: 100%;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+/*td, th {
+  width: 25%;
+}**/
+
+.btn-create{
+  float: right!important;
+  margin: 30px;
+}
+
+.bnm-center{
+  display: flex;
+  align-items: center;
+}
+.lop{
+  margin-top: 5px!important;
+}
+.s-opc{
+  margin: 5px!important;
+}
+.title-admin{
+  margin-top: 20px!important;
+  margin-left: 25px!important;
+  margin-bottom: -10px!important;
+  padding: 0px!important;
+  float: right!important;
+}
+
+.title-admin:hover {
+  color: #B51755;
+}
+
+.footer-aux{
+  margin-top: 80px;
+}
+
+.bg-ini-form{
+  background-image: url("assets/img/theme/bg-ini-for.jpeg");
+  background-size: cover;
+  background-position: center;
+  padding: 100px;
+}
+
+.bg-ini-2{
+  padding: 100px;
+}
+
+.bg-ini-3{
+  padding-top: 100px;
+}
+
+
+.img-header img{
+  width: 50%;
+}
+
+.pd-header-init{
+  padding: 10px;
+}
+
+.border-bottom-header{
+  border-bottom: 5px solid #bc0017;
+}
+
+.inicio-sesion p{
+  text-align: right;
+  font-size: 18px;
+}
+
+.mp-barra-form{
+  margin-bottom: 20px;
+}
+
+.text-correo{
+  font-size: 20px!important;
+  color: #212529!important;
+}
+
+.descript-card{
+  margin-top: -15px!important;
+  margin-bottom: 15px!important;
+  font-size: 20px!important;
+}
+
+.spc-bottom{
+  margin-bottom: 60px!important;
+}
+
+.pd-footer{
+ padding-bottom: 20px!important;
+}
+.pd-modals{
+  padding: 20px!important;
+}
+
+.pd-modals-content{
+  padding: 10px!important;
+}
+
+.modal-title-item{
+  margin-bottom: 20px!important;
+  font-size: 20px;
+}
+
+.pd-subTitle-modal{
+  margin-top: 20px!important;
+}
+
+.inicio-sesion-bg{
+  height: 100%!important;
+  width: 100% !important;
+  background-attachment: fixed;
+}
+
+.logo-login img{
+  margin-top: 20px;
+  width: 100%;
+}
+
+.text-login-logo{
+  font-size: 25px;
+  color: #B51755;
+  font-weight: 300;
+}
+
+.bg-ini-login{
+  background-image: url("assets/img/theme/bg-ini-for.jpeg");
+  background-size: cover;
+  background-position: center;
+  padding-top: 100px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+}
+
+.i-pd-f{
+  margin-left: 5px!important;
+  margin-right: 5px!important;
+}
+
+.section-profile-cover {
+  height: 580px;
+  background-size: cover;
+  background-position: center center;
+  background-image: url("assets/img/theme/bg-ini-2.jpg");
+}
+
+.section-not-found {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-image: url("assets/img/theme/bg-ini-2.jpg");
+}
+
+.profile-page {
+  .card-profile {
+    margin-top: -150px;
+
+    .card-profile-image {
+      position: relative;
+      //min-height: 130px;
+
+      img {
+        max-width: 160px;
+        transform: translate(-50%,-30%);
+        position: absolute;
+        left: 50%;
+
+        &:hover {
+          transform: translate(-50%, -33%);
+        }
+      }
+    }
+
+    .card-profile-stats {
+      padding: 1rem 0;
+
+      > div {
+        text-align: center;
+        margin-right: 1rem;
+        padding: .875rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .heading {
+          font-size: 1.1rem;
+          font-weight: bold;
+          display: block;
+        }
+        .description {
+          font-size: .875rem;
+        }
+      }
+    }
+
+    .card-profile-actions {
+      padding: .875rem;
+    }
+  }
+}
+
+.calificacion-ase{
+  color: #bc0017;
+}
+
+.pt-min{
+  padding-top: 20px!important;
+}
+
+.bg-cal-stat{
+  width: 100%!important;
+}
+
+.mb-cal{
+  margin-bottom: 70px!important;
+}
+
+.btn-m-c{
+  margin-top: 15px!important;
+}
+
+.pd-form-view{
+  padding-right: 100px!important;
+  padding-left: 100px!important;
+}
+
+.mb-modals{
+  margin-bottom: 15px!important;
+}
+
+.btn-copy{
+  margin-top: -20px!important;
+}
+
+.msn-error-h{
+  color: red!important;
+  text-align: center!important;
+  margin-top: -8px!important;
+  margin-bottom: -10px!important;
+}
+
+.msn-error-p{
+  font-size: 15px!important;
+}
+
+.msn-error{
+  color: red;
+}
+
+.pd-calendar{
+  padding: 30px;
+}
+
+.spc-warning{
+  margin-left: -1px!important;
+}
+
+/**
+.bg-modales-app{
+  color: white;
+}
+
+.header-modal{
+  padding: 0px!important;
+  margin: 0px!important;
+  width: 100%!important;
+  background: rgb(164,9,9);
+  background: linear-gradient(90deg, rgba(164,9,9,1) 0%, rgba(208,18,18,1) 35%);
+}
+**/

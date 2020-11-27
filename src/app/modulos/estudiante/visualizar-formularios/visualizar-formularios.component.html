@@ -1,0 +1,206 @@
+<main>
+  <section class="section section-lg bg-white border-bottom-header">
+    <div class="container ">
+      <div class="row row-grid align-items-center pd-header-init">
+        <div class="col-md-6 order-md-2 img-header">
+          <img src="./assets/img/brand/logo_ufps.png" class="img-fluid">
+        </div>
+        <div class="col-md-6 order-md-2 inicio-sesion">
+          <a [routerLink]="['../login']" class="ico-input-color"><p><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp; Inicio de sesión</p></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="position-relative">
+    <section class="section section-lg section-shaped pb-250 bg-ini-form">
+      <div class="container py-lg-md d-flex">
+        <div class="col px-0">
+          <div class="row">
+            <div class="col-lg-10">
+              <h1 class="mat-display-3 text-white">GESTIÓN DE ASESORÍAS ACADÉMICAS
+                <span>
+                  <p class="lead text-white">Selecciona uno de los siguientes formularios de asesoría para solicitar la
+                    asesoría académica</p>
+                </span>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <section class="section section-lg pt-lg-0 mt--200 mp-barra-form">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="row row-grid">
+            <div class="col-lg-12">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Programas académicos</mat-label>
+                        <mat-select>
+                          <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Docentes</mat-label>
+                        <mat-select>
+                          <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-lg pt-lg-0 spc-bottom">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="row row-grid">
+            <div class="col-lg-4">
+              <div class="card card-lift--hover shadow border-0">
+                <div class="card-body py-5">
+                  <div class="row form-group">
+                    <div class="col-3">
+                      <div class="icon icon-shape icon-shape-warning rounded-circle mb-4">
+                        <i class="ni ni-single-02"></i>
+                      </div>
+                    </div>
+                    <div class="col-9">
+                      <h3>
+                        Docente <br><span class="text-danger text-correo">Nombre del docente</span>
+                        <h3 class="font-weight-light">Correo docente</h3>
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="text-primary text-uppercase">Nombre del formulario</h6>
+                      <p class="description descript-card">Formulario de asesoría 1</p>
+                    </div>
+
+                  </div>
+
+                  <div>
+                    <span class="badge badge-pill badge-primary">Programa 1</span>
+                    <span class="badge badge-pill badge-primary">Programa 2</span>
+                    <span class="badge badge-pill badge-primary">Programa 3</span>
+                  </div>
+                  <a class="btn btn-warning float-rigth mt-4">Ir al formulario</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card card-lift--hover shadow border-0">
+                <div class="card-body py-5">
+                  <div class="row form-group">
+                    <div class="col-3">
+                      <div class="icon icon-shape icon-shape-warning rounded-circle mb-4">
+                        <i class="ni ni-single-02"></i>
+                      </div>
+                    </div>
+                    <div class="col-9">
+                      <h3>
+                        Docente <br><span class="text-danger text-correo">Nombre del docente</span>
+                        <h3 class="font-weight-light">Correo docente</h3>
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="text-primary text-uppercase">Nombre del formulario</h6>
+                      <p class="description descript-card">Formulario de asesoría 1</p>
+                    </div>
+
+                  </div>
+
+                  <div>
+                    <span class="badge badge-pill badge-primary">Programa 1</span>
+                    <span class="badge badge-pill badge-primary">Programa 2</span>
+                    <span class="badge badge-pill badge-primary">Programa 3</span>
+                  </div>
+                  <a class="btn btn-warning float-rigth mt-4">Ir al formulario</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card card-lift--hover shadow border-0">
+                <div class="card-body py-5">
+                  <div class="row form-group">
+                    <div class="col-3">
+                      <div class="icon icon-shape icon-shape-warning rounded-circle mb-4">
+                        <i class="ni ni-single-02"></i>
+                      </div>
+                    </div>
+                    <div class="col-9">
+                      <h3>
+                        Docente <br><span class="text-danger text-correo">Nombre del docente</span>
+                        <h3 class="font-weight-light">Correo docente</h3>
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="text-primary text-uppercase">Nombre del formulario</h6>
+                      <p class="description descript-card">Formulario de asesoría 1</p>
+                    </div>
+
+                  </div>
+
+                  <div>
+                    <span class="badge badge-pill badge-primary">Programa 1</span>
+                    <span class="badge badge-pill badge-primary">Programa 2</span>
+                    <span class="badge badge-pill badge-primary">Programa 3</span>
+                  </div>
+                  <a class="btn btn-warning float-rigth mt-4">Ir al formulario</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pb-0">
+    <div class="container pd-footer">
+      <div class="row align-items-center justify-content-xl-between">
+        <div class="col-xl-6">
+          <div class="copyright text-center text-xl-left text-muted">
+            <p> &copy; {{ test | date: "yyyy" }} Curso de profundización</p>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <ul class="nav nav-footer justify-content-center justify-content-xl-end">
+            <li class="nav-item">
+              <p class="i-pd-f">Yhuver Quintero</p>
+            </li>
+            <li class="nav-item">
+              <p class="i-pd-f">Alvaro Perez</p>
+            </li>
+            <li class="nav-item">
+              <p class="i-pd-f">Diego Chavez</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
