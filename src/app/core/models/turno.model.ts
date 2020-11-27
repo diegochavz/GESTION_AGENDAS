@@ -1,6 +1,6 @@
 export default class Turno {
-  inicio_horario: string;
-  fin_horario: string;
-  fecha_horario: Date;
+  hora_inicio: string;
+  hora_final: string;
+  fecha: string;
   disponible:boolean;
 }

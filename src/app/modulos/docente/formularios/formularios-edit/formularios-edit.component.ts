@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Form, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import Formulario from "../../../../core/models/formulario.model";
 import Programa from "../../../../core/models/programa.model";
@@ -12,13 +12,11 @@ import {TIPO_CAMPO} from "../../../../core/constants/tipo_campo.constants";
 import {MatChipInputEvent} from "@angular/material/chips";
 import Horario from "../../../../core/models/horario.model";
 import Pregunta from "../../../../core/models/pregunta.model";
-import {v4 as uuidv4} from "uuid";
 import * as moment from "moment";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {ToasterService} from "../../../../core/services/toaster.service";
 import {ClipboardService} from "ngx-clipboard";
-import SeleccionesDataResponse from "../../../../core/models/selecciones_data_response.model";
-import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
@@ -50,7 +48,11 @@ export class FormulariosEditComponent implements OnInit {
 
   listProgramas: Array<Programa>;
 
+  listAllHorarioDocente: Array<Horario>
+
   urlFormulario: string;
+
+  validadorTimeOut: any;
 
   constructor(private _adapter: DateAdapter<any>,
               private _formBuilder: FormBuilder,
@@ -60,9 +62,9 @@ export class FormulariosEditComponent implements OnInit {
               private docenteService: DocenteServiceImpl,
               private toasterService: ToasterService,
               private clipboardService: ClipboardService,
-              private validateUser: ValidateUser,
+              private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl) {
-    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
     this.editFormulario = this.dataFormularioService.getDataFormulario();
     this.minDate = new Date();
@@ -73,20 +75,33 @@ export class FormulariosEditComponent implements OnInit {
     this.consultarPreguntas();
     this.establecerFechaMaxMin();
     this.urlFormulario = '';
+    this.listAllHorarioDocente = [];
   }
 
   ngOnInit() {
+    this.getLisAllHorarios();
     this.crearFormEditFormulario();
     this.listTipoDatos = this.getTipoDatos();
     this.listTipoCampos = this.getTipoCampos();
   }
 
+
   /****CARGA VALORES INICIALES***/
+
+  getLisAllHorarios() {
+    if (this.editFormulario != null && this.editFormulario != undefined) {
+      this.docenteService.getHorariosByDocente(this.editFormulario.docente).subscribe((res: Horario[]) => {
+        this.listAllHorarioDocente = res;
+      }, () => {
+        console.log("ERROR CARGAS HORARIOS DOCENTE")
+      })
+    }
+  }
+
   consultarHorarios() {
     if (this.editFormulario != null && this.editFormulario != undefined) {
       this.loading = false;
       this.formularioService.getHorariosByFormulario(this.editFormulario.id).subscribe(res => {
-          console.log("listado de horarios", res)
           this.listarHorarios(res);
         }, () => {
         }, () => {
@@ -102,10 +117,12 @@ export class FormulariosEditComponent implements OnInit {
       let dateAux = new Date(+dateHorario[0], +dateHorario[1] - 1, +dateHorario[2])
       const horario = this._formBuilder.group(
         {
-          id_horario: restHorarios[i].id,
-          fecha_horario: dateAux,
-          inicio_horario: restHorarios[i].inicio_horario,
-          fin_horario: restHorarios[i].fin_horario,
+          cruce: false,
+          disponibilidad: [restHorarios[i].disponibilidad],
+          id_horario: [{value: restHorarios[i].id, disabled: !restHorarios[i].disponibilidad}],
+          fecha_horario: [{value: dateAux, disabled: !restHorarios[i].disponibilidad}],
+          inicio_horario: [{value: restHorarios[i].inicio_horario, disabled: !restHorarios[i].disponibilidad}],
+          fin_horario: [{value: restHorarios[i].fin_horario, disabled: !restHorarios[i].disponibilidad}],
         });
 
       horario.valueChanges.subscribe(res => {
@@ -119,6 +136,7 @@ export class FormulariosEditComponent implements OnInit {
       this.horarios.push(horario);
     }
   }
+
 
   establecerFechaMaxMin() {
     if (this.editFormulario != null && this.editFormulario != undefined) {
@@ -319,11 +337,14 @@ export class FormulariosEditComponent implements OnInit {
 
   agregarHorario() {
     const horario = this._formBuilder.group({
+      cruce: false,
+      disponibilidad: true,
       id_horario: null,
       fecha_horario: '',
       inicio_horario: '',
       fin_horario: '',
     });
+
     horario.valueChanges.subscribe(res => {
       if (res.inicio_horario >= res.fin_horario) {
         horario.get('fin_horario').setErrors({'error': true})
@@ -331,16 +352,39 @@ export class FormulariosEditComponent implements OnInit {
         horario.get('fin_horario').setErrors(null)
         horario.get('fin_horario').setValidators([Validators.required])
       }
+
+      if (res.fecha_horario != '' && res.inicio_horario != '' && res.fin_horario != '') {
+
+        this.validadorTimeOut = setTimeout(() => {
+          let data = horario.value;
+          let auxHor = new Horario(moment(data.fecha_horario).format("YYYY-MM-DD"), data.inicio_horario, data.fin_horario)
+          horario.get('cruce').setValue(this.validate.validarCruceFecha(auxHor, this.listAllHorarioDocente))
+          if (horario.get('cruce').value) {
+            horario.get('cruce').setErrors({'error-cruce': true})
+          } else {
+            horario.get('cruce').setErrors(null)
+          }
+        }, 2000);
+      }
     });
+
     this.horarios.push(horario);
   }
+
+  stopTimeOut(){
+    clearTimeout(this.validadorTimeOut);
+  }
+
 
   borrarHorario(indice) {
     let aux = this.horarios.controls[indice].value
     if (aux.id_horario != null) {
       this.formularioService.deleteHorarioById(+aux.id_horario).subscribe(res => {
       }, () => {
-        console.log("Marque error")
+        this.toasterService.openSnackBar(
+          'ERROR AL ELIMINAR HORARIO',
+          ToasterService.CERRAR_ACTION
+        );
       })
     }
     this.horarios.removeAt(indice)
@@ -379,11 +423,11 @@ export class FormulariosEditComponent implements OnInit {
     let horariosAux = new Array<Horario>();
     for (let i = 0; i < this.horarios.controls.length; i++) {
       let aux = this.horarios.controls[i].value;
-      let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario, aux.id_horario);
+      let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario, aux.id_horario, aux.disponibilidad);
       horariosAux.push(hor)
     }
     this.editFormulario.horarios = horariosAux;
-
+    console.log(this.editFormulario.horarios)
     this.calcularNuevosHorarios();
   }
 
@@ -394,22 +438,25 @@ export class FormulariosEditComponent implements OnInit {
     let intervaloAux = this.editFormulario.intervalo;
 
     for (let i = 0; i < horariosCal.length; i++) {
+      if (horariosCal[i].disponibilidad == true) {
+        const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
+        const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
+        let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
 
-      const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
-      const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
-      let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
-
-      if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
-        while (horaFinal.isAfter(horaVariable)) {
-          let newH = horaVariable.clone().add(duracionAux, "minutes")
-          horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
-          newH = newH.clone().add(intervaloAux, "minutes")
-          horaVariable = newH;
+        if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
+          while (horaFinal.isAfter(horaVariable)) {
+            let newH = horaVariable.clone().add(duracionAux, "minutes")
+            horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
+            newH = newH.clone().add(intervaloAux, "minutes")
+            horaVariable = newH;
+          }
         }
       }
+
     }
 
     this.editFormulario.horarios = horarioListAux;
+    console.log(this.editFormulario.horarios)
   }
 
   getPreguntasFromForm() {
@@ -420,18 +467,16 @@ export class FormulariosEditComponent implements OnInit {
       preguntasAux.push(pre)
     }
     this.editFormulario.preguntas = preguntasAux;
-    console.log("preguntas ", this.editFormulario.preguntas)
   }
 
   onFormSubmit() {
     this.loading = true;
 
     this.registrarHorarioAtencion();
-    this.registrarPreguntas();
+    this.registrarPreguntas()
 
     this.editFormulario.horarios = null;
     this.editFormulario.preguntas = null;
-
     this.formularioService.update(this.editFormulario.id, this.editFormulario).subscribe(
       (newForm) => {
         this.toasterService.openSnackBar(
@@ -448,35 +493,82 @@ export class FormulariosEditComponent implements OnInit {
       () => {
         console.log("carga")
       });
+
+
   }
 
   registrarHorarioAtencion() {
+    let listadoHorarios = this.editFormulario.horarios;
+    console.log(listadoHorarios)
     //BORRADO DE HORARIOS VIEJOS
-    for (let horarioControl of this.horarios.controls) {
-      if (horarioControl.get('id_horario').value != null) {
-        this.formularioService.deleteHorarioById(horarioControl.get('id_horario').value).subscribe(() => {
-        });
+    let listAux = this.horarios.getRawValue()
+    console.log(listAux)
+    for (let horarioControl of listAux) {
+      console.log(horarioControl)
+      if (horarioControl.id_horario != null) {
+        if (horarioControl.disponibilidad == true) {
+          this.formularioService.deleteHorarioById(horarioControl.id_horario).subscribe(() => {
+            },
+            (error) => {
+            console.log("ERROR BORRADO DE DATOS")
+              console.log(JSON.stringify(error))
+              this.toasterService.openSnackBar(
+                'ERROR' + JSON.stringify(error),
+                ToasterService.CERRAR_ACTION
+              );
+
+            }, () => {
+            });
+        }
       }
     }
 
-    //REGISTRO NUEVOS HORARIOS
-    for (let horarioList of this.editFormulario.horarios) {
-      this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
-      });
-    }
+
+    setTimeout(() => {
+      //REGISTRO NUEVOS HORARIOS
+      for (let horarioList of listadoHorarios) {
+        console.log("registro -->",horarioList)
+        this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
+        }, error => {
+          this.toasterService.openSnackBar(
+            'ERROR' + JSON.stringify(error),
+            ToasterService.CERRAR_ACTION
+          );
+          return false;
+        }, () => {
+        });
+      }
+    }, 2000);
+
+
+
+
   }
 
-  registrarPreguntas() {
+  registrarPreguntas(): boolean {
     //ACTUALIZAR PREGUNTAS
     for (let pregunta of this.editFormulario.preguntas) {
       if (pregunta.id == null) {
         console.log("NUEVA PREGUNTA", JSON.stringify(pregunta))
         this.formularioService.addPreguntabyFormulario(this.editFormulario.id, pregunta).subscribe(() => {
+        }, error => {
+          this.toasterService.openSnackBar(
+            'ERROR' + JSON.stringify(error),
+            ToasterService.CERRAR_ACTION
+          );
+          return false;
         });
       } else {
         this.formularioService.updatePreguntaByFormulario(pregunta.id, pregunta).subscribe(() => {
+        }, (error) => {
+          this.toasterService.openSnackBar(
+            'ERROR' + JSON.stringify(error),
+            ToasterService.CERRAR_ACTION
+          );
+          return false;
         });
       }
     }
+    return true;
   }
 }

@@ -26,7 +26,7 @@ import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {EstudianteServiceImpl} from "./http/implement/estudiante.service.impl";
 import {SolicitudServiceImpl} from "./http/implement/solicitud.service.impl";
 import {DataUserService} from "./services/data_user.service";
-import {ValidateUser} from "./services/validate_usuario.service";
+import {ValidateService} from "./services/validators";
 
 @NgModule({
   declarations: [],
@@ -47,7 +47,7 @@ import {ValidateUser} from "./services/validate_usuario.service";
     ServiceImpl,
     DataFormularioService,
     DataUserService,
-    ValidateUser,
+    ValidateService,
     DialogService,
     DocenteServiceImpl,
     ToasterService,

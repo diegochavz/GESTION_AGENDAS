@@ -16,7 +16,7 @@ export class SolicitudServiceImpl extends ServiceImpl<any> implements ISolicitud
   }
 
   getSolicitudByDocente(idDocente): Observable<Solicitud[]> {
-    const path = `${idDocente}/docente`;
+    const path = `${idDocente}/docente/`;
     return this.executeGet(path).pipe(map((res: any) => res.data));
   }
 

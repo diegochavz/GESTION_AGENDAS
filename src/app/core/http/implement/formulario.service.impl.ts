@@ -19,62 +19,65 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
     this.resource = 'formulario/';
   }
 
-  getHorariosByFormulario(idFormulario): Observable<Horario[]>{
-    const path = `${idFormulario}/horarios`;
+  getHorariosByFormulario(idFormulario): Observable<Horario[]> {
+    const path = `${idFormulario}/horarios/`;
     return this.executeGet(path) as Observable<Horario[]>;
   }
 
-  getProgramasByFormulario(idFormulario): Observable<Programa[]>{
-    const path = `${idFormulario}/programas-simple`;
+  getProgramasByFormulario(idFormulario): Observable<Programa[]> {
+    const path = `${idFormulario}/programas-simple/`;
     return this.executeGet(path) as Observable<Programa[]>;
   }
 
-  getPreguntasByFormulario(idFormulario): Observable<Pregunta[]>{
-    const path = `${idFormulario}/preguntas`;
+  getPreguntasByFormulario(idFormulario): Observable<Pregunta[]> {
+    const path = `${idFormulario}/preguntas/`;
     return this.executeGet(path) as Observable<Pregunta[]>;
   }
 
-  getFormularioByEnlace(enlace): Observable<FormularioResponse[]>{
-    const path = `?enlace=${enlace}`;
+  getFormularioByEnlace(enlace): Observable<FormularioResponse[]> {
+    const path = `?enlace=${enlace}/`;
     return this.executeGet(path) as Observable<FormularioResponse[]>;
   }
 
-  deleteHorarioById(idHorario):Observable<any>{
-    const path = `horarios/${idHorario}`;
+  deleteHorarioById(idHorario): Observable<any> {
+    const path = `horarios/${idHorario}/`;
     return this.httpClient.delete(this.getFullPath() + path) as Observable<any>;
   }
 
-  addHorariobyFormulario(idFormulario, horario):Observable<any>{
+  addHorariobyFormulario(idFormulario, horario): Observable<any> {
     const path = `${idFormulario}/horarios/`;
     console.log(path)
-    return this.httpClient.post(this.getFullPath()+path, horario) as Observable<any>;
+    return this.httpClient.post(this.getFullPath() + path, horario) as Observable<any>;
   }
 
-  deletePreguntaById(idPregunta):Observable<any>{
-    const path = `preguntas/${idPregunta}`;
+  deletePreguntaById(idPregunta): Observable<any> {
+    const path = `preguntas/${idPregunta}/`;
     return this.httpClient.delete(this.getFullPath() + path) as Observable<any>;
   }
 
-  addPreguntabyFormulario(idFormulario, pregunta):Observable<any>{
+  addPreguntabyFormulario(idFormulario, pregunta): Observable<any> {
     const path = `${idFormulario}/preguntas/`;
-    return this.httpClient.post(this.getFullPath()+path, pregunta) as Observable<any>;
+    return this.httpClient.post(this.getFullPath() + path, pregunta) as Observable<any>;
   }
 
-  updateHorarioByFormulario(idHorario, horario):Observable<any>{
-    const path = `horarios/${idHorario}`;
-    console.log("PUT HORARIOS --> ", JSON.stringify(horario))
-    console.log(this.getFullPath()+path)
-    return this.httpClient.put(this.getFullPath()+path, horario) as Observable<any>;
+  updateHorarioByFormulario(idHorario, horario): Observable<any> {
+    const path = `horarios/${idHorario}/`;
+    return this.httpClient.put(this.getFullPath() + path, horario) as Observable<any>;
   }
 
-  updatePreguntaByFormulario(idPregunta, pregunta):Observable<any>{
-    const path = `preguntas/${idPregunta}`;
-    return this.httpClient.put(this.getFullPath()+path, pregunta) as Observable<any>;
+  updatePreguntaByFormulario(idPregunta, pregunta): Observable<any> {
+    const path = `preguntas/${idPregunta}/`;
+    return this.httpClient.put(this.getFullPath() + path, pregunta) as Observable<any>;
   }
 
- getHorariosByIdDocenteAndIdFormulario(idDocente, idFormulario, fecha):Observable<any>{
+  /**getHorariosByIdDocenteAndIdFormulario(idDocente, idFormulario, fecha):Observable<any>{
     const path = `turnos-formulaio`;
     return this.httpClient.post(this.apiUrl +path, {"id_docente": idDocente, "id_formulario":idFormulario, "fecha": fecha}) as Observable<any>;
+  }*/
+
+  getHorariosDisponiblesByFormulario(idFormulario): Observable<any> {
+    const path = `turnos-formulario-general/`;
+    return this.httpClient.post(this.apiUrl +path, {"id_formulario":idFormulario}) as Observable<any>;
   }
 
 }

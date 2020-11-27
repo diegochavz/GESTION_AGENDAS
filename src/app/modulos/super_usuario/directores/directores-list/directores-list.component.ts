@@ -5,7 +5,7 @@ import {ToasterService} from "../../../../core/services/toaster.service";
 import {DirectorServiceImpl} from "../../../../core/http/implement/director.service.impl";
 import DirectorResponse from "../../../../core/models/director_response.model";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
-import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 
 @Component({
@@ -29,9 +29,9 @@ export class DirectoresListComponent implements OnInit {
   constructor(private  directorService: DirectorServiceImpl,
               private dialogService: DialogService,
               private toasterService: ToasterService,
-              private validateUser: ValidateUser,
+              private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl) {
-    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario,TIPO_USER.SUPER_USUARIO)
+    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario,TIPO_USER.SUPER_USUARIO)
     this.loading = true;
     this.directores = [];
     this.dataSource = new MatTableDataSource(this.directores);

@@ -28,6 +28,7 @@ import Respuesta from "../../../core/models/respuesta.model";
 import EstudianteResponse from "../../../core/models/estudiante_response.model";
 import Programa from "../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../core/http/implement/programa.service.impl";
+import Turno from "../../../core/models/turno.model";
 
 @Component({
   selector: 'app-view-formulario',
@@ -49,7 +50,7 @@ export class ViewFormularioComponent implements OnInit {
 
   listHorariosDisponibles: Array<Horario>;
 
-  listHorariosFormulario: Array<Horario>;
+  listHorariosFormulario: Array<Turno>;
 
   listPreguntasFormulario: Array<Pregunta>
 
@@ -124,18 +125,14 @@ export class ViewFormularioComponent implements OnInit {
       if (res != null && res != undefined) {
         if (res.length > 0) {
           this.formulario = res[0];
-          console.log("hay algo ahí")
         } else {
           this.routes.navigate(['/not-page'])
-          console.log("viene vacio")
         }
       }
     }, () => {
-      console.log("hay error")
       this.routes.navigate(['/not-page'])
     }, () => {
       this.loading = true;
-      console.log(JSON.stringify(this.formulario));
       this.establecerMaxMinDate();
       this.consultarNombreDocente();
       this.consultarHorarios();
@@ -176,7 +173,7 @@ export class ViewFormularioComponent implements OnInit {
   consultarHorarios() {
     if (Object.keys(this.formulario).length !== 0) {
       this.loading = false;
-      this.formularioService.getHorariosByFormulario(this.formulario.id).subscribe((res: Array<Horario>) => {
+      this.formularioService.getHorariosDisponiblesByFormulario(this.formulario.id).subscribe((res: Array<Turno>) => {
         this.listHorariosFormulario = res;
       }, () => {
       }, () => {
@@ -219,7 +216,6 @@ export class ViewFormularioComponent implements OnInit {
       this.loading = false;
       this.formularioService.getPreguntasByFormulario(this.formulario.id).subscribe((res: Array<Pregunta>) => {
         this.listPreguntasFormulario = res;
-       // console.log(JSON.stringify(res))
       }, () => {
       }, () => {
         this.loading = true;
@@ -229,7 +225,6 @@ export class ViewFormularioComponent implements OnInit {
   }
 
   crearControlesPreguntas() {
-    console.log("Entre en crear preguntas")
     for (let i = 0; i < this.listPreguntasFormulario.length; i++) {
       this.preguntas.push(new FormControl())
     }
@@ -250,9 +245,11 @@ export class ViewFormularioComponent implements OnInit {
     if (Object.keys(this.formulario).length !== 0) {
       if (this.listHorariosFormulario.length > 0) {
         for (let i of this.listHorariosFormulario) {
-          let dateAux = i.fecha_horario.split("-");
-          let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
-          newFechasDisponibles.push(newD);
+          if(i.disponible == true){
+            let dateAux = i.fecha.split("-");
+            let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
+            newFechasDisponibles.push(newD);
+          }
         }
       }
     }
@@ -271,12 +268,14 @@ export class ViewFormularioComponent implements OnInit {
       const horarios = this.listHorariosFormulario;
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
-          let dateAux = horarios[i].fecha_horario.split("-");
-          let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
-          if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
-            ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
-            (moment(newD).year() == moment(fechaSeleccionada).year())) {
-            this.listHorariosDisponibles.push(horarios[i])
+          if(horarios[i].disponible == true) {
+            let dateAux = horarios[i].fecha.split("-");
+            let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
+            if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
+              ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
+              (moment(newD).year() == moment(fechaSeleccionada).year())) {
+              this.listHorariosDisponibles.push(new Horario(horarios[i].fecha, horarios[i].hora_inicio, horarios[i].hora_final))
+            }
           }
         }
       }
@@ -284,7 +283,6 @@ export class ViewFormularioComponent implements OnInit {
   }
 
   selectedHorario(horario: Horario) {
-    console.log("china")
     this.horarioAsesoria = horario;
   }
 
@@ -359,7 +357,6 @@ export class ViewFormularioComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log("Entre aquíi")
     let formData = new FormData();
     formData.append('id_formulario', this.formulario.id + "")
     formData.append('id_docente', this.formulario.docente + "")

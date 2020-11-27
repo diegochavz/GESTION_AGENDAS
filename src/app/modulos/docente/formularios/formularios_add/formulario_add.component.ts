@@ -32,7 +32,7 @@ import {DocenteServiceImpl} from "../../../../core/http/implement/docente.servic
 import {ToasterService} from "../../../../core/services/toaster.service";
 import Horario from "../../../../core/models/horario.model";
 import {ClipboardService} from "ngx-clipboard";
-import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
@@ -69,15 +69,19 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   urlFormulario: string;
 
+  listAllHorarioDocente: Array<Horario>;
+
+  validadorTimeOut: any;
+
   constructor(private _adapter: DateAdapter<any>,
               private _formBuilder: FormBuilder,
               private formularioService: FormularioServiceImpl,
               private docenteService: DocenteServiceImpl,
               private toasterService: ToasterService,
               private clipboardService: ClipboardService,
-              private validateUser: ValidateUser,
+              private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl) {
-    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
     this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = false;
@@ -86,14 +90,24 @@ export class CrearFormularioDocenteComponent implements OnInit {
     this.listProgramas = [];
     this.newFormulario = new Formulario();
     this.urlFormulario = '';
+    this.listAllHorarioDocente = [];
   }
 
   ngOnInit() {
+    this.getLisAllHorarios();
     this.crearFormAddFormulario();
     this.listTipoDatos = this.getTipoDatos();
     this.listTipoCampos = this.getTipoCampos();
     this.agregarPregunta();
     this.agregarHorario();
+  }
+
+  getLisAllHorarios() {
+      this.docenteService.getHorariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe((res: Horario[]) => {
+        this.listAllHorarioDocente = res;
+      }, () => {
+        console.log("ERROR CARGAS HORARIOS DOCENTE")
+      })
   }
 
   /****CARGA VALORES INICIALES***/
@@ -211,6 +225,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   agregarHorario() {
     const horario = this._formBuilder.group({
+      cruce: false,
       fecha_horario: ['', [Validators.required]],
       inicio_horario: ['', [Validators.required]],
       fin_horario: ['', [Validators.required]],
@@ -222,6 +237,22 @@ export class CrearFormularioDocenteComponent implements OnInit {
         horario.get('fin_horario').setErrors(null)
         horario.get('fin_horario').setValidators([Validators.required])
       }
+
+      if (res.fecha_horario != '' && res.inicio_horario != '' && res.fin_horario != '') {
+
+        this.validadorTimeOut = setTimeout(() => {
+          let data = horario.value;
+          let auxHor = new Horario(moment(data.fecha_horario).format("YYYY-MM-DD"), data.inicio_horario, data.fin_horario)
+          horario.get('cruce').setValue(this.validate.validarCruceFecha(auxHor, this.listAllHorarioDocente))
+          if (horario.get('cruce').value) {
+            horario.get('cruce').setErrors({'error-cruce': true})
+          } else {
+            horario.get('cruce').setErrors(null)
+          }
+        }, 2000);
+      }
+
+
     });
     this.horarios.push(horario);
   }
@@ -230,6 +261,9 @@ export class CrearFormularioDocenteComponent implements OnInit {
     this.horarios.removeAt(indice)
   }
 
+  stopTimeOut(){
+    clearTimeout(this.validadorTimeOut);
+  }
 
   /****ENVIO Y REGISTRO DE INFORMACIÓN***/
 
