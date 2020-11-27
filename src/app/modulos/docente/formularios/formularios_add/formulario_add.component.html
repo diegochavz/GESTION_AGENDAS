@@ -70,6 +70,13 @@
                                 <p class="msn-error-p">La hora fin es inferior o igual a la hora inicio</p>
                               </div>
                             </div>
+
+                            <div class="row msn-error-h" *ngIf="horarios.controls[i].get('cruce').hasError('error-cruce')">
+                              <div class="col-12">
+                                <p class="msn-error-p">El horario se encuentra en cruce con otro horario</p>
+                              </div>
+                            </div>
+
                           </div>
 
                         </div>
@@ -216,6 +223,7 @@
                           mat-raised-button
                           color="warn"
                           matStepperNext
+                          (click)="stopTimeOut()"
                           [disabled]="this.formAddFormulario.invalid">
                     Siguiente
                   </button>

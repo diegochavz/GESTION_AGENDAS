@@ -17,7 +17,7 @@ import Programa from "../../../../core/models/programa.model";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import * as moment from "moment";
 import {ClipboardService} from "ngx-clipboard";
-import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
@@ -26,7 +26,7 @@ import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
   templateUrl: './formularios-list.component.html',
   styleUrls: ['./formularios-list.component.scss']
 })
-export class FormulariosListComponent implements OnInit, AfterViewInit {
+export class FormulariosListComponent implements OnInit {
 
   //@ViewChild(MatPaginator) paginator: MatPaginator;
   //@ViewChild(MatSort) sort: MatSort;
@@ -51,9 +51,9 @@ export class FormulariosListComponent implements OnInit, AfterViewInit {
               private dataFormularioService: DataFormularioService,
               private dialogService: DialogService,
               private toasterService: ToasterService,
-              private validateUser: ValidateUser,
+              private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl) {
-    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = true;
     // Assign the data to the data source for the table to render

@@ -20,27 +20,27 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
   }
 
   getHorariosByFormulario(idFormulario): Observable<Horario[]> {
-    const path = `${idFormulario}/horarios`;
+    const path = `${idFormulario}/horarios/`;
     return this.executeGet(path) as Observable<Horario[]>;
   }
 
   getProgramasByFormulario(idFormulario): Observable<Programa[]> {
-    const path = `${idFormulario}/programas-simple`;
+    const path = `${idFormulario}/programas-simple/`;
     return this.executeGet(path) as Observable<Programa[]>;
   }
 
   getPreguntasByFormulario(idFormulario): Observable<Pregunta[]> {
-    const path = `${idFormulario}/preguntas`;
+    const path = `${idFormulario}/preguntas/`;
     return this.executeGet(path) as Observable<Pregunta[]>;
   }
 
   getFormularioByEnlace(enlace): Observable<FormularioResponse[]> {
-    const path = `?enlace=${enlace}`;
+    const path = `?enlace=${enlace}/`;
     return this.executeGet(path) as Observable<FormularioResponse[]>;
   }
 
   deleteHorarioById(idHorario): Observable<any> {
-    const path = `horarios/${idHorario}`;
+    const path = `horarios/${idHorario}/`;
     return this.httpClient.delete(this.getFullPath() + path) as Observable<any>;
   }
 
@@ -51,7 +51,7 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
   }
 
   deletePreguntaById(idPregunta): Observable<any> {
-    const path = `preguntas/${idPregunta}`;
+    const path = `preguntas/${idPregunta}/`;
     return this.httpClient.delete(this.getFullPath() + path) as Observable<any>;
   }
 
@@ -61,14 +61,12 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
   }
 
   updateHorarioByFormulario(idHorario, horario): Observable<any> {
-    const path = `horarios/${idHorario}`;
-    console.log("PUT HORARIOS --> ", JSON.stringify(horario))
-    console.log(this.getFullPath() + path)
+    const path = `horarios/${idHorario}/`;
     return this.httpClient.put(this.getFullPath() + path, horario) as Observable<any>;
   }
 
   updatePreguntaByFormulario(idPregunta, pregunta): Observable<any> {
-    const path = `preguntas/${idPregunta}`;
+    const path = `preguntas/${idPregunta}/`;
     return this.httpClient.put(this.getFullPath() + path, pregunta) as Observable<any>;
   }
 
