@@ -104,7 +104,7 @@
 ***
 ### Demo
 
-Para ver el demo de la aplicación puede dirigirse a: [Gestión de asesorías académicas](http://23.251.145.118:9000/#/).
+Para ver el demo de la aplicación puede dirigirse a: [Gestión de asesorías académicas](http://www.agendas-ufps.tk/#/).
 
 ***
 ### Autor(es)
