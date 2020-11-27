@@ -5,7 +5,7 @@ import {ToasterService} from "../../../../core/services/toaster.service";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import DocenteResponse from "../../../../core/models/docente_response.model";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
-import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {ValidateService} from "../../../../core/services/validators";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
 @Component({
@@ -31,8 +31,8 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
               private dialogService: DialogService,
               private toasterService: ToasterService,
               private authenticationService: AuthenticationServiceImpl,
-              private validateUser: ValidateUser) {
-    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario,TIPO_USER.DIRECTOR)
+              private validate: ValidateService) {
+    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario,TIPO_USER.DIRECTOR)
     this.loading = true;
     this.docentes = [];
     this.dataSource = new MatTableDataSource(this.docentes);

@@ -3,13 +3,14 @@
   <div class="row">
     <div class="col-12">
       <div class="pd-modals">
-        <h1> Formulario de asesoría <p class="mat-display-1">{{solicitud.formulario_data.nombre_formulario}}</p></h1>
+        <h1> Formulario de asesoría <p class="mat-display-1">{{nombreFormulario}}</p></h1>
       </div>
     </div>
   </div>
   <div class="row mt--70">
     <div class="col-12">
       <mat-card class="pd-modals mb-modals">
+        <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
         <div mat-subheader class="modal-title-item">Información asesoría</div>
         <mat-list-item>
           <div class="row">

@@ -126,10 +126,10 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showSolicitudDialog(solicitudResponse: SolicitudResponse) {
+  showSolicitudDialog(idSolicitud: number) {
     let dialogRef: MatDialogRef<SolicitudesShowComponent>;
     dialogRef = this.matDialog.open(SolicitudesShowComponent, {
-      data: { solicitudResponse }
+      data: { idSolicitud }
     });
     return dialogRef.afterClosed();
   }

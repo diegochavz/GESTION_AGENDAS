@@ -84,3 +84,28 @@
   </div>
 </div>
 
+
+<div class="container-fluid mt--50 ">
+  <div id="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="bg-white">
+          <div class="mat-elevation-z2">
+            <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+            <div class="pd-calendar">
+              <full-calendar *ngIf="calendarOptions"
+                             #fullcalendar
+                             [options]="calendarOptions">
+
+              </full-calendar>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -15,19 +15,32 @@ export class SolicitudesShowComponent implements OnInit {
 
   solicitud: SolicitudResponse;
 
-  listRespuestas: Array<Respuesta> = new Array<Respuesta>();
-  listEstudiantes: Array<SolicitudEstudiante> = new Array<SolicitudEstudiante>();
+  listRespuestas: Array<Respuesta>;
+  listEstudiantes: Array<SolicitudEstudiante>;
+
+  idSolicitud: number;
+
+  loading: boolean;
 
   constructor(private solicitudService: SolicitudServiceImpl,
               public dialogRef: MatDialogRef<SolicitudesShowComponent>,
               private _formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.solicitud = data.solicitudResponse;
-    this.listRespuestas = this.solicitud.respuestas_data;
-    this.listEstudiantes = this.solicitud.estudiantes_data;
+    this.idSolicitud = data.idSolicitud;
+    this.listRespuestas = [];
+    this.listEstudiantes = [];
+    this.loading = true;
   }
 
   ngOnInit(): void {
+    this.loading = false;
+    this.solicitudService.get(this.idSolicitud).subscribe((res:SolicitudResponse) =>{
+      this.solicitud = res;
+      this.listEstudiantes = res.estudiantes_data;
+      this.listRespuestas = res.respuestas_data;
+    },()=>{}, ()=>{
+      this.loading = true;
+    })
   }
 
   get nombreFormulario():string{
@@ -59,7 +72,6 @@ export class SolicitudesShowComponent implements OnInit {
     }
     return '';
   }
-
 
   formatHora(hora: string): string {
     return hora.split(':')[0] + ":" + hora.split(':')[1];

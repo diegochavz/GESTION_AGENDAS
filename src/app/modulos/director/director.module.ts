@@ -42,6 +42,7 @@ import {DocentesListComponent} from "./docentes/docentes-list/docentes-list.comp
 import {DocentesEditComponent} from "./docentes/docentes-edit/docentes-edit.component";
 import {DocentesAddComponent} from "./docentes/docentes-add/docentes-add.component";
 import {DocentesDeleteComponent} from "./docentes/docentes-delete/docentes-delete.component";
+import {SolicitudesShowComponent} from "../docente/solicitudes/solicitudes-show/solicitudes-show.component";
 
 @NgModule({
   imports: [
@@ -86,6 +87,7 @@ import {DocentesDeleteComponent} from "./docentes/docentes-delete/docentes-delet
     DocentesEditComponent,
     DocentesAddComponent,
     DocentesDeleteComponent,
+    SolicitudesShowComponent,
   ]
   ,
   providers:[

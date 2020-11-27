@@ -5,7 +5,7 @@ import Formulario from "../../core/models/formulario.model";
 import User from "../../core/models/user.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {first} from "rxjs/operators";
-import {ValidateUser} from "../../core/services/validate_usuario.service";
+import {ValidateService} from "../../core/services/validators";
 import UserResponse from "../../core/models/user_response.model";
 
 @Component({
@@ -24,9 +24,9 @@ export class LoginComponent implements OnInit {
               private authenticationService: AuthenticationServiceImpl,
               private route: ActivatedRoute,
               private router: Router,
-              private validateUser: ValidateUser) {
+              private validate: ValidateService) {
     if (this.authenticationService.logeado) {
-      this.validateUser.validateUser(this.authenticationService.currentUserValue.tipo_usuario)
+      this.validate.validateUser(this.authenticationService.currentUserValue.tipo_usuario)
     }
     this.loading = true;
   }
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(user).pipe(first()).subscribe((data: UserResponse) =>{
       console.log(data)
         if(data){
-          this.validateUser.validateUser(data.tipo_usuario);
+          this.validate.validateUser(data.tipo_usuario);
         }
       },
       error => {

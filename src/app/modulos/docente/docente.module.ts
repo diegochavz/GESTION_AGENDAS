@@ -51,6 +51,18 @@ import { SolicitudesShowComponent } from './solicitudes/solicitudes-show/solicit
 import { SolicitudesDeleteComponent } from './solicitudes/solicitudes-delete/solicitudes-delete.component';
 import {MatCardModule} from "@angular/material/card";
 
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+
+import { FullCalendarModule } from '@fullcalendar/angular';
+import {CoreModule} from "../../core/core.module";
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  interactionPlugin,
+  timeGridPlugin
+]);
+
 @NgModule({
   imports: [
     CommonModule,
@@ -61,7 +73,7 @@ import {MatCardModule} from "@angular/material/card";
     ClipboardModule,
     MatStepperModule,
     ReactiveFormsModule,
-   // MatFormFieldModule,
+    // MatFormFieldModule,
     MatButtonModule,
     MatTooltipModule,
     MatFormFieldModule,
@@ -84,6 +96,8 @@ import {MatCardModule} from "@angular/material/card";
     MatListModule,
     MatDialogModule,
     MatCardModule,
+    FullCalendarModule,
+    CoreModule,
   ],
   declarations: [
     MainDocenteComponent,

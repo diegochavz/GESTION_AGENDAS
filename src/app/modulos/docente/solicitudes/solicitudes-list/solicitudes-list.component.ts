@@ -8,7 +8,7 @@ import SolicitudEstudiante from "../../../../core/models/solicitud_estudiante.mo
 import Docente from "../../../../core/models/docente.model";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {ClipboardService} from "ngx-clipboard";
-import {ValidateUser} from "../../../../core/services/validate_usuario.service";
+import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 
@@ -36,9 +36,9 @@ export class SolicitudesListComponent implements OnInit {
   constructor(private docenteService: DocenteServiceImpl,
               private dialogService: DialogService,
               private toasterService: ToasterService,
-              private validateUser: ValidateUser,
+              private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl) {
-    this.validateUser.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.idDocente = this.authenticationService.currentUserValue.user_id;
     this.loading = true;
     this.solicitudes = [];
@@ -108,7 +108,7 @@ export class SolicitudesListComponent implements OnInit {
   }
 
   verSolicitud(solicitudResponser: SolicitudResponse) {
-    this.dialogService.showSolicitudDialog(solicitudResponser).subscribe(res => {
+    this.dialogService.showSolicitudDialog(solicitudResponser.id).subscribe(res => {
     });
   }
 }

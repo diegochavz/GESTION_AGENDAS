@@ -245,9 +245,11 @@ export class ViewFormularioComponent implements OnInit {
     if (Object.keys(this.formulario).length !== 0) {
       if (this.listHorariosFormulario.length > 0) {
         for (let i of this.listHorariosFormulario) {
-          let dateAux = i.fecha.split("-");
-          let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
-          newFechasDisponibles.push(newD);
+          if(i.disponible == true){
+            let dateAux = i.fecha.split("-");
+            let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
+            newFechasDisponibles.push(newD);
+          }
         }
       }
     }
@@ -266,12 +268,14 @@ export class ViewFormularioComponent implements OnInit {
       const horarios = this.listHorariosFormulario;
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
-          let dateAux = horarios[i].fecha.split("-");
-          let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
-          if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
-            ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
-            (moment(newD).year() == moment(fechaSeleccionada).year())) {
-            this.listHorariosDisponibles.push(new Horario(horarios[i].fecha,horarios[i].hora_inicio, horarios[i].hora_final))
+          if(horarios[i].disponible == true) {
+            let dateAux = horarios[i].fecha.split("-");
+            let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
+            if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
+              ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
+              (moment(newD).year() == moment(fechaSeleccionada).year())) {
+              this.listHorariosDisponibles.push(new Horario(horarios[i].fecha, horarios[i].hora_inicio, horarios[i].hora_final))
+            }
           }
         }
       }
