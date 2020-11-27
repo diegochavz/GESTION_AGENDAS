@@ -1,4 +1,4 @@
-![Pizzería](http://www.madarme.co/portada-web.png)
+![alt text](https://gitlab.com/agendas_docentes_ufps/agendas_ft/-/raw/master/src/assets/img/readme/HEADER_FE.png)
 # Título del proyecto:
 
 #### Gestión de asesorías academicas
