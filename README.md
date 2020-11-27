@@ -39,7 +39,7 @@
 ***
   #### Contenido del PROYECTO  
 
-1. [components](): componentes compartidos entres vistas
+1. [components](https://gitlab.com/agendas_docentes_ufps/agendas_ft/-/tree/master/src/app/components): componentes compartidos entres vistas
 2. [core](): Servicios utilizados para la organización del codigo del sistema.
 3. [modulos](): Modulos del sistema de gestión de asesorías
    - [director]():Seccción con módulos relacionados al rol director
