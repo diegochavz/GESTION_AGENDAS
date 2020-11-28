@@ -17,13 +17,9 @@ export class ProgramasAddComponent implements OnInit {
 
   formAddPrograma: FormGroup;
 
-  listDirectores: Array<DirectorResponse>;
-
   constructor(private programaService: ProgramaServiceImpl,
-              private directorService: DirectorServiceImpl,
               public dialogRef: MatDialogRef<ProgramasAddComponent>,
               private _formBuilder: FormBuilder,) {
-    this.listDirectores = [];
     this.loading = true;
   }
 
@@ -31,19 +27,7 @@ export class ProgramasAddComponent implements OnInit {
     this.formAddPrograma = this._formBuilder.group({
       codigo_programa: ['', [Validators.required]],
       nombre_programa: ['', [Validators.required]],
-      director: [null, [Validators.required]],
     });
-    this.listarDirectores();
-  }
-
-  listarDirectores() {
-    this.listDirectores = [];
-    this.loading = false;
-    this.directorService.getAll().subscribe((res: Array<DirectorResponse>)=>{
-      this.listDirectores = res;
-    },()=>{},()=>{
-      this.loading = true;
-    })
   }
 
   salir(): void {
@@ -53,7 +37,8 @@ export class ProgramasAddComponent implements OnInit {
   registrarPrograma(): void {
     this.loading = false;
     let newPrograma = <Programa>Object.assign({}, this.formAddPrograma.value);
-    console.log(newPrograma)
+    newPrograma.director = null;
+    console.log(JSON.stringify(newPrograma))
     this.programaService.save(newPrograma).subscribe(
       () => {
         this.dialogRef.close(1);

@@ -23,7 +23,7 @@ export class ServiceImpl<T> implements IService<T> {
   }
 
   get(id: number): Observable<T> {
-    return this.httpClient.get(this.getFullPath() + id) as Observable<T>;
+    return this.httpClient.get(this.getFullPath() + id+"/") as Observable<T>;
   }
 
   save(data: any): Observable<T> {

@@ -27,7 +27,6 @@ export class ValidateService {
   validateTipoUser(tipo_user: number, tipo_user_module: number) {
     if ((tipo_user == tipo_user_module) ||
       ((tipo_user == 1) && (tipo_user_module == 2))) {
-      console.log("entre en return")
       return;
     }
     this.validateUser(tipo_user);
