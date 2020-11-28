@@ -33,23 +33,17 @@
             <table mat-table [dataSource]="dataSource" matSort>
 
               <ng-container matColumnDef="fecha_registro">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creación</th>
+                <th mat-header-cell *matHeaderCellDef> Fecha creación</th>
                 <td mat-cell *matCellDef="let row"> {{aplicarFormatoFecha(row)}} </td>
               </ng-container>
 
               <ng-container matColumnDef="nombre_formulario">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre formulario</th>
+                <th mat-header-cell *matHeaderCellDef> Nombre formulario</th>
                 <td mat-cell *matCellDef="let row"> {{row.nombre_formulario}}</td>
               </ng-container>
 
-              <!--
-              <ng-container matColumnDef="programas">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Programas</th>
-                <td mat-cell *matCellDef="let row"> {{consultarProgramas(row)}} </td>
-              </ng-container>
--->
               <ng-container matColumnDef="opciones">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Opciones</th>
+                <th mat-header-cell *matHeaderCellDef> Opciones</th>
                 <td mat-cell *matCellDef="let row">
                   <button mat-icon-button class="ico-input-color s-opc" [routerLink]="['../editar-formulario']" (click)="setFormulario(row)">
                     <i class="fas fa-edit"></i></button>
@@ -62,7 +56,7 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
              <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">Información no encontrada "{{input.value}}"</td>
+                <td class="mat-cell" colspan="4">No hay datos"{{input.value}}"</td>
               </tr>
             </table>
            <!-- <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>-->
