@@ -3,6 +3,9 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DirectorServiceImpl} from "../../../../core/http/implement/director.service.impl";
 import DirectorResponse from "../../../../core/models/director_response.model";
+import Programa from "../../../../core/models/programa.model";
+import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
+import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 
 @Component({
   selector: 'app-directores-edit',
@@ -17,12 +20,17 @@ export class DirectoresEditComponent implements OnInit {
 
   director: DirectorResponse;
 
+  listProgramas: Array<Programa>;
+
   constructor(private directorService: DirectorServiceImpl,
               public dialogRef: MatDialogRef<DirectoresEditComponent>,
               private _formBuilder: FormBuilder,
+              private docenteService: DocenteServiceImpl,
+              private programaService: ProgramaServiceImpl,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.loading = true;
     this.director = data.directorResponse;
+    this.listProgramas = [];
   }
 
   ngOnInit(): void {
@@ -35,13 +43,40 @@ export class DirectoresEditComponent implements OnInit {
         codigo_director: [this.director.codigo_director, [Validators.required]],
         nombre: [this.director.usuario.nombre, [Validators.required]],
         correo: [this.director.usuario.correo,[Validators.required]],
+        programa: [null, [Validators.required]],
       });
+      this.programaService.getAll().subscribe((res: Array<Programa>) => {
+        this.listProgramas = res;
+        this.consultarProgramaUso();
+      })
     } else {
       this.formEditDirector = this._formBuilder.group({
         codigo_director: '',
         nombre: '',
         correo: '',
       });
+    }
+  }
+
+
+  consultarProgramaUso() {
+    if (this.director != null && this.director != undefined) {
+      const aux = new Array<number>();
+      this.loading = false;
+      console.log(this.director.usuario.id)
+      this.docenteService.getProgramasByDocente(this.director.usuario.id).subscribe((res: Array<Programa>) => {
+        console.log("respuesta director programa ",res)
+        for (let i of res) {
+            aux.push(i.id);
+          }
+          this.formEditDirector.get('programa').setValue(aux)
+        },
+        () => {
+        },
+        () => {
+          this.loading = true;
+        }
+      )
     }
   }
 
@@ -54,8 +89,11 @@ export class DirectoresEditComponent implements OnInit {
     this.director.usuario.nombre = this.formEditDirector.value.nombre;
     this.director.usuario.correo = this.formEditDirector.value.correo;
     this.director.codigo_director = this.formEditDirector.value.codigo_director;
-    this.director.nombre = this.formEditDirector.value.nombre;;
-    this.director.correo = this.formEditDirector.value.correo;;
+    this.director.nombre = this.formEditDirector.value.nombre;
+    this.director.correo = this.formEditDirector.value.correo;
+    let aux = new Array<number>();
+    aux.push(this.formEditDirector.value.programa)
+    this.director.programas = aux;
     console.log(this.director)
     this.directorService.update(this.director.usuario.id,this.director).subscribe(
       () => {

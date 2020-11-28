@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Editar programa académico</h1>
-<div mat-dialog-content>
+<mat-dialog-content>
   <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
   <form [formGroup]="formEditPrograma">
     <p class="pd-subTitle-modal">Diligencia los datos solicitados a continuación</p>
@@ -22,23 +22,10 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <mat-form-field class="fluid" appearance="fill">
-            <mat-label>Docentes</mat-label>
-            <mat-select formControlName="director">
-              <mat-option *ngFor="let director of listDirectores" [value]="director.usuario.id">
-                {{director.usuario.nombre}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
     </div>
   </form>
-
-</div>
-<div mat-dialog-actions>
-  <a mat-raised-button color="warn" class="btn-modal" (click)="editarPrograma()" [disabled]="formEditPrograma.invalid">Guardar</a>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
   <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
-</div>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="editarPrograma()" [disabled]="formEditPrograma.invalid">Guardar</a>
+</mat-dialog-actions>

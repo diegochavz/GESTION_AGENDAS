@@ -37,9 +37,6 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required]],
       tipo_usuario: ['', Validators.required],
     });
-
-    // get return url from route parameters or default to '/'
-   // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onFormSubmit() {

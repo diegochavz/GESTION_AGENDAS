@@ -8,4 +8,5 @@ export default class DirectorResponse {
   correo:string;
   contrasena:string;
   nombre:string;
+  programas:number[];
 }

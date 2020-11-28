@@ -18,16 +18,12 @@ export class ProgramasEditComponent implements OnInit {
 
   formEditPrograma: FormGroup;
 
-  listDirectores: Array<DirectorResponse>;
-
   programa: Programa;
 
   constructor(private programaService: ProgramaServiceImpl,
-              private directorService: DirectorServiceImpl,
               public dialogRef: MatDialogRef<ProgramasEditComponent>,
               private _formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.listDirectores = [];
     this.loading = true;
     this.programa = data.programa;
   }
@@ -41,23 +37,10 @@ export class ProgramasEditComponent implements OnInit {
       this.formEditPrograma = this._formBuilder.group({
         codigo_programa: [this.programa.codigo_programa, [Validators.required]],
         nombre_programa: [this.programa.nombre_programa, [Validators.required]],
-        director: [null, [Validators.required]]
       });
-      this.loading = false;
-      this.directorService.get(this.programa.director).subscribe((res: DirectorResponse) => {
-        this.formEditPrograma.get('director').setValue(res.usuario.id);
-        this.listarDirectores();
-        this.loading = true;
-      })
     }
   }
-
-  listarDirectores() {
-    this.listDirectores = [];
-    this.directorService.getAll().subscribe((res: Array<DirectorResponse>)=>{
-      this.listDirectores = res;
-    })
-  }
+  
 
   salir(): void {
     this.dialogRef.close(0);
@@ -67,7 +50,7 @@ export class ProgramasEditComponent implements OnInit {
     this.loading = false;
     let editPrograma = <Programa>Object.assign({}, this.formEditPrograma.value);
     editPrograma.id = this.programa.id;
-    this.programaService.update(editPrograma.id,editPrograma).subscribe(
+    this.programaService.update(editPrograma.id, editPrograma).subscribe(
       () => {
         this.dialogRef.close(1);
       },

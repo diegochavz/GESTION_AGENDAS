@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Registrar director</h1>
-<div mat-dialog-content>
+<mat-dialog-content>
   <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
   <form [formGroup]="formAddDirector">
     <p class="pd-subTitle-modal">Diligencia los datos solicitados a continuación</p>
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
+        <div class="col-6">
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Correo</mat-label>
             <input matInput formControlName="correo" type="email" required>
@@ -31,14 +31,21 @@
               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
           </mat-form-field>
         </div>
-        <div class="col-6">
-        </div>
+          <div class="col-6">
+            <mat-form-field class="fluid" appearance="fill">
+              <mat-label>Programas académicos</mat-label>
+              <mat-select formControlName="programa">
+                <mat-option *ngFor="let programa of listProgramas"
+                            [value]="programa.id">{{programa.nombre_programa}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
       </div>
     </div>
   </form>
 
-</div>
-<div mat-dialog-actions>
-  <a mat-raised-button color="warn" class="btn-modal" (click)="registrarDirector()" [disabled]="formAddDirector.invalid">Guardar</a>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
   <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
-</div>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="registrarDirector()" [disabled]="formAddDirector.invalid">Guardar</a>
+</mat-dialog-actions>

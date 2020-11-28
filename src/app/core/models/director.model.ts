@@ -3,4 +3,5 @@ export default class Director {
   correo:string;
   contrasena: string;
   nombre:string;
+  programas: number[];
 }

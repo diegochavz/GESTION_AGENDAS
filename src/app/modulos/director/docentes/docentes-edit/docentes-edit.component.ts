@@ -82,6 +82,7 @@ export class DocentesEditComponent implements OnInit {
   consultarProgramasEnUso(listIDs: number[]) {
     if (listIDs.length != 0) {
       for (let i = 0; i < listIDs.length; i++) {
+        //moficiar un nuevo campos
         this.programaService.getFormulariosByPrograma(listIDs[i]).subscribe((res: FormularioResponse[]) => {
           if (res.length > 0) {
             console.log("uso -> "+ listIDs[i])

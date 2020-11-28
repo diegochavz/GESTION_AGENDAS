@@ -52,6 +52,7 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
     this.programaService.getAll().subscribe(
       (listProgramas: Array<Programa>) => {
         this.programas = listProgramas;
+        console.log(this.programas)
         this.dataSource = new MatTableDataSource(this.programas);
       },
       (error) => {

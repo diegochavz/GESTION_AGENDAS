@@ -38,7 +38,6 @@ export class ProgramasAddComponent implements OnInit {
     this.loading = false;
     let newPrograma = <Programa>Object.assign({}, this.formAddPrograma.value);
     newPrograma.director = null;
-    console.log(JSON.stringify(newPrograma))
     this.programaService.save(newPrograma).subscribe(
       () => {
         this.dialogRef.close(1);

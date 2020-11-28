@@ -35,7 +35,6 @@ export class ProgramasDeleteComponent implements OnInit {
         this.dialogRef.close(1);
       },
       (error) => {
-        console.log(JSON.stringify(error))
         this.dialogRef.close(2);
       },
       ()=>{
