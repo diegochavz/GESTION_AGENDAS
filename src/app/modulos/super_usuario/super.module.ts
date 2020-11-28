@@ -74,6 +74,7 @@ import { DirectoresDeleteComponent } from './directores/directores-delete/direct
     MatPaginatorModule,
     MatSortModule,
     MatListModule,
+    MatDialogModule,
 
   ],
   declarations: [

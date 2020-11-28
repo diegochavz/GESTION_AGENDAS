@@ -7,5 +7,5 @@ export default class UserResponse {
   correo:string;
   username:string;
   user_id:number;
-  programas: Programa[];
+  programas: any[];
 }

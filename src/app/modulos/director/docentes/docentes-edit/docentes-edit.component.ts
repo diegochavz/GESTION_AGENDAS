@@ -61,7 +61,8 @@ export class DocentesEditComponent implements OnInit {
       const aux = new Array<number>();
       this.loading = false;
       this.docenteService.getProgramasByDocente(this.docente.usuario.id).subscribe((res: Array<Programa>) => {
-          for (let i of res) {
+        console.log(res)
+        for (let i of res) {
             console.log("docente -> "+ i.id)
             aux.push(i.id);
           }
