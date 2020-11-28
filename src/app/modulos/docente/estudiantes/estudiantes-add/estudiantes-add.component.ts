@@ -25,7 +25,8 @@ export class EstudiantesAddComponent implements OnInit {
               private authenticationService : AuthenticationServiceImpl,
               private _formBuilder: FormBuilder) {
     this.idDocente = authenticationService.currentUserValue.user_id;
-    this.idPrograma = authenticationService.currentUserValue.programas[0].id;
+    console.log("programas docente ",this.authenticationService.currentUserValue.programas)
+    this.idPrograma = authenticationService.currentUserValue.programas[0].programa;
     this.loading = true;
   }
 

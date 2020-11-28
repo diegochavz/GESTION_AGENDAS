@@ -4,13 +4,10 @@ import {AuthenticationServiceImpl} from "../../../core/http/implement/authentica
 import {TIPO_USER} from "../../../core/constants/tipo_user.constants";
 import {CalendarOptions, EventInput} from '@fullcalendar/core';
 import {FullCalendarComponent} from '@fullcalendar/angular';
-import Horario from "../../../core/models/horario.model";
 import {DialogService} from "../../../core/services/dialogs.service";
 import * as moment from "moment";
 import SolicitudResponse from "../../../core/models/solicitud_response.model";
-import {MatTableDataSource} from "@angular/material/table";
 import {DocenteServiceImpl} from "../../../core/http/implement/docente.service.impl";
-import Solicitud from "../../../core/models/solicitud.model";
 
 @Component({
   selector: 'app-main-docente',
@@ -30,13 +27,6 @@ export class MainDocenteComponent implements OnInit {
               private dialogService: DialogService) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.loading = true;
-
-    let horarioNew = new Horario('2020-11-05', '11:20','11:35')
-
-    let horarioOld = new Array<Horario>();
-    horarioOld.push(new Horario('2020-11-05', '11:20','11:35'))
-
-    console.log("respuesta final ",this.validate.validarCruceFecha(horarioNew, horarioOld))
   }
 
   ngOnInit() {

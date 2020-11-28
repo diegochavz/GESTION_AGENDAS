@@ -35,7 +35,7 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
   }
 
   getFormularioByEnlace(enlace): Observable<FormularioResponse[]> {
-    const path = `?enlace=${enlace}/`;
+    const path = `?enlace=${enlace}`;
     return this.executeGet(path) as Observable<FormularioResponse[]>;
   }
 

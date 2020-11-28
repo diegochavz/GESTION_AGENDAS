@@ -17,7 +17,7 @@ export class ProgramaServiceImpl extends ServiceImpl<Programa> implements IProgr
   }
 
   getFormulariosByPrograma(idPrograma): Observable<FormularioResponse[]>{
-    const path = `${idPrograma}/formularios`;
+    const path = `${idPrograma}/formularios/`;
     return this.executeGet(path) as Observable<FormularioResponse[]>;
   }
 
