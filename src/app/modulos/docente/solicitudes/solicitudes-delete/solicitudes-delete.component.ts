@@ -30,7 +30,7 @@ export class SolicitudesDeleteComponent implements OnInit {
 
   borrar():void{
     this.loading = false;
-    this.solicitudService.delete(this.idSolicitud).subscribe(
+    this.solicitudService.setEstadoAsesoria(this.idSolicitud, 0).subscribe(
       () => {
         this.dialogRef.close(1);
       },
@@ -41,5 +41,4 @@ export class SolicitudesDeleteComponent implements OnInit {
         this.loading = true;
       });
   }
-
 }

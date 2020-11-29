@@ -24,4 +24,10 @@ export class SolicitudServiceImpl extends ServiceImpl<any> implements ISolicitud
     const path =this.apiUrl+'registrar-solicitud/';
     return this.httpClient.post(path,solicitud) as Observable<any>;
   }
+
+  setEstadoAsesoria(id_solicitud, estado): Observable<any> {
+    const path = `auditar-solicitud/`;
+    console.log(id_solicitud, estado)
+    return this.httpClient.post(this.apiUrl +path, {"id_solicitud":id_solicitud, "estado":estado}) as Observable<any>;
+  }
 }
