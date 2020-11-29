@@ -5,10 +5,10 @@ import {DialogService} from "../../../../core/services/dialogs.service";
 import {ToasterService} from "../../../../core/services/toaster.service";
 import {EstudianteServiceImpl} from "../../../../core/http/implement/estudiante.service.impl";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
-import {ClipboardService} from "ngx-clipboard";
 import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
+import EstudianteRequest from "../../../../core/models/estudiante_request.model";
 
 @Component({
   selector: 'app-estudiantes-list',
@@ -21,12 +21,12 @@ export class EstudiantesListComponent implements OnInit {
   displayedColumns: string[] = ['codigo_estudiante','nombre_estudiante','correo_estudiante', 'opciones'];
 
   //Datos a exponer en la tabla
-  dataSource: MatTableDataSource<Estudiante>;
+  dataSource: MatTableDataSource<EstudianteRequest>;
 
   //Visualización barra de carga
   loading: boolean;
 
-  estudiantes: Array<Estudiante>;
+  estudiantes: Array<EstudianteRequest>;
 
   idDocente :number;
 
@@ -54,9 +54,9 @@ export class EstudiantesListComponent implements OnInit {
   getEstudiantes() {
     this.loading = false;
     this.estudiantes = [];
-    //Este método debe ser estudiantes por progama
     this.docenteService.getEstudiantesByDocente(this.idDocente).subscribe(
-      (listEstudiantes: Array<Estudiante>) => {
+      (listEstudiantes: Array<EstudianteRequest>) => {
+        console.log(listEstudiantes)
         this.estudiantes = listEstudiantes;
         this.dataSource = new MatTableDataSource(this.estudiantes);
       },
@@ -110,7 +110,7 @@ export class EstudiantesListComponent implements OnInit {
     });
   }
 
-  editarEstudiante(estudiante: Estudiante) {
+  editarEstudiante(estudiante: EstudianteRequest) {
     this.dialogService.editEstudianteDialog(estudiante).subscribe(res => {
       if (res == 1) {
         this.getEstudiantes();
