@@ -20,6 +20,7 @@ import DocenteResponse from "../models/docente_response.model";
 import SolicitudResponse from "../models/solicitud_response.model";
 import {SolicitudesShowComponent} from "../../modulos/docente/solicitudes/solicitudes-show/solicitudes-show.component";
 import {SolicitudesDeleteComponent} from "../../modulos/docente/solicitudes/solicitudes-delete/solicitudes-delete.component";
+import EstudianteRequest from "../models/estudiante_request.model";
 
 @Injectable()
 export class DialogService {
@@ -90,7 +91,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  editEstudianteDialog(estudiante: Estudiante) {
+  editEstudianteDialog(estudiante: EstudianteRequest) {
     let dialogRef: MatDialogRef<EstudiantesEditComponent>;
     dialogRef = this.matDialog.open(EstudiantesEditComponent, {
       data: { estudiante }
