@@ -198,6 +198,10 @@ table {
   font-size: 20px;
 }
 
+.border-bottom-md{
+  border-bottom: 4px solid #bc0017!important;
+}
+
 .pd-subTitle-modal{
   margin-top: 20px!important;
 }
@@ -367,3 +371,8 @@ table {
   background: linear-gradient(90deg, rgba(164,9,9,1) 0%, rgba(208,18,18,1) 35%);
 }
 **/
+
+.pd-mar-div{
+  margin-top: 10px!important;
+  margin-bottom: 10px!important;
+}
