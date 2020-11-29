@@ -70,10 +70,11 @@ export class SolicitudesListComponent implements OnInit {
       });
   }
 
-  estudiantesAsesoria(estudiantes_data: SolicitudEstudiante[]): string {
+  estudiantesAsesoria(estudiantes_data: SolicitudEstudiante[]) {
     let estudiantesAux = '';
-    for (let est of estudiantes_data) {
-      estudiantesAux += "\n" + est.nombre_estudiante;
+
+    if(estudiantes_data.length>=0){
+      estudiantesAux = estudiantes_data[0].nombre_estudiante + "...";
     }
     return estudiantesAux;
   }
