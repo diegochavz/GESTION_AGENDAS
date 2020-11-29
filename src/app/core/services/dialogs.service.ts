@@ -21,6 +21,9 @@ import SolicitudResponse from "../models/solicitud_response.model";
 import {SolicitudesShowComponent} from "../../modulos/docente/solicitudes/solicitudes-show/solicitudes-show.component";
 import {SolicitudesDeleteComponent} from "../../modulos/docente/solicitudes/solicitudes-delete/solicitudes-delete.component";
 import EstudianteRequest from "../models/estudiante_request.model";
+import {AutorizacionesApproveComponent} from "../../modulos/docente/autorizaciones/autorizaciones-approve/autorizaciones-approve.component";
+import {AutorizacionesDeleteComponent} from "../../modulos/docente/autorizaciones/autorizaciones-delete/autorizaciones-delete.component";
+import {AutorizacionesShowComponent} from "../../modulos/docente/autorizaciones/autorizaciones-show/autorizaciones-show.component";
 
 @Injectable()
 export class DialogService {
@@ -34,7 +37,7 @@ export class DialogService {
   deleteFormularioDialog(idFormulario: number) {
     let dialogRef: MatDialogRef<FormulariosDeleteComponent>;
     dialogRef = this.matDialog.open(FormulariosDeleteComponent, {
-      data: { idFormulario }
+      data: {idFormulario}
     });
     return dialogRef.afterClosed();
   }
@@ -42,7 +45,7 @@ export class DialogService {
   deleteProgramaDialog(idPrograma: number) {
     let dialogRef: MatDialogRef<ProgramasDeleteComponent>;
     dialogRef = this.matDialog.open(ProgramasDeleteComponent, {
-      data: { idPrograma }
+      data: {idPrograma}
     });
     return dialogRef.afterClosed();
   }
@@ -50,7 +53,7 @@ export class DialogService {
   editProgramaDialog(programa: Programa) {
     let dialogRef: MatDialogRef<ProgramasEditComponent>;
     dialogRef = this.matDialog.open(ProgramasEditComponent, {
-      data: { programa }
+      data: {programa}
     });
     return dialogRef.afterClosed();
   }
@@ -64,7 +67,7 @@ export class DialogService {
   deleteDocenteDialog(idDocente: number) {
     let dialogRef: MatDialogRef<DocentesDeleteComponent>;
     dialogRef = this.matDialog.open(DocentesDeleteComponent, {
-      data: { idDocente }
+      data: {idDocente}
     });
     return dialogRef.afterClosed();
   }
@@ -72,7 +75,7 @@ export class DialogService {
   editDocenteDialog(docenteResponse: DocenteResponse) {
     let dialogRef: MatDialogRef<DocentesEditComponent>;
     dialogRef = this.matDialog.open(DocentesEditComponent, {
-      data: { docenteResponse }
+      data: {docenteResponse}
     });
     return dialogRef.afterClosed();
   }
@@ -86,7 +89,7 @@ export class DialogService {
   deleteEstudianteDialog(idEstudiante: number) {
     let dialogRef: MatDialogRef<EstudiantesDeleteComponent>;
     dialogRef = this.matDialog.open(EstudiantesDeleteComponent, {
-      data: { idEstudiante }
+      data: {idEstudiante}
     });
     return dialogRef.afterClosed();
   }
@@ -94,7 +97,7 @@ export class DialogService {
   editEstudianteDialog(estudiante: EstudianteRequest) {
     let dialogRef: MatDialogRef<EstudiantesEditComponent>;
     dialogRef = this.matDialog.open(EstudiantesEditComponent, {
-      data: { estudiante }
+      data: {estudiante}
     });
     return dialogRef.afterClosed();
   }
@@ -108,7 +111,7 @@ export class DialogService {
   deleteDirectorDialog(idDirector: number) {
     let dialogRef: MatDialogRef<DirectoresDeleteComponent>;
     dialogRef = this.matDialog.open(DirectoresDeleteComponent, {
-      data: { idDirector }
+      data: {idDirector}
     });
     return dialogRef.afterClosed();
   }
@@ -116,7 +119,7 @@ export class DialogService {
   editDirectorDialog(directorResponse: DirectorResponse) {
     let dialogRef: MatDialogRef<DirectoresEditComponent>;
     dialogRef = this.matDialog.open(DirectoresEditComponent, {
-      data: { directorResponse }
+      data: {directorResponse}
     });
     return dialogRef.afterClosed();
   }
@@ -130,7 +133,7 @@ export class DialogService {
   showSolicitudDialog(idSolicitud: number) {
     let dialogRef: MatDialogRef<SolicitudesShowComponent>;
     dialogRef = this.matDialog.open(SolicitudesShowComponent, {
-      data: { idSolicitud }
+      data: {idSolicitud}
     });
     return dialogRef.afterClosed();
   }
@@ -138,7 +141,33 @@ export class DialogService {
   deleteSolicitudDialog(idSolicitud: number) {
     let dialogRef: MatDialogRef<SolicitudesDeleteComponent>;
     dialogRef = this.matDialog.open(SolicitudesDeleteComponent, {
-      data: { idSolicitud }
+      data: {idSolicitud}
+    });
+    return dialogRef.afterClosed();
+  }
+
+
+  approveAutorizacionDialog(idAutorizacion: number) {
+    let dialogRef: MatDialogRef<AutorizacionesApproveComponent>;
+    dialogRef = this.matDialog.open(AutorizacionesApproveComponent, {
+      data: {idAutorizacion}
+    });
+    return dialogRef.afterClosed();
+  }
+
+
+  showAutorizacionDialog(idAutorizacion: any) {
+    let dialogRef: MatDialogRef<AutorizacionesShowComponent>;
+    dialogRef = this.matDialog.open(AutorizacionesShowComponent, {
+      data: {idAutorizacion}
+    });
+    return dialogRef.afterClosed();
+  }
+
+  deleteAutorizacionDialog(idAutorizacion: number) {
+    let dialogRef: MatDialogRef<AutorizacionesDeleteComponent>;
+    dialogRef = this.matDialog.open(AutorizacionesDeleteComponent, {
+      data: {idAutorizacion}
     });
     return dialogRef.afterClosed();
   }
