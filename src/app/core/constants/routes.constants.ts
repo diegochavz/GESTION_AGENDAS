@@ -6,7 +6,8 @@ export const ROUTES_CONST_DOCENTE: RouteModel[] = [
   {path: '/docente/listar-formularios', title: 'Gestionar formularios', icon: 'ni-tv-2 text-primary'},
   {path: '/docente/listar-estudiantes', title: 'Gestionar estudiantes', icon: 'ni-tv-2 text-primary'},
   {path: '/docente/listar-asesorias', title: 'Gestionar asesorías', icon: 'ni-tv-2 text-primary'},
-
+  {path: '/docente/listar-autorizaciones', title: 'Gestionar autorizaciones', icon: 'ni-tv-2 text-primary'},
+  {path: '/docente/reportes', title: 'Generar reportes', icon: 'ni-tv-2 text-primary'},
 ];
 
 export const ROUTES_CONST_DIRECTOR: RouteModel[] = [

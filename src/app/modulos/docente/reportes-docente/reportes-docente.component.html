@@ -1,0 +1,71 @@
+<div class="header pb-8 pt-5 pt-lg-4 d-flex align-items-center"
+     style="min-height: 550px; background-image: url(../../../../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  <span class="mask bg-gradient-danger opacity-8"></span>
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row ">
+      <div class="col-lg-12 col-md-10">
+        <h1 class="display-3 text-white">GENERACIÓN DE REPORTES</h1>
+        <p class="text-white mt-0 mb-8 subtitle-crear-formulario">A continuación podrás generar reportes de asesoría de
+          acuerdo a los parametros proporcionados</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--330 ">
+  <div id="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <mat-form-field>
+                <mat-label>Buscar</mat-label>
+                <input matInput (keyup)="applyFilter($event)" #input>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+              <button mat-raised-button color="warn" class="btn-create">Generar reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <form [formGroup]="formReporte">
+                <mat-form-field class="fluid" appearance="fill">
+                  <mat-select formControlName="formulario">
+                    <mat-option *ngFor="let formulario of listFormularios"
+                                [value]="[formulario.id]">{{formulario.nombre_formulario}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </form>
+            </div>
+            <div class="col-lg-8">
+              <!--<mat-card-content>
+                <section class="example-section">
+                  <mat-checkbox *ngFor="let col of listData"
+                                class="example-margin">{{col.nombre_pregunta}}</mat-checkbox>
+                </section>
+              </mat-card-content>-->
+            </div>
+          </div>
+          <div class="mat-elevation-z2">
+            <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+            <table mat-table [dataSource]="dataSource" *ngFor="let pre of displayedColumns">
+
+               <p>Holasss</p>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">Información no encontrada "{{input.value}}"</td>
+              </tr>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
