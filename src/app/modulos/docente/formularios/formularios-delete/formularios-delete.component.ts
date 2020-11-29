@@ -33,8 +33,8 @@ export class FormulariosDeleteComponent implements OnInit {
 
   borrar():void{
     this.loading = false;
-    console.log("id FORMULRIO -> " + this.idFormulario)
-    this.formularioService.delete(this.idFormulario).subscribe(
+    console.log(this.idFormulario)
+    this.formularioService.setEstadoFormulario(this.idFormulario, 0).subscribe(
       (res) => {
         console.log("uno",res)
         this.dialogRef.close(true);

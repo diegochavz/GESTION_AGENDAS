@@ -10,6 +10,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import Pregunta from "../../../core/models/pregunta.model";
 import {ToasterService} from "../../../core/services/toaster.service";
 import SolicitudResponse from "../../../core/models/solicitud_response.model";
+import {DateAdapter} from "@angular/material/core";
 
 @Component({
   selector: 'app-reportes-docente',
@@ -30,8 +31,10 @@ export class ReportesDocenteComponent implements OnInit {
               private formularioService: FormularioServiceImpl,
               private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl,
-              private _formBuilder: FormBuilder,) {
+              private _formBuilder: FormBuilder,
+              private _adapter: DateAdapter<any>) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
+    this._adapter.setLocale('es');
     this.loading = true;
     this.listFormularios = [];
     this.data = [];
@@ -60,6 +63,8 @@ export class ReportesDocenteComponent implements OnInit {
   crearFormReporte() {
     this.formReporte = this._formBuilder.group({
       formulario: [null],
+      fecha_inicio:[''],
+      fecha_fin:[''],
     })
     this.formReporte.get('formulario').valueChanges.subscribe(res => {
       this.consultarPreguntasForColumns(res);
