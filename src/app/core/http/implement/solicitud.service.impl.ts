@@ -34,7 +34,7 @@ export class SolicitudServiceImpl extends ServiceImpl<any> implements ISolicitud
 
   generarReporte(reporte: Reporte): Observable<any> {
     const path = `generar-solicitudes/`;
-    return this.httpClient.post(this.apiUrl +path, reporte) as Observable<any>;
+    return this.httpClient.post(this.apiUrl +path, reporte, {responseType: 'blob'}) as Observable<any>;
   }
 
 }

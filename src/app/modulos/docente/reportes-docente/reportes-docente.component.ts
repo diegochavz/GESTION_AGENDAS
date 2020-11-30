@@ -68,8 +68,8 @@ export class ReportesDocenteComponent implements OnInit {
 
   crearReporteFormularios() {
     this.formReporteFormularios = this._formBuilder.group({
-      fecha_inicio: ['',[Validators.required]],
-      fecha_fin:['',[Validators.required]],
+      fecha_inicio: ['', [Validators.required]],
+      fecha_fin: ['', [Validators.required]],
       asistida: [false],
       no_asistida: [false],
       nombreFormulario: [false],
@@ -94,8 +94,8 @@ export class ReportesDocenteComponent implements OnInit {
   crearFormReporte() {
     this.formReporteAsesorias = this._formBuilder.group({
       formulario: [null],
-      fecha_inicio: ['',[Validators.required]],
-      fecha_fin:['',[Validators.required]],
+      fecha_inicio: ['', [Validators.required]],
+      fecha_fin: ['', [Validators.required]],
     })
     this.formReporteAsesorias.get('formulario').valueChanges.subscribe(res => {
       this.consultarPreguntasForColumns(res);
@@ -143,17 +143,18 @@ export class ReportesDocenteComponent implements OnInit {
     let auxReport = new Reporte();
     console.log(this.formReporteFormularios.value)
 
-    if(this.formReporteFormularios.value.fecha_inicio!=''){
+    if (this.formReporteFormularios.value.fecha_inicio != '') {
       auxReport.fecha_inicio = moment(this.formReporteFormularios.value.fecha_inicio).format("YYYY-MM-DD")
     }
 
-    if(this.formReporteFormularios.value.fecha_fin!=''){
+    if (this.formReporteFormularios.value.fecha_fin != '') {
       auxReport.fecha_final = moment(this.formReporteFormularios.value.fecha_fin).format("YYYY-MM-DD")
     }
 
     auxReport.asistida = this.formReporteFormularios.value.asistida;
     auxReport.no_asistida = this.formReporteFormularios.value.no_asistida;
-    let camposAux = new Array<string>();
+
+    let camposAux = new Array<any>();
 
     if (this.formReporteFormularios.value.nombreFormulario == true) {
       camposAux.push("formulario.nombre_formulario")
@@ -216,13 +217,37 @@ export class ReportesDocenteComponent implements OnInit {
       camposAux.push("fecha_registro");
     }
 
+    if (this.formReporteFormularios.value.get_respuestas == true) {
+      camposAux.push("get_respuestas");
+    }
+
     auxReport.campos = camposAux;
 
     this.loading = false;
+    console.log(JSON.stringify(auxReport));
     this.solicitudService.generarReporte(auxReport).subscribe(res => {
-    console.log(" reporte ", res)
+      this.downloadFile(res, "reporte", "xlsx");
+
+      console.log(" TODO SALIO BIEN ", res)
+    }, (error) => {
+      console.log("ENTRE EN ERROR")
+      console.log(JSON.stringify(error))
+    }, () => {
+      this.loading = true;
     })
 
+  }
+
+  downloadFile(data: any, nombre: string, format: string) {
+    let url = window.URL.createObjectURL(new Blob([data]));
+    let a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display:none');
+    a.href = url;
+    a.download = `${nombre}.${format}`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
   }
 
 }
