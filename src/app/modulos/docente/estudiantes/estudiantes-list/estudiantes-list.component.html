@@ -1,11 +1,12 @@
 <div class="header pb-8 pt-5 pt-lg-4 d-flex align-items-center"
-     style="min-height: 550px; background-image: url(../../../../../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  style="min-height: 550px; background-image: url(../../../../../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
   <span class="mask bg-gradient-danger opacity-8"></span>
   <div class="container-fluid d-flex align-items-center">
     <div class="row ">
       <div class="col-lg-12 col-md-10">
         <h1 class="display-3 text-white">ADMINISTRACIÓN/ ESTUDIANTES</h1>
-        <p class="text-white mt-0 mb-8 subtitle-crear-formulario">A continuación podrás gestionar los estudiantes del programa
+        <p class="text-white mt-0 mb-8 subtitle-crear-formulario">A continuación podrás gestionar los estudiantes del
+          programa
           académicos</p>
       </div>
     </div>
@@ -28,6 +29,11 @@
               <button mat-raised-button color="warn" (click)="agregarEstudiante()" class="btn-create">Nuevo
                 Estudiante
               </button>
+              <button style="margin-right: 5px;" (click)="loadMassiveEstudent()" mat-raised-button color="warn" data-toggle="modal" class="btn-create"
+                data-target="#exampleModal">
+                Carga Masiva
+              </button>
+
             </div>
           </div>
           <div class="mat-elevation-z2">
@@ -68,6 +74,28 @@
             </table>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="displayMoreProfile" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" data-target="#modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom: 0;">
+        <h2 class="modal-title" id="exampleModalLabel">Carga Masiva De Alumnos</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="margin: auto">
+        <input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" class="btn btn-success">
+
+      </div>
+      <div class="modal-footer">
+        <button mat-button class="btn-modal" data-dismiss="modal">Cancelar</button>
+        <button type="button" mat-raised-button color="warn" class="btn-modal" data-dismiss="modal" (click)="sendFile()" [disabled]="loadMassive" >Cargar</button>
       </div>
     </div>
   </div>

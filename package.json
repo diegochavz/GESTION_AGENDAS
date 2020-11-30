@@ -36,6 +36,7 @@
     "tslib": "^2.0.0",
     "uuid": "^8.3.1",
     "uuidv4": "^6.2.5",
+    "xlsx": "^0.16.9",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
