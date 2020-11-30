@@ -24,6 +24,7 @@ import EstudianteRequest from "../models/estudiante_request.model";
 import {AutorizacionesApproveComponent} from "../../modulos/docente/autorizaciones/autorizaciones-approve/autorizaciones-approve.component";
 import {AutorizacionesDeleteComponent} from "../../modulos/docente/autorizaciones/autorizaciones-delete/autorizaciones-delete.component";
 import {AutorizacionesShowComponent} from "../../modulos/docente/autorizaciones/autorizaciones-show/autorizaciones-show.component";
+import {LoadDataEstudianteComponent} from "../../modulos/docente/estudiantes/load-data-estudiante/load-data-estudiante.component";
 
 @Injectable()
 export class DialogService {
@@ -105,6 +106,12 @@ export class DialogService {
   addEstudianteDialog() {
     let dialogRef: MatDialogRef<EstudiantesAddComponent>;
     dialogRef = this.matDialog.open(EstudiantesAddComponent);
+    return dialogRef.afterClosed();
+  }
+
+  loadDataEstudianteDialog() {
+    let dialogRef: MatDialogRef<LoadDataEstudianteComponent>;
+    dialogRef = this.matDialog.open(LoadDataEstudianteComponent);
     return dialogRef.afterClosed();
   }
 

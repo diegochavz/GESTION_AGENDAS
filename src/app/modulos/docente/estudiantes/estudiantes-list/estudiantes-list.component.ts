@@ -131,15 +131,16 @@ export class EstudiantesListComponent implements OnInit {
     this.dialogService.loadDataEstudianteDialog().subscribe(res => {
       if (res == 1) {
         this.getEstudiantes();
-        this.toasterService.openSnackBar(
-          'ESTUDIANTES CARGADOS CON EXITO.',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          'Información importada con exito',
+          'success'
+        )
+
       } else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL EDITAR ESTUDIANTE',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          'Ha ocurrido un error inesperado',
+          'error'
+        )
       }
     });
   }
