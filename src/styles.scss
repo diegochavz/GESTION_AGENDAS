@@ -101,7 +101,7 @@ table {
 
 .btn-create{
   float: right!important;
-  margin: 30px;
+  margin: 5px!important;
 }
 .btn-create-report{
   float: right!important;
@@ -385,3 +385,15 @@ table {
   margin-bottom: 10px!important;
   margin-top: 10px!important;
 }
+
+
+.error.mat-snack-bar-container{
+  background: rgb(138,1,18);
+  background: linear-gradient(90deg, rgba(138,1,18,0.8) 0%, rgba(188,0,23,0.8) 100%);
+}
+
+.success.mat-snack-bar-container{
+  background: rgb(24,138,1);
+  background: linear-gradient(90deg, rgba(24,138,1,0.8) 0%, rgba(0,188,75,0.8) 100%);
+}
+

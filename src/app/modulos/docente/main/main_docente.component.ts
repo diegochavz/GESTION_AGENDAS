@@ -12,6 +12,7 @@ import EstudianteRequest from "../../../core/models/estudiante_request.model";
 import {MatTableDataSource} from "@angular/material/table";
 import {SolicitudServiceImpl} from "../../../core/http/implement/solicitud.service.impl";
 import Formulario from "../../../core/models/formulario.model";
+import {ToasterService} from "../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-main-docente',
@@ -33,7 +34,8 @@ export class MainDocenteComponent implements OnInit {
   constructor(private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl,
               private docenteService: DocenteServiceImpl,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private toasterService: ToasterService,) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.loading = true;
     this.cuentaEstudiantes = 0;

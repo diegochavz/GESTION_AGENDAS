@@ -56,7 +56,8 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
     console.log("Me repito n veces")
     this.loading = false;
     this.docentes = [];
-    this.programaService.getDocentesByPrograma(this.authenticationService.currentUserValue.programas[0]).subscribe(
+    console.log(this.authenticationService.currentUserValue.programas[0].id)
+    this.programaService.getDocentesByPrograma(this.authenticationService.currentUserValue.programas[0].id).subscribe(
       (listDocentes: DocenteResponse[])=>{
         this.docentes = listDocentes;
         this.dataSource = new MatTableDataSource(this.docentes);

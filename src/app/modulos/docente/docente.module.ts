@@ -63,6 +63,7 @@ import { AutorizacionesShowComponent } from './autorizaciones/autorizaciones-sho
 import { AutorizacionesDeleteComponent } from './autorizaciones/autorizaciones-delete/autorizaciones-delete.component';
 import { AutorizacionesApproveComponent } from './autorizaciones/autorizaciones-approve/autorizaciones-approve.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import { LoadDataEstudianteComponent } from './estudiantes/load-data-estudiante/load-data-estudiante.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -126,6 +127,7 @@ FullCalendarModule.registerPlugins([
     AutorizacionesShowComponent,
     AutorizacionesDeleteComponent,
     AutorizacionesApproveComponent,
+    LoadDataEstudianteComponent,
   ],
   entryComponents:[
     FormulariosDeleteComponent,
@@ -137,6 +139,7 @@ FullCalendarModule.registerPlugins([
     AutorizacionesShowComponent,
     AutorizacionesDeleteComponent,
     AutorizacionesApproveComponent,
+    LoadDataEstudianteComponent,
   ]
   ,
   providers:[

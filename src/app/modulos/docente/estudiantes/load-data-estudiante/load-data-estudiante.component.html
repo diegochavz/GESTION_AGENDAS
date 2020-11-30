@@ -8,5 +8,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
-  <a mat-raised-button color="warn" class="btn-modal"  (click)="loadData()" >Importar</a>
+  <a mat-raised-button color="warn" class="btn-modal"  (click)="loadData()" [disabled]="!loadMassive" >Importar</a>
 </mat-dialog-actions>
