@@ -41,7 +41,7 @@ export class ProgramasAddComponent implements OnInit {
     this.programaService.save(newPrograma).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(
-          'Programa creado satisfactoriament',
+          'Programa creado satisfactoriamente',
           'success'
         )
       },
