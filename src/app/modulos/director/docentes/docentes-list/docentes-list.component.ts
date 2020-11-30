@@ -56,7 +56,7 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
     console.log("Me repito n veces")
     this.loading = false;
     this.docentes = [];
-    console.log(this.authenticationService.currentUserValue.programas[0].id)
+    console.log(this.authenticationService.currentUserValue)
     this.programaService.getDocentesByPrograma(this.authenticationService.currentUserValue.programas[0].id).subscribe(
       (listDocentes: DocenteResponse[])=>{
         this.docentes = listDocentes;
