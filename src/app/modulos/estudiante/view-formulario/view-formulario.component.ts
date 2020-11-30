@@ -76,7 +76,8 @@ export class ViewFormularioComponent implements OnInit {
               private _formBuilder: FormBuilder,
               private solicitudService: SolicitudServiceImpl,
               private toasterService: ToasterService,
-              private programaService: ProgramaServiceImpl) {
+              private programaService: ProgramaServiceImpl,
+              private router: Router) {
     this._adapter.setLocale('es');
     this.formulario = new FormularioResponse();
     this.listHorariosDisponibles = [];
@@ -396,21 +397,20 @@ export class ViewFormularioComponent implements OnInit {
 
      this.solicitudService.saveSolicitud(formData).subscribe(
      () => {
-        console.log("Pase bien")
-        this.toasterService.openSnackBar(
-          'ASESORÍA AGENDADA CORRECTAMENTE',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          'Asesoría agendada con exito',
+          'success'
+        )
       },
      (error) => {
-        console.log("Ingrese error", JSON.stringify(error))
-        this.toasterService.openSnackBar(
-          'ERROR INESPERADO',
-          ToasterService.CERRAR_ACTION
-        );
+       this.toasterService.openSnackBarCumtom(
+         'Error al agendar la asesoría',
+         'error'
+       )
       },
      () => {
         this.loading = true;
+       this.router.navigate(['../']);
       });
   }
 
