@@ -193,7 +193,7 @@ export class FormulariosEditComponent implements OnInit {
       let dateFin = this.editFormulario.disponibilidad_fin_formulario.split("-")
       this.formEditFormulario.get('disponibilidad_fin_formulario').setValue(new Date(+dateFin[0], +dateFin[1] - 1, +dateFin[2]))
 
-      this.urlFormulario = "http://localhost:4200/#/formulario/" + this.editFormulario.enlace_uuid_formulario;
+      this.urlFormulario = "http://agendadocb.cpsw.ingsistemasufps.co/#/formulario/" + this.editFormulario.enlace_uuid_formulario;
     }
   }
 

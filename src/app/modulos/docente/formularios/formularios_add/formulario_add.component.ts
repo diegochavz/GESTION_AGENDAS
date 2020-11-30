@@ -300,7 +300,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
       }
       this.newFormulario.horarios = horarioListAux;
     }
-    this.urlFormulario = "http://localhost:4200/#/formulario/" + this.newFormulario.enlace_uuid_formulario;
+    this.urlFormulario = "http://agendadocb.cpsw.ingsistemasufps.co/#/formulario/" + this.newFormulario.enlace_uuid_formulario;
 
   }
 
