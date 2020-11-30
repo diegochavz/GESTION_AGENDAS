@@ -5,6 +5,7 @@ import {DirectorServiceImpl} from "../../../../core/http/implement/director.serv
 import Director from "../../../../core/models/director.model";
 import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-directores-add',
@@ -22,7 +23,8 @@ export class DirectoresAddComponent implements OnInit {
   constructor(private directorService: DirectorServiceImpl,
               public dialogRef: MatDialogRef<DirectoresAddComponent>,
               private _formBuilder: FormBuilder,
-              private programaService: ProgramaServiceImpl) {
+              private programaService: ProgramaServiceImpl,
+              private toasterService: ToasterService,) {
     this.loading = true;
     this.listProgramas = [];
   }

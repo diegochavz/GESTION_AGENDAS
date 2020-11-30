@@ -1,4 +1,5 @@
 import Usuario from "./usuario.model";
+import Programa from "./programa.model";
 
 export default class DirectorResponse {
   codigo_director: string;
@@ -9,4 +10,6 @@ export default class DirectorResponse {
   contrasena:string;
   nombre:string;
   programas:number[];
+  programas_data: Programa[];
+  programa: number;
 }
