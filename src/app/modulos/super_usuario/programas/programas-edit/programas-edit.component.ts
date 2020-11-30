@@ -6,6 +6,7 @@ import {DocenteServiceImpl} from "../../../../core/http/implement/docente.servic
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import DirectorResponse from "../../../../core/models/director_response.model";
 import {DirectorServiceImpl} from "../../../../core/http/implement/director.service.impl";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-programas-edit',
@@ -23,7 +24,8 @@ export class ProgramasEditComponent implements OnInit {
   constructor(private programaService: ProgramaServiceImpl,
               public dialogRef: MatDialogRef<ProgramasEditComponent>,
               private _formBuilder: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private toasterService: ToasterService) {
     this.loading = true;
     this.programa = data.programa;
   }
@@ -40,10 +42,10 @@ export class ProgramasEditComponent implements OnInit {
       });
     }
   }
-  
+
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   editarPrograma(): void {
@@ -52,12 +54,21 @@ export class ProgramasEditComponent implements OnInit {
     editPrograma.id = this.programa.id;
     this.programaService.update(editPrograma.id, editPrograma).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Programa actualizado satisfactoriamente',
+          'success'
+        )
+
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error'
+        )
+        this.dialogRef.close();
       },
       () => {
+        this.dialogRef.close();
         this.loading = true;
       });
   }

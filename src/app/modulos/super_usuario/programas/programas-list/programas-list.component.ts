@@ -86,18 +86,7 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   editarPrograma(programa: Programa) {
     this.dialogService.editProgramaDialog(programa).subscribe(res => {
-      if (res == 1) {
-        this.getProgramas();
-        this.toasterService.openSnackBar(
-          'Programa editado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if (res == 2) {
-        this.toasterService.openSnackBar(
-          'ERROR AL BORRAR PROGRAMA',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getProgramas();
     });
   }
 

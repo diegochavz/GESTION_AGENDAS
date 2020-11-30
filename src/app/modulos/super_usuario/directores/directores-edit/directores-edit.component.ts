@@ -78,7 +78,6 @@ export class DirectoresEditComponent implements OnInit {
     this.director.nombre = this.formEditDirector.value.nombre;
     this.director.correo = this.formEditDirector.value.correo;
     this.director.programa = this.formEditDirector.value.programa
-    console.log(this.director)
     this.directorService.update(this.director.usuario.id, this.director).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(

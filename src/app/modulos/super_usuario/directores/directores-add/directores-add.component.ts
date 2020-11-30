@@ -24,7 +24,7 @@ export class DirectoresAddComponent implements OnInit {
               public dialogRef: MatDialogRef<DirectoresAddComponent>,
               private _formBuilder: FormBuilder,
               private programaService: ProgramaServiceImpl,
-              private toasterService: ToasterService,) {
+              private toasterService: ToasterService) {
     this.loading = true;
     this.listProgramas = [];
   }
@@ -47,21 +47,28 @@ export class DirectoresAddComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   registrarDirector(): void {
     this.loading = false;
     let newDirector = <Director>Object.assign({}, this.formAddDirector.value);
-    console.log(newDirector)
     this.directorService.save(newDirector).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Director creado satisfactoriamente',
+          'success'
+        )
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error'
+        )
+        this.dialogRef.close();
       },
       () => {
+        this.dialogRef.close();
         this.loading = true;
       });
   }
