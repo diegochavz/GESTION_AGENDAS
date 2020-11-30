@@ -51,7 +51,7 @@
 
               <div class="btn-stepper">
                 <a [routerLink]="['..//']" mat-button>Regresar</a>
-                <button mat-raised-button color="warn" (click)="onFormSubmit()" >Ingresar</button>
+                <button mat-raised-button color="warn" (click)="onFormSubmit()" [disabled]="formLogin.invalid">Ingresar</button>
               </div>
             </form>
           </div>
