@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormularioServiceImpl} from "../../../core/http/implement/formulario.service.impl";
+import Formulario from "../../../core/models/formulario.model";
+import FormularioResponse from "../../../core/models/formulario_response.model";
+import {Router} from "@angular/router";
 
 interface Food {
   value: string;
@@ -12,6 +16,12 @@ interface Food {
   styleUrls: ['./visualizar-formularios.component.scss']
 })
 export class VisualizarFormulariosComponent implements OnInit {
+
+  listFormularios: FormularioResponse[];
+
+  loading: boolean;
+
+
   test: Date = null;
 
   foods: Food[] = [
@@ -23,12 +33,31 @@ export class VisualizarFormulariosComponent implements OnInit {
   focus: any;
   focus1: any;
 
-  constructor() {
+  constructor(private formularioService: FormularioServiceImpl,
+              private routes: Router,
+              ) {
+    this.listFormularios = [];
+    this.loading = true;
   }
 
   ngOnInit(): void {
     this.test = new Date();
-
+    this.getListFormulario();
   }
 
+  getListFormulario() {
+    this.loading = false;
+    this.formularioService.getAll().subscribe(res => {
+      this.listFormularios = res;
+      console.log(this.listFormularios)
+    }, () => {
+      console.log("ERROR AL CARGA FORMULARIO EN PRINCIPAL")
+    }, () => {
+      this.loading = true;
+    })
+  }
+
+  irFormulario(enlace) {
+    document.location.href = 'http://localhost:4200/#/formulario/'+enlace;
+  }
 }

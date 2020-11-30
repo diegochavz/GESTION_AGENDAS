@@ -27,9 +27,11 @@ import {EstudianteServiceImpl} from "./http/implement/estudiante.service.impl";
 import {SolicitudServiceImpl} from "./http/implement/solicitud.service.impl";
 import {DataUserService} from "./services/data_user.service";
 import {ValidateService} from "./services/validators";
+import { NotificationsComponent } from './util/notifications/notifications.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
-  declarations: [],
+  declarations: [NotificationsComponent],
   imports: [
     MatDialogModule,
     MatSnackBarModule,
@@ -38,6 +40,7 @@ import {ValidateService} from "./services/validators";
     MatTooltipModule,
     MatSelectModule,
     HttpClientModule,
+    MatCardModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -55,6 +58,7 @@ import {ValidateService} from "./services/validators";
     AuthenticationServiceImpl,
     EstudianteServiceImpl,
     SolicitudServiceImpl,
+    NotificationsComponent,
   ],
   entryComponents: [
   ]

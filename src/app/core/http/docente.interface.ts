@@ -5,6 +5,7 @@ import Formulario from "../models/formulario.model";
 import Estudiante from "../models/estudiante.model";
 import SolicitudResponse from "../models/solicitud_response.model";
 import Horario from "../models/horario.model";
+import EstudianteRequest from "../models/estudiante_request.model";
 
 export interface IDocenteService extends IService<any>{
 
@@ -12,7 +13,7 @@ export interface IDocenteService extends IService<any>{
 
   getFormulariosByDocente(idDocente): Observable<Formulario[]>
 
-  getEstudiantesByDocente(idDocente): Observable<Estudiante[]>
+  getEstudiantesByDocente(idDocente): Observable<EstudianteRequest[]>
 
   getSolicitudesByDocente(idDocente): Observable<SolicitudResponse[]>
 

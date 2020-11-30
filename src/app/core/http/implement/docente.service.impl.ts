@@ -5,9 +5,9 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {IDocenteService} from "../docente.interface";
 import Formulario from "../../models/formulario.model";
-import Estudiante from "../../models/estudiante.model";
 import SolicitudResponse from "../../models/solicitud_response.model";
 import Horario from "../../models/horario.model";
+import EstudianteRequest from "../../models/estudiante_request.model";
 
 @Injectable()
 export class DocenteServiceImpl extends ServiceImpl<any> implements IDocenteService {
@@ -28,9 +28,9 @@ export class DocenteServiceImpl extends ServiceImpl<any> implements IDocenteServ
     return this.executeGet(path) as Observable<Array<Formulario>>;
   }
 
-  getEstudiantesByDocente(idDocente): Observable<Estudiante[]>{
-    const path = `${idDocente}/estudiantes-simple/`;
-    return this.executeGet(path) as Observable<Array<Estudiante>>;
+  getEstudiantesByDocente(idDocente): Observable<EstudianteRequest[]>{
+    const path = `${idDocente}/estudiantes/`;
+    return this.executeGet(path) as Observable<Array<EstudianteRequest>>;
   }
 
   getSolicitudesByDocente(idDocente): Observable<SolicitudResponse[]>{
@@ -43,5 +43,9 @@ export class DocenteServiceImpl extends ServiceImpl<any> implements IDocenteServ
     return this.executeGet(path) as Observable<Array<Horario>>;
   }
 
+  deleteEstudianteDocente(idEstudianteDocente):Observable<any>{
+  const path = `docente-estudiante/${idEstudianteDocente}/`;
+  return this.httpClient.delete(this.apiUrl + path) as Observable<any>;
+  }
 
 }

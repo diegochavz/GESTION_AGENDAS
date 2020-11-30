@@ -263,7 +263,7 @@
                   </div>
                   <mat-action-row>
                     <a mat-button (click)="prevStep()">Anterior</a>
-                    <a mat-raised-button color="accent" (click)="onFormSubmit()">Agendar</a>
+                    <a mat-raised-button color="accent" [routerLink]="['../']" (click)="onFormSubmit()">Agendar</a>
                   </mat-action-row>
                 </mat-expansion-panel>
               </mat-accordion>

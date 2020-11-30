@@ -57,6 +57,14 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {CoreModule} from "../../core/core.module";
+import { ReportesDocenteComponent } from './reportes-docente/reportes-docente.component';
+import { AutorizacionesListComponent } from './autorizaciones/autorizaciones-list/autorizaciones-list.component';
+import { AutorizacionesShowComponent } from './autorizaciones/autorizaciones-show/autorizaciones-show.component';
+import { AutorizacionesDeleteComponent } from './autorizaciones/autorizaciones-delete/autorizaciones-delete.component';
+import { AutorizacionesApproveComponent } from './autorizaciones/autorizaciones-approve/autorizaciones-approve.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { LoadDataEstudianteComponent } from './estudiantes/load-data-estudiante/load-data-estudiante.component';
+
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -98,6 +106,7 @@ FullCalendarModule.registerPlugins([
     MatCardModule,
     FullCalendarModule,
     CoreModule,
+    MatTabsModule,
   ],
   declarations: [
     MainDocenteComponent,
@@ -113,6 +122,12 @@ FullCalendarModule.registerPlugins([
     SolicitudesListComponent,
     SolicitudesShowComponent,
     SolicitudesDeleteComponent,
+    ReportesDocenteComponent,
+    AutorizacionesListComponent,
+    AutorizacionesShowComponent,
+    AutorizacionesDeleteComponent,
+    AutorizacionesApproveComponent,
+    LoadDataEstudianteComponent,
   ],
   entryComponents:[
     FormulariosDeleteComponent,
@@ -120,7 +135,12 @@ FullCalendarModule.registerPlugins([
     EstudiantesEditComponent,
     EstudiantesDeleteComponent,
     SolicitudesShowComponent,
-    SolicitudesDeleteComponent,]
+    SolicitudesDeleteComponent,
+    AutorizacionesShowComponent,
+    AutorizacionesDeleteComponent,
+    AutorizacionesApproveComponent,
+    LoadDataEstudianteComponent,
+  ]
   ,
   providers:[
     {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},

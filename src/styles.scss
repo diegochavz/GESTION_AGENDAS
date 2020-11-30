@@ -101,7 +101,11 @@ table {
 
 .btn-create{
   float: right!important;
-  margin: 30px;
+  margin: 5px!important;
+}
+.btn-create-report{
+  float: right!important;
+  margin-top: 10px!important;
 }
 
 .bnm-center{
@@ -196,6 +200,10 @@ table {
 .modal-title-item{
   margin-bottom: 20px!important;
   font-size: 20px;
+}
+
+.border-bottom-md{
+  border-bottom: 4px solid #bc0017!important;
 }
 
 .pd-subTitle-modal{
@@ -367,3 +375,25 @@ table {
   background: linear-gradient(90deg, rgba(164,9,9,1) 0%, rgba(208,18,18,1) 35%);
 }
 **/
+
+.pd-mar-div{
+  margin-top: 10px!important;
+  margin-bottom: 10px!important;
+}
+
+.m-rep-list{
+  margin-bottom: 10px!important;
+  margin-top: 10px!important;
+}
+
+
+.error.mat-snack-bar-container{
+  background: rgb(138,1,18);
+  background: linear-gradient(90deg, rgba(138,1,18,0.8) 0%, rgba(188,0,23,0.8) 100%);
+}
+
+.success.mat-snack-bar-container{
+  background: rgb(24,138,1);
+  background: linear-gradient(90deg, rgba(24,138,1,0.8) 0%, rgba(0,188,75,0.8) 100%);
+}
+
