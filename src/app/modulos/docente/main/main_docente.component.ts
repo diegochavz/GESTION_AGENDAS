@@ -8,6 +8,10 @@ import {DialogService} from "../../../core/services/dialogs.service";
 import * as moment from "moment";
 import SolicitudResponse from "../../../core/models/solicitud_response.model";
 import {DocenteServiceImpl} from "../../../core/http/implement/docente.service.impl";
+import EstudianteRequest from "../../../core/models/estudiante_request.model";
+import {MatTableDataSource} from "@angular/material/table";
+import {SolicitudServiceImpl} from "../../../core/http/implement/solicitud.service.impl";
+import Formulario from "../../../core/models/formulario.model";
 
 @Component({
   selector: 'app-main-docente',
@@ -21,20 +25,65 @@ export class MainDocenteComponent implements OnInit {
 
   calendarOptions: CalendarOptions;
 
+  cuentaEstudiantes: number;
+  cuentaAsesorias: number;
+  cuentaAutorizaciones: number;
+  cuentaFormularios: number;
+
   constructor(private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl,
               private docenteService: DocenteServiceImpl,
               private dialogService: DialogService) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.loading = true;
+    this.cuentaEstudiantes = 0;
+    this.cuentaAsesorias = 0;
+    this.cuentaAutorizaciones = 0;
+    this.cuentaFormularios = 0;
   }
 
   ngOnInit() {
     this.loadCalendar();
     this.cargaSolicitudes();
+    this.getEstudiantes();
+    this.getFormularios();
   }
 
-  loadCalendar(){
+  getFormularios() {
+    this.loading = false;
+    this.docenteService.getFormulariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe(
+      (listFormularios: Array<Formulario>) => {
+        let aux = 0;
+        for(let i of listFormularios){
+          if(i.activo == 1){
+            aux++;
+          }
+        }
+       this.cuentaFormularios = aux;
+      },
+      (error) => {
+        console.log("ERROR -> LISTAR FORMULARIOS")
+      },
+      () => {
+        this.loading = true;
+      });
+  }
+
+  getEstudiantes() {
+    this.loading = false;
+    this.docenteService.getEstudiantesByDocente(this.authenticationService.currentUserValue.user_id).subscribe(
+      (listEstudiantes: Array<EstudianteRequest>) => {
+        this.cuentaEstudiantes = listEstudiantes.length;
+      },
+      (error) => {
+        console.log("ERROR -> LISTAR ESTUDIANTES")
+      },
+      () => {
+        this.loading = true;
+      });
+  }
+
+  loadCalendar() {
     this.calendarOptions = {
       headerToolbar: {
         left: 'prev,next today',
@@ -54,6 +103,20 @@ export class MainDocenteComponent implements OnInit {
     this.loading = false;
     this.docenteService.getSolicitudesByDocente(this.authenticationService.currentUserValue.user_id).subscribe(
       (listsolitudes: Array<SolicitudResponse>) => {
+
+        let agendadas = 0;
+        let pendientes = 0;
+
+        for(let i of listsolitudes){
+          if(i.estado == 1){
+            pendientes++;
+          } else if(i.estado == 2) {
+            agendadas++;
+          }
+        }
+        this.cuentaAutorizaciones = pendientes;
+        this.cuentaAsesorias = agendadas;
+
         this.convertSolicitudesToEventos(listsolitudes);
       },
       (error) => {
@@ -75,7 +138,7 @@ export class MainDocenteComponent implements OnInit {
     }
   }
 
-  agregarEvento(id,title, start){
+  agregarEvento(id, title, start) {
     this.fullcalendar.getApi().addEvent({
       id: id,
       title,
