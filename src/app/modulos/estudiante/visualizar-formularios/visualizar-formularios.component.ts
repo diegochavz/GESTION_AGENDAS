@@ -97,6 +97,7 @@ export class VisualizarFormulariosComponent implements OnInit {
     if (typeof value === 'object') {
       let id = value.usuario.id
       value = value.usuario.nombre;
+      this.formInicio.get('docente').setValue(value)
       this.filtrarPorDocente(id)
     }
     const filterValue = value.toLowerCase();
