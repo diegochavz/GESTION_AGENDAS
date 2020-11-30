@@ -8,6 +8,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import DocenteResponse from "../../../../core/models/docente_response.model";
 import Usuario from "../../../../core/models/usuario.model";
 import FormularioResponse from "../../../../core/models/formulario_response.model";
+import ProgramaResponse from "../../../../core/models/programa_response.model";
 
 @Component({
   selector: 'app-docentes-edit',
@@ -60,14 +61,15 @@ export class DocentesEditComponent implements OnInit {
     if (this.docente != null && this.docente != undefined) {
       const aux = new Array<number>();
       this.loading = false;
-      this.docenteService.getProgramasByDocente(this.docente.usuario.id).subscribe((res: Array<Programa>) => {
+      this.docenteService.getProgramasNormalByDocente(this.docente.usuario.id).subscribe((res: Array<ProgramaResponse>) => {
         console.log(res)
         for (let i of res) {
-            console.log("docente -> "+ i.id)
-            aux.push(i.id);
+            aux.push(i.programa);
+            if(i.esta_vinculado == true){
+              this.listProgramasUso.push(i.programa)
+            }
           }
           this.formEditDocente.get('programas').setValue(aux)
-          this.consultarProgramasEnUso(aux);
         },
         () => {
         },
@@ -76,20 +78,6 @@ export class DocentesEditComponent implements OnInit {
           this.loading = true;
         }
       )
-    }
-  }
-
-  consultarProgramasEnUso(listIDs: number[]) {
-    if (listIDs.length != 0) {
-      for (let i = 0; i < listIDs.length; i++) {
-        //moficiar un nuevo campos
-        this.programaService.getFormulariosByPrograma(listIDs[i]).subscribe((res: FormularioResponse[]) => {
-          if (res.length > 0) {
-            console.log("uso -> "+ listIDs[i])
-            this.listProgramasUso.push(listIDs[i])
-          }
-        })
-      }
     }
   }
 

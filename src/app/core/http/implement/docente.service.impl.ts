@@ -8,6 +8,7 @@ import Formulario from "../../models/formulario.model";
 import SolicitudResponse from "../../models/solicitud_response.model";
 import Horario from "../../models/horario.model";
 import EstudianteRequest from "../../models/estudiante_request.model";
+import ProgramaResponse from "../../models/programa_response.model";
 
 @Injectable()
 export class DocenteServiceImpl extends ServiceImpl<any> implements IDocenteService {
@@ -22,6 +23,12 @@ export class DocenteServiceImpl extends ServiceImpl<any> implements IDocenteServ
     const path = `${idDocente}/programas-simple/`;
     return this.executeGet(path) as Observable<Array<Programa>>;
   }
+
+  getProgramasNormalByDocente(idDocente): Observable<ProgramaResponse[]> {
+    const path = `${idDocente}/programas/`;
+    return this.executeGet(path) as Observable<Array<ProgramaResponse>>;
+  }
+
 
   getFormulariosByDocente(idDocente): Observable<Formulario[]>{
     const path = `${idDocente}/formularios/`;

@@ -119,15 +119,15 @@ export class AutorizacionesListComponent implements OnInit {
     this.dialogService.approveAutorizacionDialog(idSolicitud).subscribe(res => {
       if (res == 1) {
         this.getSolicitudes();
-        this.toasterService.openSnackBar(
-          'AUTORIZACIÓN APROBADA',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          'Autorización aprobada con exito',
+          'success'
+        )
       } else if (res == 2) {
-        this.toasterService.openSnackBar(
-          'ERROR AL APROBAR LA AUTORIZACIÓN',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          'Autorización aprobada con exito',
+          'success'
+        )
       }
     });
   }

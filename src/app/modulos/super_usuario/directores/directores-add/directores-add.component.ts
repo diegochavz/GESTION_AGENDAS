@@ -51,9 +51,6 @@ export class DirectoresAddComponent implements OnInit {
   registrarDirector(): void {
     this.loading = false;
     let newDirector = <Director>Object.assign({}, this.formAddDirector.value);
-    let aux = new Array<number>();
-    aux.push(this.formAddDirector.value.programa)
-    newDirector.programas = aux;
     console.log(newDirector)
     this.directorService.save(newDirector).subscribe(
       () => {

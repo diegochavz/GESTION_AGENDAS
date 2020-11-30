@@ -32,6 +32,7 @@ export class DirectoresListComponent implements OnInit {
               private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario,TIPO_USER.SUPER_USUARIO)
+    console.log(authenticationService.currentUserValue)
     this.loading = true;
     this.directores = [];
     this.dataSource = new MatTableDataSource(this.directores);
@@ -51,6 +52,7 @@ export class DirectoresListComponent implements OnInit {
     this.directores = [];
     this.directorService.getAll().subscribe(
       (listDirectores: Array<DirectorResponse>) => {
+        console.log(listDirectores)
         this.directores = listDirectores;
         this.dataSource = new MatTableDataSource(this.directores);
       },
@@ -105,6 +107,7 @@ export class DirectoresListComponent implements OnInit {
   }
 
   editarDirector(directorResponse: DirectorResponse) {
+    console.log(directorResponse)
     this.dialogService.editDirectorDialog(directorResponse).subscribe(res => {
       if (res==1) {
         this.getDirectores();

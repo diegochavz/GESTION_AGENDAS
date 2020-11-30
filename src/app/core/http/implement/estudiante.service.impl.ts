@@ -14,7 +14,7 @@ export class EstudianteServiceImpl extends ServiceImpl<any> implements IEstudian
   }
 
   loadDataEstudiante(data,): Observable<any> {
-    const path = this.apiUrl+`upload-docentes/`;
+    const path = this.apiUrl+`upload-estudiantes/`;
     return this.httpClient.post(path, data) as Observable<any>;
   }
 

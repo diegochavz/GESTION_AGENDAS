@@ -6,6 +6,7 @@ export default class DocenteResponse {
   fecha_registro: Date;
   fecha_actualizacion: Date;
   programas:number[];
+  ids_programas:number[];
   nombre:string
   correo:string;
   contrasena:string;

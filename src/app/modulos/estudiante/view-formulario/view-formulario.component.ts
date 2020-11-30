@@ -54,8 +54,6 @@ export class ViewFormularioComponent implements OnInit {
 
   listPreguntasFormulario: Array<Pregunta>
 
-  loadFile: FileList;
-
   step = 0;
 
   loading: boolean;
@@ -67,6 +65,8 @@ export class ViewFormularioComponent implements OnInit {
   archivo: File;
 
   listProgramas: Array<Programa>;
+
+  file: File;
 
   constructor(private route: ActivatedRoute,
               private docenteService: DocenteServiceImpl,
@@ -91,6 +91,7 @@ export class ViewFormularioComponent implements OnInit {
     const uuid = this.route.snapshot.paramMap.get('enlace');
     this.getFormulario(uuid);
     this.listProgramas = [];
+    this.file = null;
   }
 
   ngOnInit(): void {
@@ -300,7 +301,7 @@ export class ViewFormularioComponent implements OnInit {
   agregarIntegrante() {
     const newIntegrante = this._formBuilder.group({
       nombre: ['', [Validators.required]],
-      correo: ['', [Validators.required]],
+      correo: ['', [Validators.required, Validators.email]],
       codigo: ['', [Validators.required]],
       id_programa: ['', [Validators.required]],
     });
@@ -343,10 +344,6 @@ export class ViewFormularioComponent implements OnInit {
     return response;
   }
 
-  cargarArchivo(event): void {
-    this.loadFile = event.target.files[0];
-  }
-
   /****CONFIGURACIÓN DE mat-expansion-panel***/
 
   setStep(index: number) {
@@ -361,13 +358,20 @@ export class ViewFormularioComponent implements OnInit {
     this.step--;
   }
 
+  onFileChange(evt: any) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length == 1) {
+      this.file = target.files[0]
+    }
+  }
+
   onFormSubmit() {
     let formData = new FormData();
     formData.append('id_formulario', this.formulario.id + "")
     formData.append('id_docente', this.formulario.docente + "")
     formData.append('fecha', this.horarioAsesoria.fecha_horario)
     formData.append('hora', this.formatHora(this.horarioAsesoria.inicio_horario))
-    formData.append('archivo', this.archivo)
+    formData.append('archivo', this.file)
 
     let resAux = new Array<Respuesta>()
     for (let i = 0; i < this.preguntas.controls.length; i++) {
@@ -386,14 +390,6 @@ export class ViewFormularioComponent implements OnInit {
 
     formData.append('es_virtual', this.formularioAddAsesoria.get('es_virtual').value)
 
-    console.log(" ----> DatofORM ", formData.get('id_formulario'))
-    console.log(" ----> DatofORM ", formData.get('id_docente'))
-    console.log(" ----> DatofORM ", formData.get('fecha'))
-    console.log(" ----> DatofORM ", formData.get('hora'))
-    console.log(" ----> DatofORM ", formData.get('archivo'))
-    console.log(" ----> DatofORM ", formData.get('respuestas'))
-    console.log(" ----> DatofORM ", formData.get('estudiantes'))
-    console.log(" ----> DatofORM ", formData.get('es_virtual'))
 
      this.solicitudService.saveSolicitud(formData).subscribe(
      () => {
@@ -403,6 +399,7 @@ export class ViewFormularioComponent implements OnInit {
         )
       },
      (error) => {
+       console.log(JSON.stringify(error))
        this.toasterService.openSnackBarCumtom(
          'Error al agendar la asesoría',
          'error'

@@ -131,6 +131,6 @@ export class VisualizarFormulariosComponent implements OnInit {
   }
 
   irFormulario(enlace) {
-    document.location.href = 'http://localhost:4200/#/formulario/' + enlace;
+    document.location.href = 'http://agendadocb.cpsw.ingsistemasufps.co/#/formulario/' + enlace;
   }
 }

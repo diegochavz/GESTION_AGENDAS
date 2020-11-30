@@ -4,4 +4,5 @@ export default class Director {
   contrasena: string;
   nombre:string;
   programas: number[];
+  programa:number;
 }
