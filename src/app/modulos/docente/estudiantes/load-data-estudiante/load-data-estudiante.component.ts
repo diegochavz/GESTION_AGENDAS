@@ -49,7 +49,7 @@ export class LoadDataEstudianteComponent implements OnInit {
     let formData = new FormData();
     formData.append('archivo', this.file)
     formData.append('id_docente ', this.authenticationService.currentUserValue.user_id+"")
-    formData.append('id_programa ',this.authenticationService.currentUserValue.programas[0].id+"")
+    formData.append('id_programa ',this.authenticationService.currentUserValue.programas[0].programa+"")
     this.estudianteService.loadDataEstudiante(formData).subscribe(
       () => {
         this.dialogRef.close(1);
