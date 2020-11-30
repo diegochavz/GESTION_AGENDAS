@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>Información de la sesoría académica</h1>
+<mat-dialog-content class="mat-typography">
+  <div class="row">
+    <div class="col-12">
+      <div class="pd-modals">
+        <h1> Formulario de asesoría <p class="mat-display-1">{{nombreFormulario}}</p></h1>
+      </div>
+    </div>
+  </div>
+  <div class="row mt--70">
+    <div class="col-12">
+      <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+      <div class="list-group">
+        <div class="list-group-item list-group-item-action ">
+          <div class="d-flex w-100 justify-content-between">
+            <div mat-subheader class="modal-title-item">Información asesoría</div>
+          </div>
+          <mat-list-item>
+            <div class="row">
+              <div class="col-lg-4">
+                <div mat-line>Tipo asesoría:<p>{{tipoAsesoria ? 'Virtual' : 'Presencial'}}</p></div>
+              </div>
+              <div class="col-lg-4">
+                <div mat-line>Ubicación:<p>{{tipoAsesoria ? 'Google Meet' : ubicacion}}</p></div>
+              </div>
+              <div class="col-lg-4">
+                <div mat-line>Fecha asesoría:<p>{{fechaAsesoria}} <br> {{horaAsesoria}}</p></div>
+              </div>
+            </div>
+          </mat-list-item>
+        </div>
+        <div class="list-group-item list-group-item-action ">
+          <div class="d-flex w-100 justify-content-between">
+            <div mat-subheader class="modal-title-item">Información preguntas</div>
+          </div>
+          <mat-list-item>
+            <div *ngFor="let res of listRespuestas">
+              <div class="col-lg-12">
+                <p> <span mat-line> {{res.nombre_pregunta}}:</span> {{res.respuesta}}<br></p>
+              </div>
+            </div>
+          </mat-list-item>
+        </div>
+        <div class="list-group-item list-group-item-action ">
+          <div class="d-flex w-100 justify-content-between">
+            <div mat-subheader class="modal-title-item">Información estudiantes</div>
+          </div>
+          <mat-list-item>
+            <div *ngFor="let est of listEstudiantes">
+              <p> <span mat-line> Código:</span> {{est.codigo_estudiante}} <br>
+                <span mat-line> Nombre:</span> {{est.nombre_estudiante}} <br>
+                <span mat-line> Programa:</span> {{est.nombre_programa}} <br>
+                <span mat-line> Correo:</span> {{est.correo_estudiante}} </p>
+              <mat-divider class="pd-mar-div"></mat-divider>
+            </div>
+          </mat-list-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" class="btn-modal" (click)="salir()">Salir</button>
+</mat-dialog-actions>

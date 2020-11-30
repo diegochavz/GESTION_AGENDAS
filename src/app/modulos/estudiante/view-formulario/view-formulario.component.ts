@@ -125,6 +125,10 @@ export class ViewFormularioComponent implements OnInit {
       if (res != null && res != undefined) {
         if (res.length > 0) {
           this.formulario = res[0];
+          if(this.formulario.activo == 0){
+            this.routes.navigate(['/not-page'])
+            console.log("formulario inactivo")
+          }
         } else {
           this.routes.navigate(['/not-page'])
         }

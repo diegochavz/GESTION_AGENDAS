@@ -76,7 +76,13 @@ export class FormulariosListComponent implements OnInit {
     this.formularios = [];
     this.docenteService.getFormulariosByDocente(this.idDocente).subscribe(
       (listFormularios: Array<Formulario>) => {
-        this.formularios = listFormularios;
+        let aux = [];
+        for(let i of listFormularios){
+          if(i.activo == 1){
+            aux.push(i)
+          }
+        }
+        this.formularios = aux;
         this.dataSource = new MatTableDataSource(this.formularios);
       },
       (error) => {

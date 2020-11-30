@@ -7,6 +7,9 @@ import DocenteResponse from "../../../../core/models/docente_response.model";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {ValidateService} from "../../../../core/services/validators";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
+import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
+import Director from "../../../../core/models/director.model";
+import Docente from "../../../../core/models/docente.model";
 
 @Component({
   selector: 'app-docentes-list',
@@ -28,6 +31,7 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
 
 
   constructor(private  docenteService: DocenteServiceImpl,
+              private programaService: ProgramaServiceImpl,
               private dialogService: DialogService,
               private toasterService: ToasterService,
               private authenticationService: AuthenticationServiceImpl,
@@ -52,8 +56,9 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
     console.log("Me repito n veces")
     this.loading = false;
     this.docentes = [];
-    this.docenteService.getAll().subscribe(
-      (listDocentes: Array<DocenteResponse>) => {
+    console.log(this.authenticationService.currentUserValue.programas[0].id)
+    this.programaService.getDocentesByPrograma(this.authenticationService.currentUserValue.programas[0].id).subscribe(
+      (listDocentes: DocenteResponse[])=>{
         this.docentes = listDocentes;
         this.dataSource = new MatTableDataSource(this.docentes);
       },

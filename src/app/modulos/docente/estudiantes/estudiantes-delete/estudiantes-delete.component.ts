@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {EstudianteServiceImpl} from "../../../../core/http/implement/estudiante.service.impl";
+import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 
 @Component({
   selector: 'app-estudiantes-delete',
@@ -14,7 +15,7 @@ export class EstudiantesDeleteComponent implements OnInit {
 
   idEstudiante: number;
 
-  constructor(private estudianteService: EstudianteServiceImpl,
+  constructor(private docenteService: DocenteServiceImpl,
               public dialogRef: MatDialogRef<EstudiantesDeleteComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.idEstudiante = data.idEstudiante;
@@ -30,7 +31,7 @@ export class EstudiantesDeleteComponent implements OnInit {
 
   borrar():void{
     this.loading = false;
-    this.estudianteService.delete(this.idEstudiante).subscribe(
+    this.docenteService.deleteEstudianteDocente(this.idEstudiante).subscribe(
       () => {
         this.dialogRef.close(1);
       },

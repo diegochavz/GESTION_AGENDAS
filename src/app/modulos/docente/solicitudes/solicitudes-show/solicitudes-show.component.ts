@@ -66,8 +66,14 @@ export class SolicitudesShowComponent implements OnInit {
 
   get fechaAsesoria():string{
     if(!this.solicitud!=null && this.solicitud!=undefined){
-      return this.solicitud.horario_data.fecha_horario + "  "+
-        this.formatHora(this.solicitud.horario_data.inicio_horario)+" - "+
+      return this.solicitud.horario_data.fecha_horario;
+    }
+    return '';
+  }
+
+  get horaAsesoria(){
+    if(!this.solicitud!=null && this.solicitud!=undefined){
+      return this.formatHora(this.solicitud.horario_data.inicio_horario)+" - "+
         this.formatHora(this.solicitud.horario_data.fin_horario);
     }
     return '';

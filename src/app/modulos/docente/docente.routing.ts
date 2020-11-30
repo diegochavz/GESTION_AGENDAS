@@ -5,6 +5,8 @@ import {FormulariosListComponent} from "./formularios/formularios-list/formulari
 import {FormulariosEditComponent} from "./formularios/formularios-edit/formularios-edit.component";
 import {EstudiantesListComponent} from "./estudiantes/estudiantes-list/estudiantes-list.component";
 import {SolicitudesListComponent} from "./solicitudes/solicitudes-list/solicitudes-list.component";
+import {ReportesDocenteComponent} from "./reportes-docente/reportes-docente.component";
+import {AutorizacionesListComponent} from "./autorizaciones/autorizaciones-list/autorizaciones-list.component";
 
 export const DocenteRoutes: Routes = [
   { path: '',component: MainDocenteComponent },
@@ -13,4 +15,6 @@ export const DocenteRoutes: Routes = [
   { path: 'listar-formularios',      component: FormulariosListComponent },
   { path: 'listar-estudiantes',      component: EstudiantesListComponent },
   { path: 'listar-asesorias',      component: SolicitudesListComponent },
+  { path: 'listar-autorizaciones',      component: AutorizacionesListComponent },
+  { path: 'reportes',      component: ReportesDocenteComponent },
 ];

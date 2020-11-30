@@ -20,4 +20,5 @@ export default class Formulario {
   carga_archivos: boolean;
   fecha_registro: Date;
   docente: string;
+  activo:number;
 }
