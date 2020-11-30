@@ -80,4 +80,9 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
     return this.httpClient.post(this.apiUrl +path, {"id_formulario":idFormulario}) as Observable<any>;
   }
 
+  setEstadoFormulario(id_formulario, estado): Observable<any> {
+    const path = `estado-formulario/`;
+    return this.httpClient.post(this.apiUrl +path, {"id_formulario":id_formulario, "estado":estado}) as Observable<any>;
+  }
+
 }

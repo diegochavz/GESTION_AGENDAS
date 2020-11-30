@@ -62,7 +62,7 @@ import { AutorizacionesListComponent } from './autorizaciones/autorizaciones-lis
 import { AutorizacionesShowComponent } from './autorizaciones/autorizaciones-show/autorizaciones-show.component';
 import { AutorizacionesDeleteComponent } from './autorizaciones/autorizaciones-delete/autorizaciones-delete.component';
 import { AutorizacionesApproveComponent } from './autorizaciones/autorizaciones-approve/autorizaciones-approve.component';
-
+import {MatTabsModule} from '@angular/material/tabs';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -105,6 +105,7 @@ FullCalendarModule.registerPlugins([
     MatCardModule,
     FullCalendarModule,
     CoreModule,
+    MatTabsModule,
   ],
   declarations: [
     MainDocenteComponent,
