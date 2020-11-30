@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Importar información de estudiantes</h1>
+<mat-dialog-content>
+  <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
+  <mat-list>
+    <input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" class="btn">
+    <mat-divider></mat-divider>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
+  <a mat-raised-button color="warn" class="btn-modal"  (click)="loadData()" >Importar</a>
+</mat-dialog-actions>

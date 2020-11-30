@@ -9,7 +9,6 @@ import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 import EstudianteRequest from "../../../../core/models/estudiante_request.model";
-import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-estudiantes-list',
@@ -30,10 +29,6 @@ export class EstudiantesListComponent implements OnInit {
   estudiantes: Array<EstudianteRequest>;
 
   idDocente :number;
-
-  loadMassive:boolean=true;
-
-  file:File=null;
 
   constructor(private  estudianteService: EstudianteServiceImpl,
               private docenteService: DocenteServiceImpl,
@@ -132,25 +127,20 @@ export class EstudiantesListComponent implements OnInit {
     });
   }
 
-  displayMoreProfile=false;
-
-  loadMassiveEstudent(){
-    this.loadMassive=true;
-    this.displayMoreProfile=true;
-  }
-
-  onFileChange(evt: any) {
-    const target: DataTransfer = <DataTransfer>(evt.target);
-    if (target.files.length == 1){
-      this.loadMassive=false;
-      this.file=target.files[0]
-    }
-  }
-
-  sendFile(){
-    
-    console.log(this.file)
-    this.loadMassive=true;
-    this.displayMoreProfile=false;
+  loadDataEstudiante(){
+    this.dialogService.loadDataEstudianteDialog().subscribe(res => {
+      if (res == 1) {
+        this.getEstudiantes();
+        this.toasterService.openSnackBar(
+          'ESTUDIANTES CARGADOS CON EXITO.',
+          ToasterService.CERRAR_ACTION
+        );
+      } else if(res==2){
+        this.toasterService.openSnackBar(
+          'ERROR AL EDITAR ESTUDIANTE',
+          ToasterService.CERRAR_ACTION
+        );
+      }
+    });
   }
 }

@@ -29,11 +29,9 @@
               <button mat-raised-button color="warn" (click)="agregarEstudiante()" class="btn-create">Nuevo
                 Estudiante
               </button>
-              <button style="margin-right: 5px;" (click)="loadMassiveEstudent()" mat-raised-button color="warn" data-toggle="modal" class="btn-create"
-                data-target="#exampleModal">
-                Carga Masiva
-              </button>
 
+              <button mat-raised-button color="accent" (click)="loadDataEstudiante()" class="btn-create">Importar estudiantes
+              </button>
             </div>
           </div>
           <div class="mat-elevation-z2">
@@ -74,28 +72,6 @@
             </table>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="displayMoreProfile" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" data-target="#modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="padding-bottom: 0;">
-        <h2 class="modal-title" id="exampleModalLabel">Carga Masiva De Alumnos</h2>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="margin: auto">
-        <input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" class="btn btn-success">
-
-      </div>
-      <div class="modal-footer">
-        <button mat-button class="btn-modal" data-dismiss="modal">Cancelar</button>
-        <button type="button" mat-raised-button color="warn" class="btn-modal" data-dismiss="modal" (click)="sendFile()" [disabled]="loadMassive" >Cargar</button>
       </div>
     </div>
   </div>
