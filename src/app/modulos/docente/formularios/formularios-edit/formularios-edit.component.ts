@@ -19,6 +19,7 @@ import {ClipboardService} from "ngx-clipboard";
 import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
+import {URL_FORMULARIO} from "../../../../core/constants/url_formulario.constants";
 
 @Component({
   selector: 'app-formularios-edit',
@@ -193,7 +194,7 @@ export class FormulariosEditComponent implements OnInit {
       let dateFin = this.editFormulario.disponibilidad_fin_formulario.split("-")
       this.formEditFormulario.get('disponibilidad_fin_formulario').setValue(new Date(+dateFin[0], +dateFin[1] - 1, +dateFin[2]))
 
-      this.urlFormulario = "http://agendadocb.cpsw.ingsistemasufps.co/#/formulario/" + this.editFormulario.enlace_uuid_formulario;
+      this.urlFormulario = URL_FORMULARIO.BASE + this.editFormulario.enlace_uuid_formulario;
     }
   }
 

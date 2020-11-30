@@ -38,9 +38,10 @@
             <div class="col-lg-12">
               <div class="card shadow border-0">
                 <div class="card-body">
-                  <form [formGroup]="formInicio">
+
                     <div class="row">
                       <div class="col-6">
+                        <!--
                         <mat-form-field class="fluid" appearance="fill">
                           <mat-label>Docentes</mat-label>
                           <mat-select formControlName="docente">
@@ -48,13 +49,29 @@
                                         [value]="docente.usuario.id">{{docente.usuario.nombre}}</mat-option>
                           </mat-select>
                         </mat-form-field>
+                        -->
+                        <form [formGroup]="formInicio">
+                        <mat-form-field class="example-full-width">
+                          <input type="text"
+                                 placeholder="Selecciona el nombre del docente"
+                                 matInput
+                                 formControlName="docente"
+
+                                 [matAutocomplete]="auto">
+                          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                              {{option.usuario.nombre}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                        </form>
                       </div>
                       <div class="col-6">
                         <button mat-raised-button color="warn" (click)="getListFormulario()" class="btn-create">Limpiar busqueda
                         </button>
                       </div>
                     </div>
-                  </form>
+
                 </div>
               </div>
             </div>

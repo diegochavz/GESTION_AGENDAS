@@ -3,8 +3,7 @@ import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.serv
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import Programa from "../../../../core/models/programa.model";
-import {DirectorServiceImpl} from "../../../../core/http/implement/director.service.impl";
-import DirectorResponse from "../../../../core/models/director_response.model";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-programas-add',
@@ -19,6 +18,7 @@ export class ProgramasAddComponent implements OnInit {
 
   constructor(private programaService: ProgramaServiceImpl,
               public dialogRef: MatDialogRef<ProgramasAddComponent>,
+              private toasterService: ToasterService,
               private _formBuilder: FormBuilder,) {
     this.loading = true;
   }
@@ -31,7 +31,7 @@ export class ProgramasAddComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   registrarPrograma(): void {
@@ -40,12 +40,20 @@ export class ProgramasAddComponent implements OnInit {
     newPrograma.director = null;
     this.programaService.save(newPrograma).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Programa creado satisfactoriament',
+          'success'
+        )
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error'
+        )
+        this.dialogRef.close();
       },
       () => {
+        this.dialogRef.close();
         this.loading = true;
       });
   }

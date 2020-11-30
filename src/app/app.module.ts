@@ -26,6 +26,7 @@ import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter, MomentDateModule
 } from "@angular/material-moment-adapter";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MomentDateModule,
+    MatAutocompleteModule,
   ],
   declarations: [
     AppComponent,

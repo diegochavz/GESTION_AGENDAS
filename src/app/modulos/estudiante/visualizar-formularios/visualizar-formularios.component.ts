@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, forwardRef, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormularioServiceImpl} from "../../../core/http/implement/formulario.service.impl";
 import Formulario from "../../../core/models/formulario.model";
 import FormularioResponse from "../../../core/models/formulario_response.model";
@@ -8,7 +8,11 @@ import DocenteResponse from "../../../core/models/docente_response.model";
 import Programa from "../../../core/models/programa.model";
 import {DocenteServiceImpl} from "../../../core/http/implement/docente.service.impl";
 import {ProgramaServiceImpl} from "../../../core/http/implement/programa.service.impl";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {URL_FORMULARIO} from "../../../core/constants/url_formulario.constants";
+import {Observable} from "rxjs";
+import {map, startWith} from "rxjs/operators";
+import {MAT_AUTOCOMPLETE_SCROLL_STRATEGY} from "@angular/material/autocomplete";
 
 interface Food {
   value: string;
@@ -19,19 +23,30 @@ interface Food {
 @Component({
   selector: 'app-visualizar-formularios',
   templateUrl: './visualizar-formularios.component.html',
-  styleUrls: ['./visualizar-formularios.component.scss']
+  styleUrls: ['./visualizar-formularios.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VisualizarFormulariosComponent),
+      multi: true
+    }
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class VisualizarFormulariosComponent implements OnInit {
 
   listFormularios: FormularioResponse[];
 
+  formInicio: FormGroup;
   listDocentes: DocenteResponse[];
+  filteredOptions: Observable<DocenteResponse[]>;
+  docenteControl = new FormControl({value: ''});
+
 
   listProgramas: Programa[];
 
   loading: boolean;
 
-  formInicio: FormGroup;
 
   test: Date = null;
 
@@ -61,17 +76,36 @@ export class VisualizarFormulariosComponent implements OnInit {
   }
 
   crearForm() {
+
+    this.filteredOptions = this.docenteControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
     this.formInicio = this._formBuilder.group({
-      docente: null,
+      docente: '',
     });
 
-    this.formInicio.get('docente').valueChanges.subscribe(res => {
-      this.filtrarPorDocente(res);
-    })
+    this.filteredOptions = this.formInicio.get('docente').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
   }
 
 
-  filtrarPorDocente(idDocente) {
+  private _filter(value: any): DocenteResponse[] {
+    if (typeof value === 'object') {
+      let id = value.usuario.id
+      value = value.usuario.nombre;
+      this.filtrarPorDocente(id)
+    }
+    const filterValue = value.toLowerCase();
+    return this.listDocentes.filter(option => option.usuario.nombre.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+
+   filtrarPorDocente(idDocente) {
+    console.log(idDocente)
     this.listFormularios = this.listAux;
     if (this.listFormularios.length > 0) {
       let aux = [];
@@ -107,7 +141,7 @@ export class VisualizarFormulariosComponent implements OnInit {
     })
   }
 
-  clearParametros(){
+  clearParametros() {
     this.listFormularios = this.listAux;
   }
 
@@ -131,6 +165,6 @@ export class VisualizarFormulariosComponent implements OnInit {
   }
 
   irFormulario(enlace) {
-    document.location.href = 'http://agendadocb.cpsw.ingsistemasufps.co/#/formulario/' + enlace;
+    document.location.href = URL_FORMULARIO.BASE + enlace;
   }
 }

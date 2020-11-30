@@ -35,6 +35,7 @@ import {ClipboardService} from "ngx-clipboard";
 import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
+import {URL_FORMULARIO} from "../../../../core/constants/url_formulario.constants";
 
 @Component({
   selector: 'formulario-add',
@@ -300,7 +301,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
       }
       this.newFormulario.horarios = horarioListAux;
     }
-    this.urlFormulario = "http://agendadocb.cpsw.ingsistemasufps.co/#/formulario/" + this.newFormulario.enlace_uuid_formulario;
+    this.urlFormulario = URL_FORMULARIO.BASE + this.newFormulario.enlace_uuid_formulario;
 
   }
 
