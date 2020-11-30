@@ -10,6 +10,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
+import {MAT_AUTOCOMPLETE_SCROLL_STRATEGY, MatAutocompleteModule} from '@angular/material/autocomplete';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
@@ -70,6 +71,7 @@ import { NotPageComponent } from './not-page/not-page.component';
     MatPaginatorModule,
     MatSortModule,
     MatListModule,
+    MatAutocompleteModule,
   ],
   declarations: [
     VisualizarFormulariosComponent,
