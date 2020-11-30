@@ -107,20 +107,8 @@ export class DirectoresListComponent implements OnInit {
   }
 
   editarDirector(directorResponse: DirectorResponse) {
-    console.log(directorResponse)
     this.dialogService.editDirectorDialog(directorResponse).subscribe(res => {
-      if (res==1) {
-        this.getDirectores();
-        this.toasterService.openSnackBar(
-          'Director editado exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL EDITAR DIRECTOR',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getDirectores();
     });
   }
 

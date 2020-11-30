@@ -6,6 +6,7 @@ import DirectorResponse from "../../../../core/models/director_response.model";
 import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-directores-edit',
@@ -25,11 +26,13 @@ export class DirectoresEditComponent implements OnInit {
   constructor(private directorService: DirectorServiceImpl,
               public dialogRef: MatDialogRef<DirectoresEditComponent>,
               private _formBuilder: FormBuilder,
+              private toasterService: ToasterService,
               private docenteService: DocenteServiceImpl,
               private programaService: ProgramaServiceImpl,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.loading = true;
     this.director = data.directorResponse;
+    console.log(this.director)
     this.listProgramas = [];
   }
 
@@ -42,12 +45,16 @@ export class DirectoresEditComponent implements OnInit {
       this.formEditDirector = this._formBuilder.group({
         codigo_director: [this.director.codigo_director, [Validators.required]],
         nombre: [this.director.usuario.nombre, [Validators.required]],
-        correo: [this.director.usuario.correo,[Validators.required]],
-        programa: [null, [Validators.required]],
+        correo: [this.director.usuario.correo, [Validators.required]],
+        programa: ['', [Validators.required]],
       });
       this.programaService.getAll().subscribe((res: Array<Programa>) => {
+        console.log(res)
         this.listProgramas = res;
-        this.consultarProgramaUso();
+      }, () => {
+      }, () => {
+        console.log(this.director.programas_data[0].id)
+        this.formEditDirector.get('programa').setValue(this.director.programas_data[0].id)
       })
     } else {
       this.formEditDirector = this._formBuilder.group({
@@ -59,29 +66,8 @@ export class DirectoresEditComponent implements OnInit {
   }
 
 
-  consultarProgramaUso() {
-    if (this.director != null && this.director != undefined) {
-      const aux = new Array<number>();
-      this.loading = false;
-      console.log(this.director.usuario.id)
-      this.docenteService.getProgramasByDocente(this.director.usuario.id).subscribe((res: Array<Programa>) => {
-        console.log("respuesta director programa ",res)
-        for (let i of res) {
-            aux.push(i.id);
-          }
-          this.formEditDirector.get('programa').setValue(aux)
-        },
-        () => {
-        },
-        () => {
-          this.loading = true;
-        }
-      )
-    }
-  }
-
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   editarDirector(): void {
@@ -91,18 +77,24 @@ export class DirectoresEditComponent implements OnInit {
     this.director.codigo_director = this.formEditDirector.value.codigo_director;
     this.director.nombre = this.formEditDirector.value.nombre;
     this.director.correo = this.formEditDirector.value.correo;
-    let aux = new Array<number>();
-    aux.push(this.formEditDirector.value.programa)
-    this.director.programas = aux;
+    this.director.programa = this.formEditDirector.value.programa
     console.log(this.director)
-    this.directorService.update(this.director.usuario.id,this.director).subscribe(
+    this.directorService.update(this.director.usuario.id, this.director).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Director actualizado satisfactoriamente',
+          'success'
+        )
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error'
+        )
+        this.dialogRef.close();
       },
       () => {
+        this.dialogRef.close();
         this.loading = true;
       });
   }
