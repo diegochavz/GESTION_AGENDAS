@@ -1,5 +1,8 @@
 import Horario from "./horario.model";
 import Pregunta from "./pregunta.model";
+import Usuario from "./usuario.model";
+import Docente from "./docente.model";
+import DocenteResponse from "./docente_response.model";
 
 export default class FormularioResponse {
 
@@ -18,4 +21,5 @@ export default class FormularioResponse {
   docente: string;
   activo:number;
   fecha_registro: Date;
+  docente_data: DocenteResponse;
 }

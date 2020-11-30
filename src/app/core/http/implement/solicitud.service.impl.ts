@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import Solicitud from "../../models/solicitud.model";
 import {ISolicitudService} from "../solicitud.service.interface";
+import Reporte from "../../models/reporte.model";
 
 @Injectable()
 export class SolicitudServiceImpl extends ServiceImpl<any> implements ISolicitudService {
@@ -30,4 +31,10 @@ export class SolicitudServiceImpl extends ServiceImpl<any> implements ISolicitud
     console.log(id_solicitud, estado)
     return this.httpClient.post(this.apiUrl +path, {"id_solicitud":id_solicitud, "estado":estado}) as Observable<any>;
   }
+
+  generarReporte(reporte: Reporte): Observable<any> {
+    const path = `generar-solicitudes/`;
+    return this.httpClient.post(this.apiUrl +path, reporte) as Observable<any>;
+  }
+
 }

@@ -73,8 +73,8 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-12">
-          <div class="row row-grid">
-            <div class="col-lg-4">
+          <div class="row row-grid ">
+            <div class="col-lg-4"  *ngFor="let formulario of listFormularios">
               <div class="card card-lift--hover shadow border-0">
                 <div class="card-body py-5">
                   <div class="row form-group">
@@ -85,17 +85,16 @@
                     </div>
                     <div class="col-9">
                       <h3>
-                        Docente <br><span class="text-danger text-correo">Nombre del docente</span>
-                        <h3 class="font-weight-light">Correo docente</h3>
+                        Docente <br><span class="text-danger text-correo">{{formulario.docente_data.usuario.nombre}}</span>
+                        <h3 class="font-weight-light">{{formulario.docente_data.usuario.correo}}</h3>
                       </h3>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-12">
                       <h6 class="text-primary text-uppercase">Nombre del formulario</h6>
-                      <p class="description descript-card">Formulario de asesoría 1</p>
+                      <p class="description descript-card">{{formulario.nombre_formulario}}</p>
                     </div>
-
                   </div>
 
                   <div>
@@ -103,73 +102,7 @@
                     <span class="badge badge-pill badge-primary">Programa 2</span>
                     <span class="badge badge-pill badge-primary">Programa 3</span>
                   </div>
-                  <a class="btn btn-warning float-rigth mt-4">Ir al formulario</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="card card-lift--hover shadow border-0">
-                <div class="card-body py-5">
-                  <div class="row form-group">
-                    <div class="col-3">
-                      <div class="icon icon-shape icon-shape-warning rounded-circle mb-4">
-                        <i class="ni ni-single-02"></i>
-                      </div>
-                    </div>
-                    <div class="col-9">
-                      <h3>
-                        Docente <br><span class="text-danger text-correo">Nombre del docente</span>
-                        <h3 class="font-weight-light">Correo docente</h3>
-                      </h3>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                      <h6 class="text-primary text-uppercase">Nombre del formulario</h6>
-                      <p class="description descript-card">Formulario de asesoría 1</p>
-                    </div>
-
-                  </div>
-
-                  <div>
-                    <span class="badge badge-pill badge-primary">Programa 1</span>
-                    <span class="badge badge-pill badge-primary">Programa 2</span>
-                    <span class="badge badge-pill badge-primary">Programa 3</span>
-                  </div>
-                  <a class="btn btn-warning float-rigth mt-4">Ir al formulario</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="card card-lift--hover shadow border-0">
-                <div class="card-body py-5">
-                  <div class="row form-group">
-                    <div class="col-3">
-                      <div class="icon icon-shape icon-shape-warning rounded-circle mb-4">
-                        <i class="ni ni-single-02"></i>
-                      </div>
-                    </div>
-                    <div class="col-9">
-                      <h3>
-                        Docente <br><span class="text-danger text-correo">Nombre del docente</span>
-                        <h3 class="font-weight-light">Correo docente</h3>
-                      </h3>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                      <h6 class="text-primary text-uppercase">Nombre del formulario</h6>
-                      <p class="description descript-card">Formulario de asesoría 1</p>
-                    </div>
-
-                  </div>
-
-                  <div>
-                    <span class="badge badge-pill badge-primary">Programa 1</span>
-                    <span class="badge badge-pill badge-primary">Programa 2</span>
-                    <span class="badge badge-pill badge-primary">Programa 3</span>
-                  </div>
-                  <a class="btn btn-warning float-rigth mt-4">Ir al formulario</a>
+                  <a class="btn btn-warning float-rigth mt-4" (click)="irFormulario(formulario.enlace_uuid_formulario)" >Ir al formulario</a>
                 </div>
               </div>
             </div>
