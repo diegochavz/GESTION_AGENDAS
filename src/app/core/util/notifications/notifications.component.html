@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <p class="size-ico-snack"><i class="fas fa-bell"></i></p>
+    </div>
+    <div class="col-8">
+     <p class="pd-title-snack"> {{data.message}}</p>
+    </div>
+    <div class="col-2">
+      <div (click)="snackBarRef.dismiss()">{{data.buttonText}}</div>
+    </div>
+  </div>
+</div>
+
