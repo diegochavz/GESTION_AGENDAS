@@ -108,6 +108,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
+
   deleteDirectorDialog(idDirector: number) {
     let dialogRef: MatDialogRef<DirectoresDeleteComponent>;
     dialogRef = this.matDialog.open(DirectoresDeleteComponent, {
