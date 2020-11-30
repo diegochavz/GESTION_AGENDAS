@@ -6,7 +6,8 @@
           <img src="./assets/img/brand/logo_ufps.png" class="img-fluid">
         </div>
         <div class="col-md-6 order-md-2 inicio-sesion">
-          <a [routerLink]="['../login']" class="ico-input-color"><p><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp; Inicio de sesión</p></a>
+          <a [routerLink]="['../login']" class="ico-input-color"><p><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;
+            Inicio de sesión</p></a>
         </div>
       </div>
     </div>
@@ -37,28 +38,23 @@
             <div class="col-lg-12">
               <div class="card shadow border-0">
                 <div class="card-body">
-                  <div class="row">
-                    <div class="col-6">
-                      <mat-form-field appearance="fill">
-                        <mat-label>Programas académicos</mat-label>
-                        <mat-select>
-                          <mat-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                  <form [formGroup]="formInicio">
+                    <div class="row">
+                      <div class="col-6">
+                        <mat-form-field class="fluid" appearance="fill">
+                          <mat-label>Docentes</mat-label>
+                          <mat-select formControlName="docente">
+                            <mat-option *ngFor="let docente of listDocentes"
+                                        [value]="docente.usuario.id">{{docente.usuario.nombre}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-6">
+                        <button mat-raised-button color="warn" (click)="getListFormulario()" class="btn-create">Limpiar busqueda
+                        </button>
+                      </div>
                     </div>
-                    <div class="col-6">
-                      <mat-form-field appearance="fill">
-                        <mat-label>Docentes</mat-label>
-                        <mat-select>
-                          <mat-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -74,7 +70,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-12">
           <div class="row row-grid ">
-            <div class="col-lg-4"  *ngFor="let formulario of listFormularios">
+            <div class="col-lg-4" *ngFor="let formulario of listFormularios">
               <div class="card card-lift--hover shadow border-0">
                 <div class="card-body py-5">
                   <div class="row form-group">
@@ -85,7 +81,8 @@
                     </div>
                     <div class="col-9">
                       <h3>
-                        Docente <br><span class="text-danger text-correo">{{formulario.docente_data.usuario.nombre}}</span>
+                        Docente <br><span
+                        class="text-danger text-correo">{{formulario.docente_data.usuario.nombre}}</span>
                         <h3 class="font-weight-light">{{formulario.docente_data.usuario.correo}}</h3>
                       </h3>
                     </div>
@@ -98,11 +95,11 @@
                   </div>
 
                   <div>
-                    <span class="badge badge-pill badge-primary">Programa 1</span>
-                    <span class="badge badge-pill badge-primary">Programa 2</span>
-                    <span class="badge badge-pill badge-primary">Programa 3</span>
+                    <span class="badge badge-pill badge-primary">Tiempo mínimo de agenda {{formulario.tiempo_minimo}}
+                      minutos antes.</span>
                   </div>
-                  <a class="btn btn-warning float-rigth mt-4" (click)="irFormulario(formulario.enlace_uuid_formulario)" >Ir al formulario</a>
+                  <a class="btn btn-warning float-rigth mt-4" (click)="irFormulario(formulario.enlace_uuid_formulario)">Ir
+                    al formulario</a>
                 </div>
               </div>
             </div>
