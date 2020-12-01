@@ -13,6 +13,7 @@ import {DirectorComponent} from "./modulos/director/director.component";
 import {ViewFormularioComponent} from "./modulos/estudiante/view-formulario/view-formulario.component";
 import {NotPageComponent} from "./modulos/estudiante/not-page/not-page.component";
 import {CalificacionAsesoriaComponent} from "./modulos/estudiante/calificacion-asesoria/calificacion-asesoria.component";
+import {RestablecerClaveComponent} from "./security/restablecer-clave/restablecer-clave.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
   , {
     path: 'login',
     component: LoginComponent,
+    pathMatch:"full",
+  },
+  {
+    path: 'restablecer',
+    component: RestablecerClaveComponent,
     pathMatch:"full",
   },
   {

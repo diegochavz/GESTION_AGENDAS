@@ -27,6 +27,7 @@ import {
   MomentDateAdapter, MomentDateModule
 } from "@angular/material-moment-adapter";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { RestablecerClaveComponent } from './security/restablecer-clave/restablecer-clave.component';
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     EstudianteComponent,
     DirectorComponent,
     LoginComponent,
+    RestablecerClaveComponent,
   ],
   providers:[
     {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},

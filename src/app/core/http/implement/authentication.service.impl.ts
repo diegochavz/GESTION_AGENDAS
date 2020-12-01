@@ -54,4 +54,10 @@ export class AuthenticationServiceImpl extends ServiceImpl<any> implements IAuth
     localStorage.removeItem('CURRENT_USER');
   }
 
+  restablecerClave(correo: string): Observable<any> {
+    let path = this.apiUrl + "recuperar-cuenta/"
+    return this.httpClient.post(path, {'correo':correo}) as Observable<any>;
+  }
+
+
 }
