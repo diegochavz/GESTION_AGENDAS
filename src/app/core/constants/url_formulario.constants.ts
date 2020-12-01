@@ -1,4 +1,4 @@
 export const URL_FORMULARIO = {
-  BASE: 'http://agendadocb.cpsw.ingsistemasufps.co/#/formulario/',
-  BASE_ASESORIA: 'http://agendadocb.cpsw.ingsistemasufps.co/#/calificacion/',
+  BASE: 'http://agendadoc.cpsw.ingsistemasufps.co/#/formulario/',
+  BASE_ASESORIA: 'http://agendadoc.cpsw.ingsistemasufps.co/#/calificacion/',
 }
