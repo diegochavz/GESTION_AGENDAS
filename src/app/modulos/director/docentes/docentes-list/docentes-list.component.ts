@@ -57,7 +57,15 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
     this.docentes = [];
     this.programaService.getDocentesByPrograma(this.authenticationService.currentUserValue.programas[0].id).subscribe(
       (listDocentes: DocenteResponse[])=>{
-        this.docentes = listDocentes;
+        let aux = []
+        console.log("USER ID",this.authenticationService.currentUserValue.programas[0].id)
+        for(let i of listDocentes){
+          console.log("RES ID",i.usuario.id)
+          if(i.usuario.id != this.authenticationService.currentUserValue.user_id){
+            aux.push(i);
+          }
+        }
+        this.docentes = aux;
         this.dataSource = new MatTableDataSource(this.docentes);
       },
       (error) => {

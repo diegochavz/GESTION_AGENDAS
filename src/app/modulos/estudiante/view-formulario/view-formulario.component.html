@@ -83,6 +83,7 @@
                   <div class="container-fluid">
                     <div class="row">
                       <div class="col-lg-12">
+                        <p>FECHA SELECCIONADA: {{fechaEscogida}}</p>
                         <p class="m-t-subtitle-stepper"> Cada asesoría tiene una duración de
                           <span>{{duracionAsesoria}}</span> minutos
                         </p>
@@ -92,7 +93,7 @@
                       <div class="col-lg-2"></div>
                       <div class="col-8">
                         <mat-radio-group class="text-center">
-                          <div *ngFor="let horario of listHorariosDisponibles" (click)="selectedHorario(horario)" >
+                          <div *ngFor="let horario of listHorariosDisponibles" (click)="selectedHorario(horario)">
                             <mat-radio-button class="border-circle card" value="{{horario.inicio_horario}}">
                               {{formatHora(horario.inicio_horario)}} - {{formatHora(horario.fin_horario)}}
                             </mat-radio-button>
@@ -152,7 +153,8 @@
                       <h3 class="pr-2">¿Deseas subir archivos?</h3><br/>
                       <div class="form-group">
                         <label for="file"></label>
-                        <input formControlName="file" id="file" type="file" class="form-control" (change)="onFileChange($event)">
+                        <input formControlName="file" id="file" type="file" class="form-control"
+                               (change)="onFileChange($event)">
                       </div>
                     </div>
                     <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría académica</h3><br/></div>
@@ -249,7 +251,8 @@
                       <div class="col-lg-12">
                         <a class="fluid" mat-icon-button color="primary" (click)="agregarIntegrante()">
                           <p class="ico-input-color"><i class="fas fa-plus-circle"></i> Agregar integrante
-                            <mat-icon matSuffix><a matTooltip="Incluir nuevo integrante a la asesoría" matTooltipPosition="after">
+                            <mat-icon matSuffix><a matTooltip="Incluir nuevo integrante a la asesoría"
+                                                   matTooltipPosition="after">
                               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                           </p>
                         </a>
@@ -258,7 +261,8 @@
                   </div>
                   <mat-action-row>
                     <a mat-button (click)="prevStep()">Anterior</a>
-                    <a mat-raised-button color="accent" (click)="onFormSubmit()">Agendar</a>
+                    <a mat-raised-button color="accent" (click)="onFormSubmit()"
+                       [disabled]=" (horarioAsesoria==null && horarioAsesoria == undefined ) || formularioAddAsesoria.invalid">Agendar</a>
                   </mat-action-row>
                 </mat-expansion-panel>
               </mat-accordion>

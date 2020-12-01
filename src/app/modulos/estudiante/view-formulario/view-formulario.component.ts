@@ -69,6 +69,8 @@ export class ViewFormularioComponent implements OnInit {
 
   file: File;
 
+  fechaEscogida:string;
+
   constructor(private route: ActivatedRoute,
               private docenteService: DocenteServiceImpl,
               private routes: Router,
@@ -89,6 +91,7 @@ export class ViewFormularioComponent implements OnInit {
     this.maxDateCalendar = new Date();
     this.loading = true;
     this.nombreDocente = '';
+    this.fechaEscogida = '';
     const uuid = this.route.snapshot.paramMap.get('enlace');
     this.getFormulario(uuid);
     this.listProgramas = [];
@@ -113,12 +116,10 @@ export class ViewFormularioComponent implements OnInit {
 
   crearFormAddAsesoria() {
     this.formularioAddAsesoria = this._formBuilder.group({
-      fecha_asesoría: ['', [Validators.required]],
-      hora_asesoría: ['', [Validators.required]],
       preguntas: this._formBuilder.array([]),
       integrantes: this._formBuilder.array([]),
-      file: '',
       es_virtual: false,
+      file:'',
     })
   }
 
@@ -266,6 +267,7 @@ export class ViewFormularioComponent implements OnInit {
   /****CONFIGURACIÓN DE HORARIOS DE ATENCIÓN***/
 
   onSelect(event) {
+    this.fechaEscogida = moment(event).format('YYYY-MM-DD')
     this.calcularHorariosDisponibles(event);
   }
 

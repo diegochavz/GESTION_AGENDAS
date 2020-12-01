@@ -404,3 +404,21 @@ table {
 .pd-bottom-edit{
   padding-bottom: 50px!important;
 }
+
+@media screen and (max-width: 1000px) {
+  .reduce-margin-panel-programas {
+    margin-bottom: -250px!important;
+  }
+
+  .reduce-margin-panel-directores {
+    margin-bottom: -250px!important;
+  }
+
+ /* .mat-row, .mat-header-row {
+    max-width: 300px;
+    width: 100%;
+  }*/
+
+}
+
+
