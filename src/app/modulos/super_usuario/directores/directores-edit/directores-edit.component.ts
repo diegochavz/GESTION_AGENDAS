@@ -50,7 +50,6 @@ export class DirectoresEditComponent implements OnInit {
         programa: [{value: '', disabled: true}, [Validators.required]],
       });
       this.programaService.getAll().subscribe((res: Array<Programa>) => {
-        console.log(res)
         this.listProgramas = res;
       }, () => {
       }, () => {
@@ -77,9 +76,7 @@ export class DirectoresEditComponent implements OnInit {
     directorAux.nombre = this.formEditDirector.value.nombre
     directorAux.codigo_director = this.formEditDirector.value.codigo_director
     directorAux.correo = this.formEditDirector.value.correo
-    console.log(this.formEditDirector.getRawValue().programa);
     directorAux.programa = this.formEditDirector.getRawValue().programa
-    console.log(directorAux)
     this.directorService.update(this.director.usuario.id, directorAux).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(
