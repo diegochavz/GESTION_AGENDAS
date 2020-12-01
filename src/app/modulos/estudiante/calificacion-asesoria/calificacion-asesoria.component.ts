@@ -86,9 +86,6 @@ export class CalificacionAsesoriaComponent implements OnInit {
   onSubmit() {
     if (this.escala > 0) {
       let val = this.formData.get("observacion").value;
-      console.log(this.escala)
-      console.log(val)
-
       this.solicitudService.setCalificacionAsesoria(this.idSolicitud, this.escala, val).subscribe(()=>{
         this.toasterService.openSnackBarCumtom(
           'Calificación realizada satisfactoriamente',

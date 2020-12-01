@@ -62,6 +62,48 @@ export class SolicitudesShowComponent implements OnInit {
     a.remove();
   }
 
+  get calificada():boolean{
+    if(!this.solicitud!=null && this.solicitud!=undefined) {
+      return this.solicitud.calificada ;
+    }
+    return false;
+  }
+
+  get calificacion():string{
+    if(!this.solicitud!=null && this.solicitud!=undefined){
+      if(this.solicitud.calificada == true){
+        switch (this.solicitud.calificacion) {
+          case 1:
+            return "NADA SATISFECHO";
+          case 2:
+            return "POCO SATISFECHO";
+          case 3:
+            return "NEUTRAL";
+          case 4:
+            return "MUY SATISFECHO";
+          case 5:
+            return "TOTALMENTE SATISFECHO";
+          default:
+            return '';
+        }
+      } else{
+        return ''
+      }
+    }
+    return '';
+  }
+
+  get observacion():string{
+    if(!this.solicitud!=null && this.solicitud!=undefined){
+      if(this.solicitud.calificada == true){
+        return this.solicitud.observaciones_calificacion;
+      } else {
+        return '';
+      }
+    }
+    return '';
+  }
+
   get archivo(){
     if(!this.solicitud!=null && this.solicitud!=undefined){
       if(this.solicitud.filename != null && this.solicitud.filename != undefined && this.solicitud.filename != '')
