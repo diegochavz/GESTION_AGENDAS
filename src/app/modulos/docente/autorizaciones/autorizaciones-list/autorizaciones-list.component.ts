@@ -95,18 +95,7 @@ export class AutorizacionesListComponent implements OnInit {
 
   eliminarAutorizacion(idSolicitud: number) {
     this.dialogService.deleteAutorizacionDialog(idSolicitud).subscribe(res => {
-      if (res == 1) {
-        this.getSolicitudes();
-        this.toasterService.openSnackBar(
-          'AUTORIZACIÓN NO APROBADA',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if (res == 2) {
-        this.toasterService.openSnackBar(
-          'ERROR AL DESAPROBAR LA AUTORIZACIÓN',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getSolicitudes();
     });
   }
 
