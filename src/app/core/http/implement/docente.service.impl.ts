@@ -55,4 +55,9 @@ export class DocenteServiceImpl extends ServiceImpl<any> implements IDocenteServ
   return this.httpClient.delete(this.apiUrl + path) as Observable<any>;
   }
 
+  loadDataDocente(data): Observable<any> {
+    const path = this.apiUrl+`upload-docentes/`;
+    return this.httpClient.post(path, data) as Observable<any>;
+  }
+
 }

@@ -4,6 +4,7 @@ import Estudiante from "../../../../core/models/estudiante.model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {EstudianteServiceImpl} from "../../../../core/http/implement/estudiante.service.impl";
 import EstudianteRequest from "../../../../core/models/estudiante_request.model";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-estudiantes-edit',
@@ -21,7 +22,8 @@ export class EstudiantesEditComponent implements OnInit {
   constructor(private estudianteService: EstudianteServiceImpl,
               public dialogRef: MatDialogRef<EstudiantesEditComponent>,
               private _formBuilder: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private toasterService: ToasterService,) {
     this.loading = true;
     this.estudiante = data.estudiante;
   }
@@ -42,7 +44,7 @@ export class EstudiantesEditComponent implements OnInit {
 
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   editarEstudiante(): void {
@@ -57,10 +59,16 @@ export class EstudiantesEditComponent implements OnInit {
 
     this.estudianteService.update( estudianteAux.id, estudianteAux).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Estudiante actualizado satisfactoriamente',
+          'success')
+        this.dialogRef.close();
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+        this.dialogRef.close();
       },
       () => {
         this.loading = true;

@@ -4,6 +4,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {EstudianteServiceImpl} from "../../../../core/http/implement/estudiante.service.impl";
 import Estudiante from "../../../../core/models/estudiante.model";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-estudiantes-add',
@@ -23,9 +24,9 @@ export class EstudiantesAddComponent implements OnInit {
   constructor(private estudianteService: EstudianteServiceImpl,
               public dialogRef: MatDialogRef<EstudiantesAddComponent>,
               private authenticationService : AuthenticationServiceImpl,
-              private _formBuilder: FormBuilder) {
+              private _formBuilder: FormBuilder,
+              private toasterService: ToasterService) {
     this.idDocente = authenticationService.currentUserValue.user_id;
-    console.log("programas docente ",this.authenticationService.currentUserValue.programas)
     this.idPrograma = authenticationService.currentUserValue.programas[0].programa;
     this.loading = true;
   }
@@ -40,7 +41,7 @@ export class EstudiantesAddComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   registrarEstudiante(): void {
@@ -49,13 +50,18 @@ export class EstudiantesAddComponent implements OnInit {
     newEstudiante.programa = this.idPrograma;
     newEstudiante.ids_docentes = [this.idDocente]
     newEstudiante.docentes = [this.idDocente]
-    console.log(JSON.stringify(newEstudiante))
     this.estudianteService.save(newEstudiante).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Estudiante creado satisfactoriamente',
+          'success')
+        this.dialogRef.close();
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+        this.dialogRef.close();
       },
       () => {
         this.loading = true;

@@ -43,6 +43,8 @@ import {DocentesEditComponent} from "./docentes/docentes-edit/docentes-edit.comp
 import {DocentesAddComponent} from "./docentes/docentes-add/docentes-add.component";
 import {DocentesDeleteComponent} from "./docentes/docentes-delete/docentes-delete.component";
 import {SolicitudesShowComponent} from "../docente/solicitudes/solicitudes-show/solicitudes-show.component";
+import { LoadDataDocenteComponent } from './docentes/load-data-docente/load-data-docente.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   imports: [
@@ -74,6 +76,7 @@ import {SolicitudesShowComponent} from "../docente/solicitudes/solicitudes-show/
     MatPaginatorModule,
     MatSortModule,
     MatListModule,
+    MatDialogModule,
   ],
   declarations: [
     MainDirectorComponent,
@@ -81,6 +84,7 @@ import {SolicitudesShowComponent} from "../docente/solicitudes/solicitudes-show/
     DocentesEditComponent,
     DocentesAddComponent,
     DocentesDeleteComponent,
+    LoadDataDocenteComponent,
   ],
   entryComponents:[
     DocentesListComponent,
@@ -88,6 +92,7 @@ import {SolicitudesShowComponent} from "../docente/solicitudes/solicitudes-show/
     DocentesAddComponent,
     DocentesDeleteComponent,
     SolicitudesShowComponent,
+    LoadDataDocenteComponent,
   ]
   ,
   providers:[

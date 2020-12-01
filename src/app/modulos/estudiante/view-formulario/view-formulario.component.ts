@@ -29,6 +29,7 @@ import EstudianteResponse from "../../../core/models/estudiante_response.model";
 import Programa from "../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../core/http/implement/programa.service.impl";
 import Turno from "../../../core/models/turno.model";
+import {v4 as uuidv4} from 'uuid';
 
 @Component({
   selector: 'app-view-formulario',
@@ -372,6 +373,7 @@ export class ViewFormularioComponent implements OnInit {
     formData.append('fecha', this.horarioAsesoria.fecha_horario)
     formData.append('hora', this.formatHora(this.horarioAsesoria.inicio_horario))
     formData.append('archivo', this.file)
+    formData.append('enlace_uuid_solicitud',uuidv4())
 
     let resAux = new Array<Respuesta>()
     for (let i = 0; i < this.preguntas.controls.length; i++) {

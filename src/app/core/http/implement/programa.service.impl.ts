@@ -27,4 +27,10 @@ export class ProgramaServiceImpl extends ServiceImpl<Programa> implements IProgr
     const path = `${idPrograma}/docentes-simple/`;
     return this.executeGet(path) as Observable<any[]>;
   }
+
+  loadDataProgramas(data): Observable<any> {
+    const path = this.apiUrl+`upload-programas/`;
+    return this.httpClient.post(path, data) as Observable<any>;
+  }
+
 }

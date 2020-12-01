@@ -4,5 +4,4 @@ import {CalificacionAsesoriaComponent} from "./calificacion-asesoria/calificacio
 
 export const EstudianteRoutes: Routes = [
   { path: 'formularios',      component: VisualizarFormulariosComponent  },
-  { path: 'calificacion-asesoria',      component: CalificacionAsesoriaComponent  },
 ];

@@ -42,16 +42,16 @@ export class LoginComponent implements OnInit {
   onFormSubmit() {
     this.loading = false;
     let user = <User>Object.assign({}, this.formLogin.value);
-    this.authenticationService.login(user).pipe(first()).subscribe((data: UserResponse) =>{
-        if(data){
+    this.authenticationService.login(user).pipe(first()).subscribe((data: UserResponse) => {
+        if (data) {
           this.validate.validateUser(data.tipo_usuario);
         }
       },
       error => {
         this.error = "Mensaje: " + error;
-        console.log("errror -> "+error)
-      }, ()=>{
-      this.loading = true;
+        this.loading = true;
+      }, () => {
+        this.loading = true;
       })
   }
 

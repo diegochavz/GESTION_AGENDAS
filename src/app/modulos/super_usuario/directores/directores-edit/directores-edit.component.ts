@@ -7,6 +7,7 @@ import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {ToasterService} from "../../../../core/services/toaster.service";
+import Director from "../../../../core/models/director.model";
 
 @Component({
   selector: 'app-directores-edit',
@@ -46,7 +47,7 @@ export class DirectoresEditComponent implements OnInit {
         codigo_director: [this.director.codigo_director, [Validators.required]],
         nombre: [this.director.usuario.nombre, [Validators.required]],
         correo: [this.director.usuario.correo, [Validators.required]],
-        programa: ['', [Validators.required]],
+        programa: [{value: '', disabled: true}, [Validators.required]],
       });
       this.programaService.getAll().subscribe((res: Array<Programa>) => {
         console.log(res)
@@ -72,13 +73,14 @@ export class DirectoresEditComponent implements OnInit {
 
   editarDirector(): void {
     this.loading = false;
-    this.director.usuario.nombre = this.formEditDirector.value.nombre;
-    this.director.usuario.correo = this.formEditDirector.value.correo;
-    this.director.codigo_director = this.formEditDirector.value.codigo_director;
-    this.director.nombre = this.formEditDirector.value.nombre;
-    this.director.correo = this.formEditDirector.value.correo;
-    this.director.programa = this.formEditDirector.value.programa
-    this.directorService.update(this.director.usuario.id, this.director).subscribe(
+    let directorAux = new Director();
+    directorAux.nombre = this.formEditDirector.value.nombre
+    directorAux.codigo_director = this.formEditDirector.value.codigo_director
+    directorAux.correo = this.formEditDirector.value.correo
+    console.log(this.formEditDirector.getRawValue().programa);
+    directorAux.programa = this.formEditDirector.getRawValue().programa
+    console.log(directorAux)
+    this.directorService.update(this.director.usuario.id, directorAux).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(
           'Director actualizado satisfactoriamente',

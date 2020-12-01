@@ -5,6 +5,7 @@ import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {MatDialogRef} from "@angular/material/dialog";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-docentes-add',
@@ -22,7 +23,8 @@ export class DocentesAddComponent implements OnInit {
   constructor(private programaService: ProgramaServiceImpl,
               private docenteService: DocenteServiceImpl,
               public dialogRef: MatDialogRef<DocentesAddComponent>,
-              private _formBuilder: FormBuilder,) {
+              private _formBuilder: FormBuilder,
+              private toasterService: ToasterService) {
     this.listProgramas = [];
     this.loading = true;
   }
@@ -42,11 +44,15 @@ export class DocentesAddComponent implements OnInit {
     this.listProgramas = [];
     this.programaService.getAll().subscribe((res:Array<Programa>)=>{
       this.listProgramas = res;
+    },(error)=>{
+      this.toasterService.openSnackBarCumtom(
+        error,
+        'error')
     })
   }
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   registrarDocente(): void {
@@ -55,10 +61,16 @@ export class DocentesAddComponent implements OnInit {
     console.log(newDocente)
     this.docenteService.save(newDocente).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Docente creado satisfactoriamente',
+          'success')
+        this.dialogRef.close();
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+        this.dialogRef.close();
       },
       () => {
         this.loading = true;

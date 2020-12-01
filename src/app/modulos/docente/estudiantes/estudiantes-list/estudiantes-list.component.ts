@@ -56,12 +56,14 @@ export class EstudiantesListComponent implements OnInit {
     this.estudiantes = [];
     this.docenteService.getEstudiantesByDocente(this.idDocente).subscribe(
       (listEstudiantes: Array<EstudianteRequest>) => {
-        console.log(listEstudiantes)
         this.estudiantes = listEstudiantes;
         this.dataSource = new MatTableDataSource(this.estudiantes);
       },
       (error) => {
-        console.log("ERROR -> LISTAR ESTUDIANTES")
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+
       },
       () => {
         this.loading = true;
@@ -78,70 +80,25 @@ export class EstudiantesListComponent implements OnInit {
 
   eliminarEstudiante(idEstudiante: number) {
     this.dialogService.deleteEstudianteDialog(idEstudiante).subscribe(res => {
-      if (res==1) {
-        this.getEstudiantes();
-        this.toasterService.openSnackBar(
-          'Estudiante eliminado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      }else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL ELIMINAR ESTUDIANTE',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getEstudiantes();
     });
   }
 
   agregarEstudiante() {
     this.dialogService.addEstudianteDialog().subscribe(res => {
-      if (res == 1) {
-        this.getEstudiantes();
-        this.toasterService.openSnackBar(
-          'Estudiante agregado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL AGREGAR ESTUDIANTE',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getEstudiantes();
     });
   }
 
   editarEstudiante(estudiante: EstudianteRequest) {
     this.dialogService.editEstudianteDialog(estudiante).subscribe(res => {
-      if (res == 1) {
-        this.getEstudiantes();
-        this.toasterService.openSnackBar(
-          'Estudiante editado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL EDITAR ESTUDIANTE',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getEstudiantes();
     });
   }
 
   loadDataEstudiante(){
     this.dialogService.loadDataEstudianteDialog().subscribe(res => {
-      if (res == 1) {
-        this.getEstudiantes();
-        this.toasterService.openSnackBarCumtom(
-          'Información importada con exito',
-          'success'
-        )
-
-      } else if(res==2){
-        this.toasterService.openSnackBarCumtom(
-          'Ha ocurrido un error inesperado',
-          'error'
-        )
-      }
+      this.getEstudiantes();
     });
   }
 }

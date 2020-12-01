@@ -117,18 +117,7 @@ export class AutorizacionesListComponent implements OnInit {
 
   aprobarAutorizacion(idSolicitud: number) {
     this.dialogService.approveAutorizacionDialog(idSolicitud).subscribe(res => {
-      if (res == 1) {
-        this.getSolicitudes();
-        this.toasterService.openSnackBarCumtom(
-          'Autorización aprobada con exito',
-          'success'
-        )
-      } else if (res == 2) {
-        this.toasterService.openSnackBarCumtom(
-          'Autorización aprobada con exito',
-          'success'
-        )
-      }
+      this.getSolicitudes();
     });
   }
 

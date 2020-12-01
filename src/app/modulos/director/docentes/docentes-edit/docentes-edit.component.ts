@@ -1,14 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import Docente from "../../../../core/models/docente.model";
 import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import DocenteResponse from "../../../../core/models/docente_response.model";
 import Usuario from "../../../../core/models/usuario.model";
-import FormularioResponse from "../../../../core/models/formulario_response.model";
 import ProgramaResponse from "../../../../core/models/programa_response.model";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-docentes-edit',
@@ -31,6 +30,7 @@ export class DocentesEditComponent implements OnInit {
               private docenteService: DocenteServiceImpl,
               public dialogRef: MatDialogRef<DocentesEditComponent>,
               private _formBuilder: FormBuilder,
+              private toasterService: ToasterService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.listProgramas = [];
     this.loading = true;
@@ -53,6 +53,11 @@ export class DocentesEditComponent implements OnInit {
       this.programaService.getAll().subscribe((res: Array<Programa>) => {
         this.listProgramas = res;
         this.consultarProgramas();
+      }, (error)=>{
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+
       })
     }
   }
@@ -71,7 +76,10 @@ export class DocentesEditComponent implements OnInit {
           }
           this.formEditDocente.get('programas').setValue(aux)
         },
-        () => {
+        (error) => {
+          this.toasterService.openSnackBarCumtom(
+            error,
+            'error')
         },
         () => {
 
@@ -82,7 +90,7 @@ export class DocentesEditComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   editarDocente(): void {
@@ -100,10 +108,17 @@ export class DocentesEditComponent implements OnInit {
     console.log(JSON.stringify(editDocente))
     this.docenteService.update(editDocente.usuario.id, editDocente).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Docente actualizado satisfactoriamente',
+          'success')
+
+        this.dialogRef.close();
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+        this.dialogRef.close();
       },
       () => {
         this.loading = true;

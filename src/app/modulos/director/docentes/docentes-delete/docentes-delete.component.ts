@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-docentes-delete',
@@ -14,7 +15,8 @@ export class DocentesDeleteComponent implements OnInit {
 
   constructor(private docenteService: DocenteServiceImpl,
               public dialogRef: MatDialogRef<DocentesDeleteComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private toasterService: ToasterService) {
     this.idDocente = data.idDocente;
     this.loading = true;
   }
@@ -24,17 +26,23 @@ export class DocentesDeleteComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close();
   }
 
   borrar():void{
     this.loading = false;
     this.docenteService.delete(this.idDocente).subscribe(
       () => {
-        this.dialogRef.close(1);
+        this.toasterService.openSnackBarCumtom(
+          'Docente eliminado satisfactoriamente',
+          'success')
+        this.dialogRef.close();
       },
       (error) => {
-        this.dialogRef.close(2);
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+        this.dialogRef.close();
       },
       ()=>{
         this.loading = true;

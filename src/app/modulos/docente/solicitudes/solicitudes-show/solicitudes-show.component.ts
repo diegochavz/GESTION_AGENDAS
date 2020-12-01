@@ -43,6 +43,22 @@ export class SolicitudesShowComponent implements OnInit {
     })
   }
 
+  descargarArchivo(){
+
+  }
+
+  downloadFile(data: any, nombre: string, format: string) {
+    let url = window.URL.createObjectURL(new Blob([data]));
+    let a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display:none');
+    a.href = url;
+    a.download = `${nombre}.${format}`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
+
   get nombreFormulario():string{
     if(!this.solicitud!=null && this.solicitud!=undefined){
       return this.solicitud.formulario_data.nombre_formulario;
