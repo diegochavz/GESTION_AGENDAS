@@ -5,6 +5,7 @@ import SolicitudResponse from "../../../../core/models/solicitud_response.model"
 import {SolicitudServiceImpl} from "../../../../core/http/implement/solicitud.service.impl";
 import Respuesta from "../../../../core/models/respuesta.model";
 import SolicitudEstudiante from "../../../../core/models/solicitud_estudiante.model";
+import {URL_DOCUMENTO} from "../../../../core/constants/url_formulario.constants";
 
 @Component({
   selector: 'app-solicitudes-show',
@@ -34,10 +35,12 @@ export class SolicitudesShowComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = false;
-    this.solicitudService.get(this.idSolicitud).subscribe((res:SolicitudResponse) =>{
+    this.solicitudService.get(this.idSolicitud).subscribe((res) =>{
       this.solicitud = res;
       this.listEstudiantes = res.estudiantes_data;
+      console.log(this.listEstudiantes)
       this.listRespuestas = res.respuestas_data;
+      console.log(this.listRespuestas)
     },()=>{}, ()=>{
       this.loading = true;
     })
@@ -61,9 +64,12 @@ export class SolicitudesShowComponent implements OnInit {
 
   get archivo(){
     if(!this.solicitud!=null && this.solicitud!=undefined){
-      return this.solicitud.archivo;
+      if(this.solicitud.filename != null && this.solicitud.filename != undefined && this.solicitud.filename != '')
+      return URL_DOCUMENTO.BASE_DOCUMENTO+ this.solicitud.filename;
+    } else {
+      return null;
     }
-    return '';
+    return null;
   }
 
   get nombreFormulario():string{

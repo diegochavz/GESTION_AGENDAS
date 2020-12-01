@@ -24,4 +24,5 @@ export default class SolicitudResponse {
   formulario_data: FormularioResponse;
   respuestas_data: Respuesta[];
   estudiantes_data:SolicitudEstudiante[];
+  filename:string;
 }

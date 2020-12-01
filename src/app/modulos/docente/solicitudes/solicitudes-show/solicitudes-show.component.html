@@ -49,13 +49,13 @@
             <div *ngFor="let est of listEstudiantes">
               <p><span mat-line> Código:</span> {{est.codigo_estudiante}} <br>
                 <span mat-line> Nombre:</span> {{est.nombre_estudiante}} <br>
-                <span mat-line> Programa:</span> {{est.nombre_programa}} <br>
+                <!--<span mat-line> Programa:</span> {{est.nombre_programa}} <br>-->
                 <span mat-line> Correo:</span> {{est.correo_estudiante}} </p>
               <mat-divider class="pd-mar-div"></mat-divider>
             </div>
           </mat-list-item>
         </div>
-        <div *ngIf="archivo.length>0" class="list-group-item list-group-item-action ">
+        <div *ngIf="archivo!=null" class="list-group-item list-group-item-action ">
           <div class="d-flex w-100 justify-content-between">
             <div mat-subheader class="modal-title-item">Descargar documento</div>
           </div>
