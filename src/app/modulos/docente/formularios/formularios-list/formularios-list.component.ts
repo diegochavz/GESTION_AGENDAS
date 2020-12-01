@@ -20,6 +20,8 @@ import {ClipboardService} from "ngx-clipboard";
 import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
+import {NavigationStart, Router} from "@angular/router";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-formularios-list',
@@ -52,7 +54,8 @@ export class FormulariosListComponent implements OnInit {
               private dialogService: DialogService,
               private toasterService: ToasterService,
               private validate: ValidateService,
-              private authenticationService: AuthenticationServiceImpl) {
+              private authenticationService: AuthenticationServiceImpl,
+              private router: Router) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = true;
@@ -60,6 +63,12 @@ export class FormulariosListComponent implements OnInit {
     this.formularios = [];
     this.dataSource = new MatTableDataSource(this.formularios);
     this.getFormularios();
+    router.events.forEach((event) => {
+      if(event instanceof NavigationStart) {
+        if('/docente/listar-formularios' === event.url)
+       this.getFormularios();
+      }
+    });
   }
 
   ngOnInit(): void {
