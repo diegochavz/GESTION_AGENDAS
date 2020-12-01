@@ -59,6 +59,13 @@ export class SolicitudesShowComponent implements OnInit {
     a.remove();
   }
 
+  get archivo(){
+    if(!this.solicitud!=null && this.solicitud!=undefined){
+      return this.solicitud.archivo;
+    }
+    return '';
+  }
+
   get nombreFormulario():string{
     if(!this.solicitud!=null && this.solicitud!=undefined){
       return this.solicitud.formulario_data.nombre_formulario;

@@ -55,13 +55,13 @@
             </div>
           </mat-list-item>
         </div>
-        <div class="list-group-item list-group-item-action ">
+        <div *ngIf="archivo.length>0" class="list-group-item list-group-item-action ">
           <div class="d-flex w-100 justify-content-between">
             <div mat-subheader class="modal-title-item">Descargar documento</div>
           </div>
           <mat-list-item>
             <p>Descarga el documento subido por el estudiante al sistema</p>
-            <button mat-stroked-button color="warn" (click)="descargarArchivo()">Descargar Archivo</button>
+            <a mat-stroked-button color="warn" href="{{archivo}}" >Descargar Archivo</a>
             <mat-divider class="pd-mar-div"></mat-divider>
           </mat-list-item>
         </div>
