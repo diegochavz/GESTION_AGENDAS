@@ -46,6 +46,7 @@ import {SolicitudesShowComponent} from "../docente/solicitudes/solicitudes-show/
 import { LoadDataDocenteComponent } from './docentes/load-data-docente/load-data-docente.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { PerfilDirectorComponent } from './perfil-director/perfil-director.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   imports: [
@@ -78,6 +79,7 @@ import { PerfilDirectorComponent } from './perfil-director/perfil-director.compo
     MatSortModule,
     MatListModule,
     MatDialogModule,
+    MatCardModule,
   ],
   declarations: [
     MainDirectorComponent,

@@ -9,6 +9,9 @@ import {ToasterService} from "../../../core/services/toaster.service";
 import {AuthenticationServiceImpl} from "../../../core/http/implement/authentication.service.impl";
 import ProgramaResponse from "../../../core/models/programa_response.model";
 import Usuario from "../../../core/models/usuario.model";
+import DirectorResponse from "../../../core/models/director_response.model";
+import {DirectorServiceImpl} from "../../../core/http/implement/director.service.impl";
+import Director from "../../../core/models/director.model";
 
 @Component({
   selector: 'app-perfil-director',
@@ -19,34 +22,32 @@ export class PerfilDirectorComponent implements OnInit {
 
   loading: boolean;
 
-  formEditDocente: FormGroup;
+  formEditDirector: FormGroup;
+
+  director: DirectorResponse;
 
   listProgramas: Array<Programa>;
 
-  docente: DocenteResponse;
-
-  listProgramasUso: number[];
-
-  constructor(private programaService: ProgramaServiceImpl,
-              private docenteService: DocenteServiceImpl,
-              public dialogRef: MatDialogRef<PerfilDirectorComponent>,
+  constructor(private directorService: DirectorServiceImpl,
               private _formBuilder: FormBuilder,
               private toasterService: ToasterService,
+              private docenteService: DocenteServiceImpl,
+              private programaService: ProgramaServiceImpl,
               private authenticationService: AuthenticationServiceImpl) {
-    this.listProgramas = [];
     this.loading = true;
-    this.listProgramasUso = [];
+    this.listProgramas = [];
   }
 
   ngOnInit(): void {
-    this.getDocente();
+    this.getDirector();
     this.crearForm();
   }
+
   crearForm(){
-    this.formEditDocente = this._formBuilder.group({
-      codigo_docente: ['', [Validators.required]],
+    this.formEditDirector = this._formBuilder.group({
+      codigo_director: ['', [Validators.required]],
       nombre: ['',[Validators.required]],
-      programas: [null, [Validators.required]],
+      programa: [{value: '', disabled: true}, [Validators.required]],
       correo: ['',[Validators.required]],
     });
 
@@ -60,84 +61,49 @@ export class PerfilDirectorComponent implements OnInit {
     })
   }
 
-  getDocente(){
+  getDirector(){
     this.loading = false;
-    this.docenteService.get(this.authenticationService.currentUserValue.user_id).subscribe(res =>{
-      this.docente= res;
+    this.directorService.get(this.authenticationService.currentUserValue.user_id).subscribe(res =>{
+      this.director = res;
     }, (error) =>{
       this.toasterService.openSnackBarCumtom(
         error,
         'error'
       )
     },()=>{
-      this.cargarDatosDocente();
-      this.consultarProgramas();
+      this.cargarDatosDirector();
       this.loading = true;
     })
   }
 
-  cargarDatosDocente(){
-    this.formEditDocente.get('codigo_docente').setValue(this.docente.usuario.id)
-    this.formEditDocente.get('nombre').setValue(this.docente.usuario.nombre)
-    this.formEditDocente.get('programas').setValue(null)
-    this.formEditDocente.get('correo').setValue(this.docente.usuario.correo)
-
+  cargarDatosDirector(){
+    this.formEditDirector.get('codigo_director').setValue(this.director.codigo_director)
+    this.formEditDirector.get('nombre').setValue(this.director.usuario.nombre)
+    this.formEditDirector.get('programa').setValue(this.director.programas_data[0].id)
+    this.formEditDirector.get('correo').setValue(this.director.usuario.correo)
   }
 
-  consultarProgramas() {
-      const aux = new Array<number>();
-      this.loading = false;
-      this.docenteService.getProgramasNormalByDocente(this.authenticationService.currentUserValue.user_id).subscribe((res: Array<ProgramaResponse>) => {
-          for (let i of res) {
-            aux.push(i.programa);
-            if(i.esta_vinculado == true){
-              this.listProgramasUso.push(i.programa)
-            }
-          }
-          this.formEditDocente.get('programas').setValue(aux)
-        },
-        (error) => {
-          this.toasterService.openSnackBarCumtom(
-            error,
-            'error')
-        },
-        () => {
-
-          this.loading = true;
-        }
-      )
-  }
-
-  salir(): void {
-    this.dialogRef.close();
-  }
-
-  editarDocente(): void {
+  editarDirector(): void {
     this.loading = false;
-    let editDocente = new DocenteResponse();
-    let editUsuario = new Usuario();
-    editUsuario.id = this.authenticationService.currentUserValue.user_id;
-    editDocente.usuario = editUsuario;
-    editDocente.codigo_docente = this.formEditDocente.value.codigo_docente + '';
-    editDocente.usuario.nombre = this.formEditDocente.value.nombre;
-    editDocente.nombre = this.formEditDocente.value.nombre;
-    editDocente.usuario.correo = this.formEditDocente.value.correo + '';
-    editDocente.correo = this.formEditDocente.value.correo + '';
-    editDocente.programas = this.formEditDocente.value.programas;
-    console.log(JSON.stringify(editDocente))
-    this.docenteService.update(editDocente.usuario.id, editDocente).subscribe(
+    let directorAux = new Director();
+    directorAux.nombre = this.formEditDirector.value.nombre
+    directorAux.codigo_director = this.formEditDirector.value.codigo_director
+    directorAux.correo = this.formEditDirector.value.correo
+    console.log(this.formEditDirector.getRawValue().programa);
+    directorAux.programa = this.formEditDirector.getRawValue().programa
+    console.log(directorAux)
+    this.directorService.update(this.director.usuario.id, directorAux).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(
-          'Docente actualizado satisfactoriamente',
-          'success')
-
-        this.dialogRef.close();
+          'Director actualizado satisfactoriamente',
+          'success'
+        )
       },
       (error) => {
         this.toasterService.openSnackBarCumtom(
           error,
-          'error')
-        this.dialogRef.close();
+          'error'
+        )
       },
       () => {
         this.loading = true;

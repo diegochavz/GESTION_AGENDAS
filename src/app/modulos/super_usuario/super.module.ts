@@ -46,6 +46,7 @@ import { DirectoresEditComponent } from './directores/directores-edit/directores
 import { DirectoresDeleteComponent } from './directores/directores-delete/directores-delete.component';
 import { LoadDataProgramaComponent } from './programas/load-data-programa/load-data-programa.component';
 import { PerfilSuperComponent } from './perfil-super/perfil-super.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   imports: [
@@ -77,7 +78,7 @@ import { PerfilSuperComponent } from './perfil-super/perfil-super.component';
     MatSortModule,
     MatListModule,
     MatDialogModule,
-
+    MatCardModule,
   ],
   declarations: [
     ProgramasEditComponent,
