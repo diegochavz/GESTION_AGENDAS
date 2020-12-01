@@ -41,7 +41,7 @@ export class FormulariosListComponent implements OnInit {
   loading: boolean;
 
   //Identificador docente provisional
-  idDocente : number;
+  idDocente: number;
 
   formularios: Array<Formulario>;
 
@@ -59,7 +59,7 @@ export class FormulariosListComponent implements OnInit {
     // Assign the data to the data source for the table to render
     this.formularios = [];
     this.dataSource = new MatTableDataSource(this.formularios);
-
+    this.getFormularios();
   }
 
   ngOnInit(): void {
@@ -77,8 +77,8 @@ export class FormulariosListComponent implements OnInit {
     this.docenteService.getFormulariosByDocente(this.idDocente).subscribe(
       (listFormularios: Array<Formulario>) => {
         let aux = [];
-        for(let i of listFormularios){
-          if(i.activo == 1){
+        for (let i of listFormularios) {
+          if (i.activo == 1) {
             aux.push(i)
           }
         }
@@ -86,7 +86,9 @@ export class FormulariosListComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.formularios);
       },
       (error) => {
-        console.log("ERROR -> LISTAR FORMULARIOS")
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
       },
       () => {
         this.loading = true;
@@ -111,16 +113,8 @@ export class FormulariosListComponent implements OnInit {
   }
 
   eliminarFormulario(idFormulario: number) {
-    console.log(idFormulario)
     this.dialogService.deleteFormularioDialog(idFormulario).subscribe(res => {
-      if (res) {
-        this.getFormularios();
-        this.toasterService.openSnackBar(
-          'Formulario eliminado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-
-      }
+      this.getFormularios();
     });
   }
 }

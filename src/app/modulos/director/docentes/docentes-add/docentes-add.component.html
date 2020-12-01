@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Registrar docente</h1>
-<div mat-dialog-content>
+<mat-dialog-content>
   <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
   <form [formGroup]="formAddDocente">
     <p class="pd-subTitle-modal">Diligencia los datos solicitados a continuación</p>
@@ -43,11 +43,11 @@
       </div>
     </div>
   </form>
-</div>
-<div mat-dialog-actions>
-  <a mat-raised-button color="warn" class="btn-modal" (click)="registrarDocente()" [disabled]="formAddDocente.invalid">Guardar</a>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
   <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
-</div>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="registrarDocente()" [disabled]="formAddDocente.invalid">Guardar</a>
+</mat-dialog-actions>
 
 
 

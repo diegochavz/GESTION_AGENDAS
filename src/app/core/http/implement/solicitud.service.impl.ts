@@ -6,6 +6,7 @@ import {map} from "rxjs/operators";
 import Solicitud from "../../models/solicitud.model";
 import {ISolicitudService} from "../solicitud.service.interface";
 import Reporte from "../../models/reporte.model";
+import FormularioResponse from "../../models/formulario_response.model";
 
 @Injectable()
 export class SolicitudServiceImpl extends ServiceImpl<any> implements ISolicitudService {
@@ -28,13 +29,22 @@ export class SolicitudServiceImpl extends ServiceImpl<any> implements ISolicitud
 
   setEstadoAsesoria(id_solicitud, estado): Observable<any> {
     const path = `auditar-solicitud/`;
-    console.log(id_solicitud, estado)
     return this.httpClient.post(this.apiUrl +path, {"id_solicitud":id_solicitud, "estado":estado}) as Observable<any>;
   }
 
   generarReporte(reporte: Reporte): Observable<any> {
     const path = `generar-solicitudes/`;
     return this.httpClient.post(this.apiUrl +path, reporte, {responseType: 'blob'}) as Observable<any>;
+  }
+
+  getSolicitudCalificacion(uuid): Observable<any> {
+    const path = `solicitudes/?enlace=${uuid}`;
+    return this.httpClient.get(this.apiUrl + path) as Observable<any>;
+  }
+
+  setCalificacionAsesoria(idSolicitud, calificacion, observaciones): Observable<any> {
+    const path = `calificar-solicitud/`;
+    return this.httpClient.post(this.apiUrl +path, {"id_solicitud":idSolicitud, "calificacion":calificacion,"observaciones": observaciones}) as Observable<any>;
   }
 
 }

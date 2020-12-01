@@ -26,7 +26,7 @@
           <div class="row justify-content-center">
             <div class="col-lg-2 order-lg-2">
               <div class="card-profile-image">
-                <a href="javascript:void(0)"(click)="onSelection(1)">
+                <a href="javascript:void(0)" (click)="onSelection(1)">
                   <img src="./assets/img/theme/ico_fc_5.jpg">
                 </a>
               </div>
@@ -63,7 +63,7 @@
           <div class="row mt-5 py-7 mb--125 justify-content-center">
             <div class="col-8">
               <p class="mat-display-1">
-               RESPUESTA: <span class="calificacion-ase">{{eleccion}}</span>
+                RESPUESTA: <span class="calificacion-ase">{{eleccion}}</span>
               </p>
             </div>
           </div>
@@ -72,13 +72,18 @@
               <div class="col-lg-9">
                 <p>Si tienes algún comentario con relación a la asesoría académica recibida por el docente podrás
                   dejarlo a continuación.</p>
-                <form>
+                <form [formGroup]="formData">
                   <mat-form-field appearance="fill">
                     <mat-label>Déjanos tú comentario</mat-label>
-                    <textarea matInput maxlength="300" #postalCode></textarea>
+                    <textarea formControlName="observacion" matInput maxlength="300" #postalCode></textarea>
                     <mat-hint align="end">{{postalCode.value.length}} / 300</mat-hint>
                   </mat-form-field>
-                  <button class="float-rigth btn-m-c" mat-raised-button color="warn">Enviar respuesta</button>
+                  <button class="float-rigth btn-m-c"
+                          mat-raised-button color="warn"
+                          (click)="onSubmit()"
+                          [disabled]="(escala==0)"
+                  >Enviar respuesta
+                  </button>
                 </form>
 
               </div>
@@ -95,20 +100,15 @@
       <div class="row align-items-center justify-content-xl-between">
         <div class="col-xl-6">
           <div class="copyright text-center text-xl-left text-muted">
-            <p> &copy; {{ test | date: "yyyy" }} Curso de profundización</p>
+            <p class="text-center"> Trabajo realizado como proyecto del curso de profundización de: <br>Desarrollo de software</p>
           </div>
         </div>
         <div class="col-xl-6">
+
           <ul class="nav nav-footer justify-content-center justify-content-xl-end">
-            <li class="nav-item">
-              <p class="i-pd-f">Yhuver Quintero</p>
-            </li>
-            <li class="nav-item">
-              <p class="i-pd-f">Alvaro Perez</p>
-            </li>
-            <li class="nav-item">
-              <p class="i-pd-f">Diego Chavez</p>
-            </li>
+            <p class="text-center">Integrantes <br>
+              Yhuver Quintero 1151253 - Alvaro Perez 1151754 - Diego Chavez 1151234
+            </p>
           </ul>
         </div>
       </div>

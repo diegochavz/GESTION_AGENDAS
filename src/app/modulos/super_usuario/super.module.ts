@@ -44,6 +44,7 @@ import { DirectoresAddComponent } from './directores/directores-add/directores-a
 import { DirectoresListComponent } from './directores/directores-list/directores-list.component';
 import { DirectoresEditComponent } from './directores/directores-edit/directores-edit.component';
 import { DirectoresDeleteComponent } from './directores/directores-delete/directores-delete.component';
+import { LoadDataProgramaComponent } from './programas/load-data-programa/load-data-programa.component';
 
 @NgModule({
   imports: [
@@ -87,6 +88,7 @@ import { DirectoresDeleteComponent } from './directores/directores-delete/direct
     DirectoresListComponent,
     DirectoresEditComponent,
     DirectoresDeleteComponent,
+    LoadDataProgramaComponent,
   ],
   entryComponents: [
     ProgramasDeleteComponent,
@@ -95,6 +97,7 @@ import { DirectoresDeleteComponent } from './directores/directores-delete/direct
     DirectoresAddComponent,
     DirectoresEditComponent,
     DirectoresDeleteComponent,
+    LoadDataProgramaComponent,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},

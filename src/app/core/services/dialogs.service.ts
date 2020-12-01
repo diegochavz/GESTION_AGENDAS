@@ -25,6 +25,8 @@ import {AutorizacionesApproveComponent} from "../../modulos/docente/autorizacion
 import {AutorizacionesDeleteComponent} from "../../modulos/docente/autorizaciones/autorizaciones-delete/autorizaciones-delete.component";
 import {AutorizacionesShowComponent} from "../../modulos/docente/autorizaciones/autorizaciones-show/autorizaciones-show.component";
 import {LoadDataEstudianteComponent} from "../../modulos/docente/estudiantes/load-data-estudiante/load-data-estudiante.component";
+import {LoadDataProgramaComponent} from "../../modulos/super_usuario/programas/load-data-programa/load-data-programa.component";
+import {LoadDataDocenteComponent} from "../../modulos/director/docentes/load-data-docente/load-data-docente.component";
 
 @Injectable()
 export class DialogService {
@@ -65,11 +67,23 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
+  loadDataProgramaDialog() {
+    let dialogRef: MatDialogRef<LoadDataProgramaComponent>;
+    dialogRef = this.matDialog.open(LoadDataProgramaComponent);
+    return dialogRef.afterClosed();
+  }
+
   deleteDocenteDialog(idDocente: number) {
     let dialogRef: MatDialogRef<DocentesDeleteComponent>;
     dialogRef = this.matDialog.open(DocentesDeleteComponent, {
       data: {idDocente}
     });
+    return dialogRef.afterClosed();
+  }
+
+  loadDataDocenteDialog() {
+    let dialogRef: MatDialogRef<LoadDataDocenteComponent>;
+    dialogRef = this.matDialog.open(LoadDataDocenteComponent);
     return dialogRef.afterClosed();
   }
 

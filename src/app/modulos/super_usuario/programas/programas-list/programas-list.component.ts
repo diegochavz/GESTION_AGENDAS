@@ -52,11 +52,12 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
     this.programaService.getAll().subscribe(
       (listProgramas: Array<Programa>) => {
         this.programas = listProgramas;
-        console.log(this.programas)
         this.dataSource = new MatTableDataSource(this.programas);
       },
       (error) => {
-        console.log("ERROR -> LISTAR PROGRAMAS")
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
       },
       () => {
         this.loading = true;
@@ -72,7 +73,6 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
   }
 
   eliminarPrograma(idPrograma: number) {
-    console.log(idPrograma)
     this.dialogService.deleteProgramaDialog(idPrograma).subscribe(res => {
       this.getProgramas();
     });
@@ -80,6 +80,12 @@ export class ProgramasListComponent implements OnInit, AfterViewInit {
 
   agregarPrograma() {
     this.dialogService.addProgramaDialog().subscribe(res => {
+      this.getProgramas();
+    });
+  }
+
+  loadDataPrograma(){
+    this.dialogService.loadDataProgramaDialog().subscribe(res => {
       this.getProgramas();
     });
   }

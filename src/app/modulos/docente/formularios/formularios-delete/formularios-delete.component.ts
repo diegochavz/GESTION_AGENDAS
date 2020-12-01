@@ -4,6 +4,7 @@ import Formulario from "../../../../core/models/formulario.model";
 import {SolicitudServiceImpl} from "../../../../core/http/implement/solicitud.service.impl";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormularioServiceImpl} from "../../../../core/http/implement/formulario.service.impl";
+import {ToasterService} from "../../../../core/services/toaster.service";
 
 @Component({
   selector: 'app-formularios-delete',
@@ -18,8 +19,8 @@ export class FormulariosDeleteComponent implements OnInit {
 
   constructor(private formularioService: FormularioServiceImpl,
               public dialogRef: MatDialogRef<FormulariosDeleteComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(JSON.stringify(data))
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private toasterService: ToasterService,) {
     this.idFormulario = data.idFormulario;
     this.loading = true;
   }
@@ -28,19 +29,23 @@ export class FormulariosDeleteComponent implements OnInit {
   }
 
   salir(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close();
   }
 
   borrar():void{
     this.loading = false;
-    console.log(this.idFormulario)
     this.formularioService.setEstadoFormulario(this.idFormulario, 0).subscribe(
       (res) => {
-        console.log("uno",res)
-        this.dialogRef.close(true);
+        this.toasterService.openSnackBarCumtom(
+          'Formulario eliminado satisfactoriamente',
+          'success')
+        this.dialogRef.close();
       },
       (error) => {
-        console.log("dos", JSON.stringify(error))
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+        this.dialogRef.close();
       },
       ()=>{
         this.loading = true;

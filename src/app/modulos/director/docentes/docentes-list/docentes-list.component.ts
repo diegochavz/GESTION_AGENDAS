@@ -53,17 +53,18 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
   }
 
   getDocentes() {
-    console.log("Me repito n veces")
     this.loading = false;
     this.docentes = [];
-    console.log(this.authenticationService.currentUserValue)
     this.programaService.getDocentesByPrograma(this.authenticationService.currentUserValue.programas[0].id).subscribe(
       (listDocentes: DocenteResponse[])=>{
         this.docentes = listDocentes;
         this.dataSource = new MatTableDataSource(this.docentes);
       },
       (error) => {
-        console.log("ERROR -> LISTAR DOCENTES")
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+
       },
       () => {
         this.loading = true;
@@ -81,53 +82,25 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
   eliminarDocente(idDocente: number) {
     console.log(idDocente)
     this.dialogService.deleteDocenteDialog(idDocente).subscribe(res => {
-      if (res == 1) {
-        this.getDocentes();
-        this.toasterService.openSnackBar(
-          'Docente eliminado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL ELIMINAR DOCENTE',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getDocentes();
+    });
+  }
+
+  loadDataDocente(){
+    this.dialogService.loadDataDocenteDialog().subscribe(res => {
+      this.getDocentes();
     });
   }
 
   agregarDocente() {
     this.dialogService.addDocenteDialog().subscribe(res => {
-      if (res == 1) {
-        this.getDocentes();
-        this.toasterService.openSnackBar(
-          'Docente agregado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL CREAR DOCENTE',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getDocentes();
     });
   }
 
   editarDocente(docenteResponse: DocenteResponse) {
-    console.log(docenteResponse)
     this.dialogService.editDocenteDialog(docenteResponse).subscribe(res => {
-      if (res==1) {
-        this.getDocentes();
-        this.toasterService.openSnackBar(
-          'Docente editado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      }else if(res==2){
-        this.toasterService.openSnackBar(
-          'ERROR AL EDITAR DOCENTE',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getDocentes();
     });
   }
 
