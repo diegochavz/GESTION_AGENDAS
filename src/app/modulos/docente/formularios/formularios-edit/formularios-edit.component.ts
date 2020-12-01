@@ -20,6 +20,7 @@ import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 import {URL_FORMULARIO} from "../../../../core/constants/url_formulario.constants";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-formularios-edit',
@@ -480,19 +481,16 @@ export class FormulariosEditComponent implements OnInit {
     this.editFormulario.preguntas = null;
     this.formularioService.update(this.editFormulario.id, this.editFormulario).subscribe(
       (newForm) => {
-        this.toasterService.openSnackBar(
-          'Formulario editado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          'Formulario actualizado satisfactoriamente',
+          'success')
       },
       (error) => {
-        this.toasterService.openSnackBar(
-          'Ha ocurrido un error inesperado',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
       },
       () => {
-        console.log("carga")
       });
 
 
@@ -500,23 +498,20 @@ export class FormulariosEditComponent implements OnInit {
 
   registrarHorarioAtencion() {
     let listadoHorarios = this.editFormulario.horarios;
-    console.log(listadoHorarios)
+
     //BORRADO DE HORARIOS VIEJOS
     let listAux = this.horarios.getRawValue()
     console.log(listAux)
     for (let horarioControl of listAux) {
-      console.log(horarioControl)
       if (horarioControl.id_horario != null) {
         if (horarioControl.disponibilidad == true) {
+          console.log("eliminar horario:", horarioControl)
           this.formularioService.deleteHorarioById(horarioControl.id_horario).subscribe(() => {
             },
             (error) => {
-            console.log("ERROR BORRADO DE DATOS")
-              console.log(JSON.stringify(error))
-              this.toasterService.openSnackBar(
-                'ERROR' + JSON.stringify(error),
-                ToasterService.CERRAR_ACTION
-              );
+              this.toasterService.openSnackBarCumtom(
+                error,
+                'error')
 
             }, () => {
             });
@@ -524,25 +519,18 @@ export class FormulariosEditComponent implements OnInit {
       }
     }
 
-
     setTimeout(() => {
       //REGISTRO NUEVOS HORARIOS
       for (let horarioList of listadoHorarios) {
-        console.log("registro -->",horarioList)
         this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
-        }, error => {
-          this.toasterService.openSnackBar(
-            'ERROR' + JSON.stringify(error),
-            ToasterService.CERRAR_ACTION
-          );
-          return false;
+        }, (error) => {
+          this.toasterService.openSnackBarCumtom(
+            error,
+            'error')
         }, () => {
         });
       }
     }, 2000);
-
-
-
 
   }
 
@@ -553,20 +541,16 @@ export class FormulariosEditComponent implements OnInit {
         console.log("NUEVA PREGUNTA", JSON.stringify(pregunta))
         this.formularioService.addPreguntabyFormulario(this.editFormulario.id, pregunta).subscribe(() => {
         }, error => {
-          this.toasterService.openSnackBar(
-            'ERROR' + JSON.stringify(error),
-            ToasterService.CERRAR_ACTION
-          );
-          return false;
+          this.toasterService.openSnackBarCumtom(
+            error,
+            'error')
         });
       } else {
         this.formularioService.updatePreguntaByFormulario(pregunta.id, pregunta).subscribe(() => {
         }, (error) => {
-          this.toasterService.openSnackBar(
-            'ERROR' + JSON.stringify(error),
-            ToasterService.CERRAR_ACTION
-          );
-          return false;
+          this.toasterService.openSnackBarCumtom(
+            error,
+            'error')
         });
       }
     }
