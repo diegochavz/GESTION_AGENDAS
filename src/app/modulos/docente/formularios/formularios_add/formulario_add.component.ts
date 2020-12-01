@@ -81,7 +81,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
               private toasterService: ToasterService,
               private clipboardService: ClipboardService,
               private validate: ValidateService,
-              private authenticationService: AuthenticationServiceImpl) {
+              private authenticationService: AuthenticationServiceImpl,) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
     this.idDocente = authenticationService.currentUserValue.user_id;
@@ -106,8 +106,11 @@ export class CrearFormularioDocenteComponent implements OnInit {
   getLisAllHorarios() {
       this.docenteService.getHorariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe((res: Horario[]) => {
         this.listAllHorarioDocente = res;
-      }, () => {
-        console.log("ERROR CARGAS HORARIOS DOCENTE")
+      }, (error) => {
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error'
+        )
       })
   }
 
@@ -307,22 +310,19 @@ export class CrearFormularioDocenteComponent implements OnInit {
 
   onFormSubmit() {
     this.loading = false;
-    console.log("INFORMACIÓN IMPORTANTE CREAR: " + JSON.stringify(this.newFormulario))
     this.formularioService.save(this.newFormulario).subscribe(
       (newForm) => {
-        this.toasterService.openSnackBar(
-          'Formulario creado Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          'Formulario creado satisfactoriamente',
+          'success')
+
       },
       (error) => {
-        this.toasterService.openSnackBar(
-          'Ha ocurrido un error inesperado',
-          ToasterService.CERRAR_ACTION
-        );
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
       },
       () => {
-        console.log("carga")
         this.loading = true;
       });
   }
