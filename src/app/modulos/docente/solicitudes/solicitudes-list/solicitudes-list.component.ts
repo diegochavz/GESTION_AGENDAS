@@ -61,12 +61,13 @@ export class SolicitudesListComponent implements OnInit {
             aux.push(sol)
           }
         }
-        console.log(aux)
         this.solicitudes = aux;
         this.dataSource = new MatTableDataSource(this.solicitudes);
       },
       (error) => {
-        console.log("ERROR -> LISTAR SOLICITUDES")
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
       },
       () => {
         this.loading = true;
@@ -96,18 +97,7 @@ export class SolicitudesListComponent implements OnInit {
 
   eliminarSolicitud(idSolicitud: number) {
     this.dialogService.deleteSolicitudDialog(idSolicitud).subscribe(res => {
-      if (res == 1) {
-        this.getSolicitudes();
-        this.toasterService.openSnackBar(
-          'Solicitud eliminada Exitosamente.',
-          ToasterService.CERRAR_ACTION
-        );
-      } else if (res == 2) {
-        this.toasterService.openSnackBar(
-          'ERROR AL ELIMINAR SOLICITUD',
-          ToasterService.CERRAR_ACTION
-        );
-      }
+      this.getSolicitudes();
     });
   }
 

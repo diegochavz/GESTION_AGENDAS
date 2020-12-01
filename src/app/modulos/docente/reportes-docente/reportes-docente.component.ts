@@ -37,6 +37,7 @@ export class ReportesDocenteComponent implements OnInit {
               private authenticationService: AuthenticationServiceImpl,
               private _formBuilder: FormBuilder,
               private _adapter: DateAdapter<any>,
+              private toasterService: ToasterService,
               private solicitudService: SolicitudServiceImpl) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
@@ -58,8 +59,11 @@ export class ReportesDocenteComponent implements OnInit {
     this.docenteService.getFormulariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe((listFormularios: Array<Formulario>) => {
         console.log(listFormularios)
         this.listFormularios = listFormularios;
-      }, () => {
-        console.log("ERROR AL CARGAR FORMULARIOS")
+      }, (error) => {
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+
       }, () => {
         this.loading = true;
       }
@@ -123,8 +127,11 @@ export class ReportesDocenteComponent implements OnInit {
           }
         }
         console.log(this.displayedColumns)
-      }, () => {
-        console.log("ERROR CONSULTAR PREGUNTAS")
+      }, (error) => {
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+
       }, () => {
         this.loading = true;
       }
@@ -227,11 +234,15 @@ export class ReportesDocenteComponent implements OnInit {
     console.log(JSON.stringify(auxReport));
     this.solicitudService.generarReporte(auxReport).subscribe(res => {
       this.downloadFile(res, "reporte", "xlsx");
+      this.toasterService.openSnackBarCumtom(
+        'Reporte Generado satisfactoriamente',
+        'success')
 
-      console.log(" TODO SALIO BIEN ", res)
     }, (error) => {
-      console.log("ENTRE EN ERROR")
-      console.log(JSON.stringify(error))
+      this.toasterService.openSnackBarCumtom(
+        error,
+        'error')
+
     }, () => {
       this.loading = true;
     })

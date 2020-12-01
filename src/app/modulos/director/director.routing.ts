@@ -6,8 +6,10 @@ import {CrearFormularioDocenteComponent} from "../docente/formularios/formulario
 import {FormulariosEditComponent} from "../docente/formularios/formularios-edit/formularios-edit.component";
 import {EstudiantesListComponent} from "../docente/estudiantes/estudiantes-list/estudiantes-list.component";
 import {SolicitudesListComponent} from "../docente/solicitudes/solicitudes-list/solicitudes-list.component";
+import {PerfilDirectorComponent} from "./perfil-director/perfil-director.component";
 
 export const DirectorRoutes: Routes = [
   { path: '',      component: MainDirectorComponent },
   { path: 'listar-docentes',      component: DocentesListComponent },
+  { path: 'editar-perfil',      component: PerfilDirectorComponent },
 ];

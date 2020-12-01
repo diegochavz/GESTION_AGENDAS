@@ -128,7 +128,7 @@ export class ViewFormularioComponent implements OnInit {
       if (res != null && res != undefined) {
         if (res.length > 0) {
           this.formulario = res[0];
-          if(this.formulario.activo == 0){
+          if (this.formulario.activo == 0) {
             this.routes.navigate(['/not-page'])
             console.log("formulario inactivo")
           }
@@ -252,7 +252,7 @@ export class ViewFormularioComponent implements OnInit {
     if (Object.keys(this.formulario).length !== 0) {
       if (this.listHorariosFormulario.length > 0) {
         for (let i of this.listHorariosFormulario) {
-          if(i.disponible == true){
+          if (i.disponible == true) {
             let dateAux = i.fecha.split("-");
             let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
             newFechasDisponibles.push(newD);
@@ -275,7 +275,7 @@ export class ViewFormularioComponent implements OnInit {
       const horarios = this.listHorariosFormulario;
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
-          if(horarios[i].disponible == true) {
+          if (horarios[i].disponible == true) {
             let dateAux = horarios[i].fecha.split("-");
             let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
             if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
@@ -373,7 +373,7 @@ export class ViewFormularioComponent implements OnInit {
     formData.append('fecha', this.horarioAsesoria.fecha_horario)
     formData.append('hora', this.formatHora(this.horarioAsesoria.inicio_horario))
     formData.append('archivo', this.file)
-    formData.append('enlace_uuid_solicitud',uuidv4())
+    formData.append('enlace_uuid_solicitud', uuidv4())
 
     let resAux = new Array<Respuesta>()
     for (let i = 0; i < this.preguntas.controls.length; i++) {
@@ -392,24 +392,25 @@ export class ViewFormularioComponent implements OnInit {
 
     formData.append('es_virtual', this.formularioAddAsesoria.get('es_virtual').value)
 
+    console.log(JSON.stringify(formData));
 
-     this.solicitudService.saveSolicitud(formData).subscribe(
-     () => {
+    this.solicitudService.saveSolicitud(formData).subscribe(
+      () => {
         this.toasterService.openSnackBarCumtom(
           'Asesoría agendada con exito',
           'success'
         )
       },
-     (error) => {
-       console.log(JSON.stringify(error))
-       this.toasterService.openSnackBarCumtom(
-         'Error al agendar la asesoría',
-         'error'
-       )
+      (error) => {
+        console.log(JSON.stringify(error))
+        this.toasterService.openSnackBarCumtom(
+          'Error al agendar la asesoría',
+          'error'
+        )
       },
-     () => {
+      () => {
         this.loading = true;
-       this.router.navigate(['../']);
+        this.router.navigate(['../']);
       });
   }
 

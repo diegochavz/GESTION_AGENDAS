@@ -64,6 +64,7 @@ import { AutorizacionesDeleteComponent } from './autorizaciones/autorizaciones-d
 import { AutorizacionesApproveComponent } from './autorizaciones/autorizaciones-approve/autorizaciones-approve.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { LoadDataEstudianteComponent } from './estudiantes/load-data-estudiante/load-data-estudiante.component';
+import { PerfilDocenteComponent } from './perfil-docente/perfil-docente.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -128,6 +129,7 @@ FullCalendarModule.registerPlugins([
     AutorizacionesDeleteComponent,
     AutorizacionesApproveComponent,
     LoadDataEstudianteComponent,
+    PerfilDocenteComponent,
   ],
   entryComponents:[
     FormulariosDeleteComponent,
@@ -140,6 +142,7 @@ FullCalendarModule.registerPlugins([
     AutorizacionesDeleteComponent,
     AutorizacionesApproveComponent,
     LoadDataEstudianteComponent,
+    PerfilDocenteComponent,
   ]
   ,
   providers:[

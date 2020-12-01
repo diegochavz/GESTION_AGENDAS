@@ -45,6 +45,7 @@ import {DocentesDeleteComponent} from "./docentes/docentes-delete/docentes-delet
 import {SolicitudesShowComponent} from "../docente/solicitudes/solicitudes-show/solicitudes-show.component";
 import { LoadDataDocenteComponent } from './docentes/load-data-docente/load-data-docente.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { PerfilDirectorComponent } from './perfil-director/perfil-director.component';
 
 @NgModule({
   imports: [
@@ -85,6 +86,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     DocentesAddComponent,
     DocentesDeleteComponent,
     LoadDataDocenteComponent,
+    PerfilDirectorComponent,
   ],
   entryComponents:[
     DocentesListComponent,

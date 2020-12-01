@@ -382,11 +382,10 @@ export class FormulariosEditComponent implements OnInit {
     let aux = this.horarios.controls[indice].value
     if (aux.id_horario != null) {
       this.formularioService.deleteHorarioById(+aux.id_horario).subscribe(res => {
-      }, () => {
-        this.toasterService.openSnackBar(
-          'ERROR AL ELIMINAR HORARIO',
-          ToasterService.CERRAR_ACTION
-        );
+      }, (error) => {
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
       })
     }
     this.horarios.removeAt(indice)

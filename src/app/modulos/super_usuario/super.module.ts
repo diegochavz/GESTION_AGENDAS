@@ -45,6 +45,7 @@ import { DirectoresListComponent } from './directores/directores-list/directores
 import { DirectoresEditComponent } from './directores/directores-edit/directores-edit.component';
 import { DirectoresDeleteComponent } from './directores/directores-delete/directores-delete.component';
 import { LoadDataProgramaComponent } from './programas/load-data-programa/load-data-programa.component';
+import { PerfilSuperComponent } from './perfil-super/perfil-super.component';
 
 @NgModule({
   imports: [
@@ -89,6 +90,7 @@ import { LoadDataProgramaComponent } from './programas/load-data-programa/load-d
     DirectoresEditComponent,
     DirectoresDeleteComponent,
     LoadDataProgramaComponent,
+    PerfilSuperComponent,
   ],
   entryComponents: [
     ProgramasDeleteComponent,
