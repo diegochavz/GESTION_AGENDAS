@@ -131,7 +131,6 @@ export class ViewFormularioComponent implements OnInit {
           this.formulario = res[0];
           if (this.formulario.activo == 0) {
             this.routes.navigate(['/not-page'])
-            console.log("formulario inactivo")
           }
         } else {
           this.routes.navigate(['/not-page'])
@@ -394,7 +393,6 @@ export class ViewFormularioComponent implements OnInit {
 
     formData.append('es_virtual', this.formularioAddAsesoria.get('es_virtual').value)
 
-    console.log(JSON.stringify(formData));
 
     this.solicitudService.saveSolicitud(formData).subscribe(
       () => {
@@ -404,7 +402,6 @@ export class ViewFormularioComponent implements OnInit {
         )
       },
       (error) => {
-        console.log(JSON.stringify(error))
         this.toasterService.openSnackBarCumtom(
           'Error al agendar la asesoría',
           'error'

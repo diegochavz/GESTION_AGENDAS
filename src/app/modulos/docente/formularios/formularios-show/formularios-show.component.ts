@@ -55,7 +55,6 @@ export class FormulariosShowComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log("Entre a supervisar")
     this.crearFormAddAsesoria();
     this.agregarIntegrante();
     this.listarProgramas();

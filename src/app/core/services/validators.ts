@@ -10,7 +10,6 @@ export class ValidateService {
   }
 
   validateUser(tipo_usuario: number) {
-    console.log(tipo_usuario)
     switch (tipo_usuario) {
       case 0:
         this.router.navigate(['/super']);
@@ -43,33 +42,26 @@ export class ValidateService {
         if (horaInicioNew.isSame(horaFinOld) &&
           horaInicioNew.isAfter(horaInicioOld)
           && horaFinNew.isAfter(horaFinOld)) {
-          console.log("contreee 1")
           return false;
         } else if(horaFinNew.isSame(horaInicioOld) &&
           horaInicioOld.isAfter(horaInicioNew)
           && horaFinOld.isAfter(horaFinNew)) {
-          console.log("contreee 2")
           return false;
         } else if(horaInicioNew.isSameOrBefore(horaInicioOld) &&
           horaFinNew.isSameOrAfter(horaInicioOld)
           && horaFinNew.isSameOrBefore(horaFinOld)) {
-          console.log("contreee 3")
           return true;
         } else if (horaInicioNew.isSameOrBefore(horaInicioOld)
           && horaFinNew.isSameOrAfter(horaFinOld)) {
-          console.log("contreee 4")
           return true;
         } else if (horaInicioNew.isSameOrAfter(horaInicioOld)
           && horaFinNew.isSameOrBefore(horaFinOld)) {
-          console.log("contreee 5")
           return true;
         } else if (horaInicioNew.isSameOrAfter(horaInicioOld)
           && horaInicioNew.isSameOrBefore(horaFinOld) &&
           horaFinNew.isSameOrAfter(horaFinOld)) {
-          console.log("contreee 6")
           return true;
         } else {
-          console.log("ERROR VALIDADOR FECHA")
         }
       }
     }

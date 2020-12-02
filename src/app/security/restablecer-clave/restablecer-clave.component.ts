@@ -36,7 +36,6 @@ export class RestablecerClaveComponent implements OnInit {
   onFormSubmit() {
     this.loading = false;
     let correo = this.formLogin.get('correo').value.trim();
-    console.log(correo)
     this.authenticationService.restablecerClave(correo).subscribe(() => {
       this.toasterService.openSnackBarCumtom(
         'Se restableció la constraseña satisfactoriamente, revisa tu correo',

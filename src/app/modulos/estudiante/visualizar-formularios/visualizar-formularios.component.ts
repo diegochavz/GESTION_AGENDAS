@@ -106,7 +106,6 @@ export class VisualizarFormulariosComponent implements OnInit {
 
 
    filtrarPorDocente(idDocente) {
-    console.log(idDocente)
     this.listFormularios = this.listAux;
     if (this.listFormularios.length > 0) {
       let aux = [];
@@ -122,17 +121,14 @@ export class VisualizarFormulariosComponent implements OnInit {
   getDocentes() {
     this.loading = false;
     this.docenteService.getAll().subscribe((res: DocenteResponse[]) => {
-      console.log("antes ", res)
       let aux = []
       for(let i of res){
         if(i.usuario.tipo_usuario == 2){
           aux.push(i)
         }
       }
-      console.log("despues ", aux);
       this.listDocentes = aux;
     }, () => {
-      console.log("ERROR AL CARGA FORMULARIO EN PRINCIPAL")
     }, () => {
       this.loading = true;
     })
@@ -144,7 +140,6 @@ export class VisualizarFormulariosComponent implements OnInit {
     this.programaService.getAll().subscribe((res: Programa[]) => {
       this.listProgramas = res;
     }, () => {
-      console.log("ERROR AL CARGA FORMULARIO EN PRINCIPAL")
     }, () => {
       this.loading = true;
     })
@@ -167,7 +162,6 @@ export class VisualizarFormulariosComponent implements OnInit {
       this.listFormularios = aux;
       this.listAux = aux;
     }, () => {
-      console.log("ERROR AL CARGA FORMULARIO EN PRINCIPAL")
     }, () => {
       this.loading = true;
     })

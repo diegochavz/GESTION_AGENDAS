@@ -48,7 +48,6 @@ export class LoadDataDocenteComponent implements OnInit {
     this.loading = false;
     let formData = new FormData();
     formData.append('archivo', this.file)
-    console.log(this.authenticationService.currentUserValue.programas[0].id);
     formData.append('id_programa ',this.authenticationService.currentUserValue.programas[0].id+"")
     this.docenteService.loadDataDocente(formData).subscribe(
       () => {

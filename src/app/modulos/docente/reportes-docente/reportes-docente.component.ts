@@ -57,7 +57,6 @@ export class ReportesDocenteComponent implements OnInit {
   getFormularios() {
     this.loading = false;
     this.docenteService.getFormulariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe((listFormularios: Array<Formulario>) => {
-        console.log(listFormularios)
         this.listFormularios = listFormularios;
       }, (error) => {
         this.toasterService.openSnackBarCumtom(
@@ -109,15 +108,12 @@ export class ReportesDocenteComponent implements OnInit {
   consultarPreguntasForColumns(idFormulario: number) {
     this.loading = false;
     this.docenteService.getSolicitudesByDocente(this.authenticationService.currentUserValue.user_id).subscribe((res: SolicitudResponse[]) => {
-        console.log(res)
-        console.log(idFormulario)
         this.data = [];
         for (let i of res) {
           if (idFormulario == i.formulario) {
             this.data.push(i.respuestas_data)
           }
         }
-        console.log("formulario ", this.data)
         this.dataSource.data = this.data;
 
         this.displayedColumns = [];
@@ -126,7 +122,6 @@ export class ReportesDocenteComponent implements OnInit {
             this.displayedColumns.push(i.nombre_pregunta)
           }
         }
-        console.log(this.displayedColumns)
       }, (error) => {
         this.toasterService.openSnackBarCumtom(
           error,
@@ -148,7 +143,6 @@ export class ReportesDocenteComponent implements OnInit {
 
   generarReporteSolicitudes() {
     let auxReport = new Reporte();
-    console.log(this.formReporteFormularios.value)
 
     if (this.formReporteFormularios.value.fecha_inicio != '') {
       auxReport.fecha_inicio = moment(this.formReporteFormularios.value.fecha_inicio).format("YYYY-MM-DD")
@@ -231,7 +225,6 @@ export class ReportesDocenteComponent implements OnInit {
     auxReport.campos = camposAux;
 
     this.loading = false;
-    console.log(JSON.stringify(auxReport));
     this.solicitudService.generarReporte(auxReport).subscribe(res => {
       this.downloadFile(res, "reporte", "xlsx");
       this.toasterService.openSnackBarCumtom(

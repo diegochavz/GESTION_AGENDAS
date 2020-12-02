@@ -46,7 +46,6 @@ export class FormularioServiceImpl extends ServiceImpl<any> implements IFormular
 
   addHorariobyFormulario(idFormulario, horario): Observable<any> {
     const path = `${idFormulario}/horarios/`;
-    console.log(path)
     return this.httpClient.post(this.getFullPath() + path, horario) as Observable<any>;
   }
 

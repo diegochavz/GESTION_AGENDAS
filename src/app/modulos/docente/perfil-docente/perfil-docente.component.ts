@@ -121,7 +121,6 @@ export class PerfilDocenteComponent implements OnInit {
     editDocente.usuario.correo = this.formEditDocente.value.correo + '';
     editDocente.correo = this.formEditDocente.value.correo + '';
     editDocente.programas = this.formEditDocente.value.programas;
-    console.log(JSON.stringify(editDocente))
     this.docenteService.update(editDocente.usuario.id, editDocente).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(

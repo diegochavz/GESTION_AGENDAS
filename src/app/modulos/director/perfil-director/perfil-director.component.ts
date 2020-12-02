@@ -89,9 +89,7 @@ export class PerfilDirectorComponent implements OnInit {
     directorAux.nombre = this.formEditDirector.value.nombre
     directorAux.codigo_director = this.formEditDirector.value.codigo_director
     directorAux.correo = this.formEditDirector.value.correo
-    console.log(this.formEditDirector.getRawValue().programa);
     directorAux.programa = this.formEditDirector.getRawValue().programa
-    console.log(directorAux)
     this.directorService.update(this.director.usuario.id, directorAux).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(

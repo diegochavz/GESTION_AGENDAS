@@ -38,9 +38,7 @@ export class SolicitudesShowComponent implements OnInit {
     this.solicitudService.get(this.idSolicitud).subscribe((res) =>{
       this.solicitud = res;
       this.listEstudiantes = res.estudiantes_data;
-      console.log(this.listEstudiantes)
       this.listRespuestas = res.respuestas_data;
-      console.log(this.listRespuestas)
     },()=>{}, ()=>{
       this.loading = true;
     })

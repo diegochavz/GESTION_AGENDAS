@@ -54,7 +54,6 @@ export class SolicitudesListComponent implements OnInit {
     this.solicitudes = [];
     this.docenteService.getSolicitudesByDocente(this.idDocente).subscribe(
       (listsolitudes: Array<SolicitudResponse>) => {
-        console.log(listsolitudes)
         let aux = [];
         for(let sol of listsolitudes){
           if(sol.estado == 2){

@@ -36,7 +36,6 @@ export class MainSuperComponent implements OnInit {
         this.cuentaProgramas = listProgramas.length;
       },
       (error) => {
-        console.log("ERROR -> LISTAR PROGRAMAS")
       },
       () => {
       });
@@ -48,7 +47,6 @@ export class MainSuperComponent implements OnInit {
         this.cuentaDirectores = listDirectores.length;
       },
       (error) => {
-        console.log("ERROR -> LISTAR DIRECTORES")
       },
       () => {
       });

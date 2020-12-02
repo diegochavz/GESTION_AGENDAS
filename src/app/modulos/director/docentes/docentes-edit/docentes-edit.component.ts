@@ -67,7 +67,6 @@ export class DocentesEditComponent implements OnInit {
       const aux = new Array<number>();
       this.loading = false;
       this.docenteService.getProgramasNormalByDocente(this.docente.usuario.id).subscribe((res: Array<ProgramaResponse>) => {
-        console.log(res)
         for (let i of res) {
             aux.push(i.programa);
             if(i.esta_vinculado == true){
@@ -105,7 +104,6 @@ export class DocentesEditComponent implements OnInit {
     editDocente.usuario.correo = this.formEditDocente.value.correo + '';
     editDocente.correo = this.formEditDocente.value.correo + '';
     editDocente.programas = this.formEditDocente.value.programas;
-    console.log(JSON.stringify(editDocente))
     this.docenteService.update(editDocente.usuario.id, editDocente).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(

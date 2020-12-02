@@ -95,7 +95,6 @@ export class FormulariosEditComponent implements OnInit {
       this.docenteService.getHorariosByDocente(this.editFormulario.docente).subscribe((res: Horario[]) => {
         this.listAllHorarioDocente = res;
       }, () => {
-        console.log("ERROR CARGAS HORARIOS DOCENTE")
       })
     }
   }
@@ -144,10 +143,8 @@ export class FormulariosEditComponent implements OnInit {
     if (this.editFormulario != null && this.editFormulario != undefined) {
       let dateMin = this.editFormulario.disponibilidad_inicio_formulario.split("-")
       this.minDate = new Date(+dateMin[0], +dateMin[1] - 1, +dateMin[2]);
-      console.log(this.minDate)
       let dateMax = this.editFormulario.disponibilidad_fin_formulario.split("-")
       this.maxDate = new Date(+dateMax[0], +dateMax[1] - 1, +dateMax[2]);
-      console.log(this.maxDate)
     }
   }
 
@@ -216,7 +213,6 @@ export class FormulariosEditComponent implements OnInit {
     if (this.editFormulario != null && this.editFormulario != undefined) {
       this.loading = false;
       this.formularioService.getPreguntasByFormulario(this.editFormulario.id).subscribe(res => {
-          console.log(res)
           this.listarPreguntas(res);
         }, () => {
         }, () => {
@@ -314,13 +310,10 @@ export class FormulariosEditComponent implements OnInit {
   borrarPregunta(indice) {
     let aux = this.preguntas.controls[indice].value;
     if (aux.id != null) {
-      console.log("Estoy llenito")
       this.formularioService.deletePreguntaById(+aux.id).subscribe(res => {
       }, () => {
-        console.log("Marque error")
       })
     } else {
-      console.log("Estoy vacio")
     }
     this.preguntas.removeAt(indice)
   }
@@ -428,7 +421,6 @@ export class FormulariosEditComponent implements OnInit {
       horariosAux.push(hor)
     }
     this.editFormulario.horarios = horariosAux;
-    console.log(this.editFormulario.horarios)
     this.calcularNuevosHorarios();
   }
 
@@ -457,7 +449,6 @@ export class FormulariosEditComponent implements OnInit {
     }
 
     this.editFormulario.horarios = horarioListAux;
-    console.log(this.editFormulario.horarios)
   }
 
   getPreguntasFromForm() {
@@ -500,11 +491,9 @@ export class FormulariosEditComponent implements OnInit {
 
     //BORRADO DE HORARIOS VIEJOS
     let listAux = this.horarios.getRawValue()
-    console.log(listAux)
     for (let horarioControl of listAux) {
       if (horarioControl.id_horario != null) {
         if (horarioControl.disponibilidad == true) {
-          console.log("eliminar horario:", horarioControl)
           this.formularioService.deleteHorarioById(horarioControl.id_horario).subscribe(() => {
             },
             (error) => {
@@ -537,7 +526,6 @@ export class FormulariosEditComponent implements OnInit {
     //ACTUALIZAR PREGUNTAS
     for (let pregunta of this.editFormulario.preguntas) {
       if (pregunta.id == null) {
-        console.log("NUEVA PREGUNTA", JSON.stringify(pregunta))
         this.formularioService.addPreguntabyFormulario(this.editFormulario.id, pregunta).subscribe(() => {
         }, error => {
           this.toasterService.openSnackBarCumtom(

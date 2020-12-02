@@ -58,7 +58,6 @@ export class DocentesAddComponent implements OnInit {
   registrarDocente(): void {
     this.loading = false;
     let newDocente = <Docente>Object.assign({}, this.formAddDocente.value);
-    console.log(newDocente)
     this.docenteService.save(newDocente).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(

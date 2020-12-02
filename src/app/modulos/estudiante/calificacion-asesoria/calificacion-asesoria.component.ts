@@ -38,9 +38,7 @@ export class CalificacionAsesoriaComponent implements OnInit {
   }
 
   getViewCalificacion(uuid) {
-    console.log(uuid)
     this.solicitudService.getSolicitudCalificacion(uuid).subscribe((res: SolicitudResponse) => {
-      console.log(res)
       if (res != null && res != undefined) {
         this.idSolicitud = res[0].id;
       } else {

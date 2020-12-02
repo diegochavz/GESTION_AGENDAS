@@ -64,7 +64,6 @@ export class MainDocenteComponent implements OnInit {
        this.cuentaFormularios = aux;
       },
       (error) => {
-        console.log("ERROR -> LISTAR FORMULARIOS")
       },
       () => {
         this.loading = true;
@@ -78,7 +77,6 @@ export class MainDocenteComponent implements OnInit {
         this.cuentaEstudiantes = listEstudiantes.length;
       },
       (error) => {
-        console.log("ERROR -> LISTAR ESTUDIANTES")
       },
       () => {
         this.loading = true;
@@ -122,7 +120,6 @@ export class MainDocenteComponent implements OnInit {
         this.convertSolicitudesToEventos(listsolitudes);
       },
       (error) => {
-        console.log("ERROR -> LISTAR CALENDAR SOLICITUDES")
       },
       () => {
         this.loading = true;
@@ -131,7 +128,6 @@ export class MainDocenteComponent implements OnInit {
 
   //Esto debe cambiarse solicitudes
   convertSolicitudesToEventos(listHorario: SolicitudResponse[]) {
-    console.log(listHorario)
     for (let i = 0; i < listHorario.length; i++) {
       let dataIni: EventInput[] = [];
       let dateAux = listHorario[i].fecha_solicitada.split("-");

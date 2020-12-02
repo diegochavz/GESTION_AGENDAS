@@ -53,19 +53,16 @@ export class AutorizacionesListComponent implements OnInit {
     this.solicitudes = [];
     this.docenteService.getSolicitudesByDocente(this.idDocente).subscribe(
       (listsolitudes: Array<SolicitudResponse>) => {
-        console.log(listsolitudes)
         let aux = [];
         for(let sol of listsolitudes){
           if(sol.estado == 1){
             aux.push(sol)
           }
         }
-        console.log(aux)
         this.solicitudes = aux;
         this.dataSource = new MatTableDataSource(this.solicitudes);
       },
       (error) => {
-        console.log("ERROR -> LISTAR SOLICITUDES")
       },
       () => {
         this.loading = true;

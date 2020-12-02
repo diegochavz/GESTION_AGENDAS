@@ -33,7 +33,6 @@ export class DirectoresEditComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.loading = true;
     this.director = data.directorResponse;
-    console.log(this.director)
     this.listProgramas = [];
   }
 
@@ -53,7 +52,6 @@ export class DirectoresEditComponent implements OnInit {
         this.listProgramas = res;
       }, () => {
       }, () => {
-        console.log(this.director.programas_data[0].id)
         this.formEditDirector.get('programa').setValue(this.director.programas_data[0].id)
       })
     } else {

@@ -86,7 +86,6 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
   }
 
   eliminarDocente(idDocente: number) {
-    console.log(idDocente)
     this.dialogService.deleteDocenteDialog(idDocente).subscribe(res => {
       this.getDocentes();
     });
