@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import RouteModel from "../../core/models/route.model";
+import {AuthenticationServiceImpl} from "../../core/http/implement/authentication.service.impl";
 
 @Component({
   selector: 'app-menu',
@@ -14,7 +15,8 @@ export class MenuComponent implements OnInit {
 
   @Input() routes: RouteModel[];
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private  authenticationService: AuthenticationServiceImpl,) {
   }
 
   ngOnInit() {
@@ -22,4 +24,10 @@ export class MenuComponent implements OnInit {
       this.isCollapsed = true;
     });
   }
+
+  cerrarSesion(){
+    this.authenticationService.logout();
+    this.router.navigate(['/']);
+  }
+
 }
