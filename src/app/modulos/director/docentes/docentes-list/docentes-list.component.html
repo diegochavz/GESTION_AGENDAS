@@ -1,4 +1,4 @@
-<div class="header pb-8 pt-5 pt-lg-4 d-flex align-items-center"
+<div class="header pb-8 pt-5 pt-lg-4 d-flex align-items-center reduce-margin-panel-docentes-director"
      style="min-height: 550px; background-image: url(../../../../../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
   <span class="mask bg-gradient-danger opacity-8"></span>
   <div class="container-fluid d-flex align-items-center">
@@ -32,9 +32,9 @@
               </button>
             </div>
           </div>
-          <div class="mat-elevation-z2">
+          <div class="mat-elevation-z2 table-p">
             <mat-progress-bar mode="indeterminate" color="accent" [hidden]="loading"></mat-progress-bar>
-            <table mat-table [dataSource]="dataSource" matSort>
+            <table  mat-table [dataSource]="dataSource" matSort>
 
               <ng-container matColumnDef="codigo_docente">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Código</th>

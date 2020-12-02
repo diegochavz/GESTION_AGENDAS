@@ -12,11 +12,13 @@ export class MenuComponent implements OnInit {
 
   public menuItems: any[];
   public isCollapsed = true;
+  nombre:string
 
   @Input() routes: RouteModel[];
 
   constructor(private router: Router,
               private  authenticationService: AuthenticationServiceImpl,) {
+    this.nombre = this.authenticationService.currentUserValue.nombre;
   }
 
   ngOnInit() {
