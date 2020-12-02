@@ -122,7 +122,15 @@ export class VisualizarFormulariosComponent implements OnInit {
   getDocentes() {
     this.loading = false;
     this.docenteService.getAll().subscribe((res: DocenteResponse[]) => {
-      this.listDocentes = res;
+      console.log("antes ", res)
+      let aux = []
+      for(let i of res){
+        if(i.usuario.tipo_usuario == 2){
+          aux.push(i)
+        }
+      }
+      console.log("despues ", aux);
+      this.listDocentes = aux;
     }, () => {
       console.log("ERROR AL CARGA FORMULARIO EN PRINCIPAL")
     }, () => {
