@@ -2,11 +2,11 @@
   <section class="section section-lg bg-white border-bottom-header">
     <div class="container ">
       <div class="row row-grid align-items-center pd-header-init">
-        <div class="col-md-6 col-sm-12  order-md-2 img-header">
-          <img src="./assets/img/brand/logo_ufps.png" class="img-fluid">
+        <div class="col-lg-6 col-sm-12  order-md-2 img-header">
+          <p class="text-center-ms pd-ms-img"><img src="./assets/img/brand/logo_ufps.png" class="img-fluid align-center-img"></p>
         </div>
-        <div class="col-md-6 col-sm-12  order-md-2 inicio-sesion">
-          <a [routerLink]="['../login']" class="ico-input-color"><p><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;
+        <div class="col-lg-6 col-sm-12  order-md-2 inicio-sesion">
+          <a [routerLink]="['../login']" class="ico-input-color"><p class="text-center-ms"><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;
             Inicio de sesión</p></a>
         </div>
       </div>
@@ -40,7 +40,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                      <div class="col-6">
+                      <div class="col-lg-6 col-ms-12">
                         <form [formGroup]="formInicio">
                         <mat-form-field class="example-full-width">
                           <input type="text"
@@ -57,7 +57,7 @@
                         </mat-form-field>
                         </form>
                       </div>
-                      <div class="col-6">
+                      <div class="col-lg-6 col-ms-12">
                         <a mat-raised-button color="warn" (click)="getListFormulario()" class="btn-create">Limpiar busqueda
                         </a>
                       </div>
