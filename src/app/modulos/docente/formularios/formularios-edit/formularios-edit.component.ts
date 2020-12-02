@@ -78,6 +78,7 @@ export class FormulariosEditComponent implements OnInit {
     this.establecerFechaMaxMin();
     this.urlFormulario = '';
     this.listAllHorarioDocente = [];
+    this.formEditFormulario = null;
   }
 
   ngOnInit() {
