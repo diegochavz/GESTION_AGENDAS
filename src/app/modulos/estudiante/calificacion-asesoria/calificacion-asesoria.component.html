@@ -3,9 +3,9 @@
     <div class="position-relative">
       <section class="section section-lg section-shaped pb-250 bg-ini-2">
         <div class="container py-lg-md d-flex">
-          <div class="col px-0 ">
+          <div class="col ">
             <div class="row">
-              <div class="col-lg-12 text-center">
+              <div class="col-lg-12 col-sm-12  text-center">
                 <h1 class="mat-display-1 text-white">GESTIÓN DE ASESORÍAS ACADÉMICAS <br>
                   <h3 class="mat-display-3 text-white">Encuesta de satisfacción <br>
                     <p class="lead text-white">A continuación diligencia esta pequeña encuesta de satisfacción de la
@@ -24,35 +24,35 @@
       <div class="card card-profile shadow mt--250">
         <div class="px-4">
           <div class="row justify-content-center">
-            <div class="col-lg-2 order-lg-2">
+            <div class="col-lg-2 col-sm-12 order-lg-2">
               <div class="card-profile-image">
                 <a href="javascript:void(0)" (click)="onSelection(1)">
                   <img src="./assets/img/theme/ico_fc_5.jpg">
                 </a>
               </div>
             </div>
-            <div class="col-lg-2 order-lg-2">
+            <div class="col-lg-2 col-sm-12 order-lg-2 spc-top">
               <div class="card-profile-image">
                 <a href="javascript:void(0)" (click)="onSelection(2)">
                   <img src="./assets/img/theme/ico_fc_4.jpg" class="card">
                 </a>
               </div>
             </div>
-            <div class="col-lg-2 order-lg-2">
+            <div class="col-lg-2 col-sm-12 order-lg-2 spc-top">
               <div class="card-profile-image">
                 <a href="javascript:void(0)" (click)="onSelection(3)">
                   <img src="./assets/img/theme/ico_fc_3.jpg">
                 </a>
               </div>
             </div>
-            <div class="col-lg-2 order-lg-2">
+            <div class="col-lg-2 col-sm-12 order-lg-2 spc-top">
               <div class="card-profile-image">
                 <a href="javascript:void(0)" (click)="onSelection(4)">
                   <img src="./assets/img/theme/ico_fc_2.jpg">
                 </a>
               </div>
             </div>
-            <div class="col-lg-2 order-lg-2">
+            <div class="col-lg-2 col-sm-12 order-lg-2 spc-top">
               <div class="card-profile-image">
                 <a href="javascript:void(0)" (click)="onSelection(5)">
                   <img src="./assets/img/theme/ico_fc_1.jpg">
@@ -61,15 +61,15 @@
             </div>
           </div>
           <div class="row mt-5 py-7 mb--125 justify-content-center">
-            <div class="col-8">
-              <p class="mat-display-1">
+            <div class="col-lg-8 col-sm-12 mg-bottom-c">
+              <p class="mat-display-1 txt-c">
                 RESPUESTA: <span class="calificacion-ase">{{eleccion}}</span>
               </p>
             </div>
           </div>
           <div class="row py-3 border-top text-center">
             <div class="row justify-content-center">
-              <div class="col-lg-9">
+              <div class="col-lg-9 col-sm-12">
                 <p>Si tienes algún comentario con relación a la asesoría académica recibida por el docente podrás
                   dejarlo a continuación.</p>
                 <form [formGroup]="formData">
@@ -87,8 +87,11 @@
                 </form>
 
               </div>
-              <p class="pt-min"> Esta observación se guardara de manera anónima y será utilizada para el
-                mejoramiento de las orientaciones educativas</p>
+             <div class="col-12">
+               <p class="pt-min"> Esta observación será utilizada para el
+                 mejoramiento de las orientaciones educativas</p>
+             </div>
+
             </div>
           </div>
         </div>
