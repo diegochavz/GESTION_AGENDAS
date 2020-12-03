@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import SolicitudResponse from "../../../../core/models/solicitud_response.model";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
@@ -8,6 +8,9 @@ import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 import SolicitudEstudiante from "../../../../core/models/solicitud_estudiante.model";
+import {MatPaginator} from "@angular/material/paginator";
+import {AutorizacionTable} from "../../../../core/util/interface_tables/autorizacion_table.interface";
+import {ConverterService} from "../../../../core/services/converters.service";
 
 @Component({
   selector: 'app-autorizaciones-list',
@@ -16,16 +19,18 @@ import SolicitudEstudiante from "../../../../core/models/solicitud_estudiante.mo
 })
 export class AutorizacionesListComponent implements OnInit {
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   //columnas de la tabla
   displayedColumns: string[] = ['fecha_asesoria', 'hora_inicio', 'hora_fin', 'estudiantes', 'opciones'];
 
   //Datos a exponer en la tabla
-  dataSource: MatTableDataSource<SolicitudResponse>;
+  dataSource: MatTableDataSource<AutorizacionTable>;
 
   //Visualización barra de carga
   loading: boolean;
 
-  solicitudes: Array<SolicitudResponse>;
+  solicitudes: Array<AutorizacionTable>;
 
   //provicional
   idDocente : number ;
@@ -35,7 +40,8 @@ export class AutorizacionesListComponent implements OnInit {
               private dialogService: DialogService,
               private toasterService: ToasterService,
               private validate: ValidateService,
-              private authenticationService: AuthenticationServiceImpl) {
+              private authenticationService: AuthenticationServiceImpl,
+              private converterService: ConverterService) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.idDocente = this.authenticationService.currentUserValue.user_id;
     this.loading = true;
@@ -59,27 +65,20 @@ export class AutorizacionesListComponent implements OnInit {
             aux.push(sol)
           }
         }
-        this.solicitudes = aux;
-        this.dataSource = new MatTableDataSource(this.solicitudes);
+        this.solicitudes = this.converterService.converterToTableAutorizaciones(aux);
       },
       (error) => {
       },
       () => {
+        this.dataSource = new MatTableDataSource(this.solicitudes);
+        this.setInitPaginatorAndSort();
         this.loading = true;
       });
   }
 
-  estudiantesAsesoria(estudiantes_data: SolicitudEstudiante[]) {
-    let estudiantesAux = '';
-
-    if(estudiantes_data.length>=0){
-      estudiantesAux = estudiantes_data[0].nombre_estudiante + "...";
-    }
-    return estudiantesAux;
-  }
-
-  formatHora(hora: string): string {
-    return hora.split(':')[0] + ":" + hora.split(':')[1];
+  setInitPaginatorAndSort(){
+    this.dataSource.paginator = this.paginator;
+    this.paginator._intl.itemsPerPageLabel = ' Filas por página';
   }
 
   applyFilter(event: Event) {
