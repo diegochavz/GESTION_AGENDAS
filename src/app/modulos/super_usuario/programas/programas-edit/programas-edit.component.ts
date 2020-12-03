@@ -21,26 +21,41 @@ export class ProgramasEditComponent implements OnInit {
 
   programa: Programa;
 
+  idPrograma:number;
+
   constructor(private programaService: ProgramaServiceImpl,
               public dialogRef: MatDialogRef<ProgramasEditComponent>,
               private _formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private toasterService: ToasterService) {
     this.loading = true;
-    this.programa = data.programa;
+    this.idPrograma = data.idPrograma;
   }
 
   ngOnInit(): void {
-    this.cargaDatosPrograma();
+    this.formEditPrograma = this._formBuilder.group({
+      codigo_programa: ['', [Validators.required]],
+      nombre_programa: ['', [Validators.required]],
+    });
+    this.getPrograma();
+  }
+
+  getPrograma(){
+    this.loading = false;
+    this.programaService.get(this.idPrograma).subscribe((res:Programa)=>{
+      this.programa = res;
+    }, error =>{
+      this.toasterService.openSnackBarCumtom(error,'error')
+      this.loading = true;
+    },()=>{
+      this.cargaDatosPrograma();
+      this.loading = true;
+    })
   }
 
   cargaDatosPrograma() {
-    if (this.programa != null && this.programa != undefined) {
-      this.formEditPrograma = this._formBuilder.group({
-        codigo_programa: [this.programa.codigo_programa, [Validators.required]],
-        nombre_programa: [this.programa.nombre_programa, [Validators.required]],
-      });
-    }
+   this.formEditPrograma.get('codigo_programa').setValue(this.programa.codigo_programa)
+   this.formEditPrograma.get('nombre_programa').setValue(this.programa.nombre_programa)
   }
 
 
@@ -66,6 +81,7 @@ export class ProgramasEditComponent implements OnInit {
           'error'
         )
         this.dialogRef.close();
+        this.loading = true;
       },
       () => {
         this.dialogRef.close();

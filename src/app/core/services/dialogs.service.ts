@@ -53,10 +53,10 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  editProgramaDialog(programa: Programa) {
+  editProgramaDialog(idPrograma: number) {
     let dialogRef: MatDialogRef<ProgramasEditComponent>;
     dialogRef = this.matDialog.open(ProgramasEditComponent, {
-      data: {programa}
+      data: {idPrograma}
     });
     return dialogRef.afterClosed();
   }

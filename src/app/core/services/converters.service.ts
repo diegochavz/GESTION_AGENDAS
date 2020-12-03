@@ -10,6 +10,8 @@ import SolicitudEstudiante from "../models/solicitud_estudiante.model";
 import {AutorizacionTable} from "../util/interface_tables/autorizacion_table.interface";
 import DirectorResponse from "../models/director_response.model";
 import {DirectorTable} from "../util/interface_tables/director_table.interface";
+import Programa from "../models/programa.model";
+import {ProgramaTable} from "../util/interface_tables/programa_table.interface";
 
 @Injectable()
 export class ConverterService {
@@ -45,6 +47,18 @@ export class ConverterService {
     return auxList;
   }
 
+  converterToTablePrograma(listPrograma: Programa[]): ProgramaTable [] {
+    let auxList = new Array<ProgramaTable>();
+    for (let pro of listPrograma) {
+      let proTable: ProgramaTable = {
+        id: pro.id,
+        nombre: pro.nombre_programa,
+        codigo: pro.codigo_programa,
+      }
+      auxList.push(proTable)
+    }
+    return auxList;
+  }
 
   converterToTableFormularios(listFormularios: Formulario[]): FormularioTable [] {
     let auxList = new Array<FormularioTable>();
