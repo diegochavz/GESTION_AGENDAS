@@ -21,6 +21,7 @@ export class DirectoresEditComponent implements OnInit {
   formEditDirector: FormGroup;
 
   director: DirectorResponse;
+  idDirector: number;
 
   listProgramas: Array<Programa>;
 
@@ -32,35 +33,45 @@ export class DirectoresEditComponent implements OnInit {
               private programaService: ProgramaServiceImpl,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.loading = true;
-    this.director = data.directorResponse;
+    this.idDirector = data.idDirector;
     this.listProgramas = [];
   }
 
   ngOnInit(): void {
-    this.cargaDatosDirector();
+    this.getDirector();
+    this.formEditDirector = this._formBuilder.group({
+      codigo_director: ['', [Validators.required]],
+      nombre: ['', [Validators.required]],
+      correo: ['', [Validators.required]],
+      programa: [{value: '', disabled: true}, [Validators.required]],
+    });
+    this.getProgramas();
+  }
+
+  getProgramas(){
+    this.programaService.getAll().subscribe((res: Array<Programa>) => {
+      this.listProgramas = res;
+    });
+  }
+
+  getDirector() {
+    this.loading = false;
+    this.directorService.get(this.idDirector).subscribe((dir: DirectorResponse) => {
+      this.director = dir;
+    }, error => {
+      this.toasterService.openSnackBarCumtom(error, 'error')
+      this.loading = true;
+    }, () => {
+      this.loading = true;
+      this.cargaDatosDirector();
+    })
   }
 
   cargaDatosDirector() {
-    if (this.director != null && this.director != undefined) {
-      this.formEditDirector = this._formBuilder.group({
-        codigo_director: [this.director.codigo_director, [Validators.required]],
-        nombre: [this.director.usuario.nombre, [Validators.required]],
-        correo: [this.director.usuario.correo, [Validators.required]],
-        programa: [{value: '', disabled: true}, [Validators.required]],
-      });
-      this.programaService.getAll().subscribe((res: Array<Programa>) => {
-        this.listProgramas = res;
-      }, () => {
-      }, () => {
-        this.formEditDirector.get('programa').setValue(this.director.programas_data[0].id)
-      })
-    } else {
-      this.formEditDirector = this._formBuilder.group({
-        codigo_director: '',
-        nombre: '',
-        correo: '',
-      });
-    }
+    this.formEditDirector.get('codigo_director').setValue(this.director.codigo_director);
+    this.formEditDirector.get('nombre').setValue(this.director.usuario.nombre);
+    this.formEditDirector.get('correo').setValue(this.director.usuario.correo);
+    this.formEditDirector.get('programa').setValue(this.director.programas_data[0].id)
   }
 
 
@@ -83,11 +94,9 @@ export class DirectoresEditComponent implements OnInit {
         )
       },
       (error) => {
-        this.toasterService.openSnackBarCumtom(
-          error,
-          'error'
-        )
+        this.toasterService.openSnackBarCumtom(error, 'error')
         this.dialogRef.close();
+        this.loading = true;
       },
       () => {
         this.dialogRef.close();
