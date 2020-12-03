@@ -17,7 +17,9 @@ export class EstudiantesEditComponent implements OnInit {
 
   formEditEstudiante: FormGroup;
 
-  estudiante: EstudianteRequest;
+  estudiante: Estudiante;
+
+  idEstudiante: number;
 
   constructor(private estudianteService: EstudianteServiceImpl,
               public dialogRef: MatDialogRef<EstudiantesEditComponent>,
@@ -25,23 +27,41 @@ export class EstudiantesEditComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any,
               private toasterService: ToasterService,) {
     this.loading = true;
-    this.estudiante = data.estudiante;
+    this.idEstudiante = data.idEstudiante;
   }
 
   ngOnInit(): void {
-    this.cargaDatosEstudiante();
+    this.formEditEstudiante = this._formBuilder.group({
+      codigo_estudiante: ['', [Validators.required]],
+      nombre_estudiante: ['', [Validators.required]],
+      correo_estudiante: ['', [Validators.required]],
+    });
+    this.getEstudiante();
   }
 
-  cargaDatosEstudiante() {
-    if (this.estudiante != null && this.estudiante != undefined) {
-      this.formEditEstudiante = this._formBuilder.group({
-        codigo_estudiante: [this.estudiante.estudiante_data.codigo_estudiante, [Validators.required]],
-        nombre_estudiante: [this.estudiante.estudiante_data.nombre_estudiante, [Validators.required]],
-        correo_estudiante: [this.estudiante.estudiante_data.correo_estudiante, [Validators.required]],
-      });
+  getEstudiante(){
+    if(this.idEstudiante != null && this.idEstudiante!= undefined){
+      this.loading = false;
+      this.estudianteService.get(this.idEstudiante).subscribe((res: Estudiante) =>{
+       this.estudiante = res;
+      }, (error) =>{
+        this.toasterService.openSnackBarCumtom(error,'error');
+        this.loading = true;
+        this.dialogRef.close();
+      },()=>{
+        this.loading = true;
+       this.cargarDatosEstudiate();
+      })
     }
   }
 
+  cargarDatosEstudiate() {
+    if (this.estudiante != null && this.estudiante != undefined) {
+      this.formEditEstudiante.get('codigo_estudiante').setValue(this.estudiante.codigo_estudiante);
+      this.formEditEstudiante.get('nombre_estudiante').setValue(this.estudiante.nombre_estudiante);
+      this.formEditEstudiante.get('correo_estudiante').setValue(this.estudiante.correo_estudiante);
+    }
+  }
 
   salir(): void {
     this.dialogRef.close();
@@ -49,15 +69,12 @@ export class EstudiantesEditComponent implements OnInit {
 
   editarEstudiante(): void {
     this.loading = false;
-    let estudianteAux = new Estudiante();
-    estudianteAux.id = this.estudiante.estudiante_data.id;
-    estudianteAux.codigo_estudiante = this.formEditEstudiante.value.codigo_estudiante;
-    estudianteAux.nombre_estudiante = this.formEditEstudiante.value.nombre_estudiante;
-    estudianteAux.correo_estudiante = this.formEditEstudiante.value.correo_estudiante;
-    estudianteAux.programa = this.estudiante.estudiante_data.programa;
-    estudianteAux.docentes = this.estudiante.estudiante_data.ids_docentes;
+    this.estudiante.codigo_estudiante = this.formEditEstudiante.value.codigo_estudiante;
+    this.estudiante.nombre_estudiante = this.formEditEstudiante.value.nombre_estudiante;
+    this.estudiante.correo_estudiante = this.formEditEstudiante.value.correo_estudiante;
+    this.estudiante.docentes = this.estudiante.ids_docentes;
 
-    this.estudianteService.update( estudianteAux.id, estudianteAux).subscribe(
+    this.estudianteService.update( this.estudiante.id, this.estudiante).subscribe(
       () => {
         this.toasterService.openSnackBarCumtom(
           'Estudiante actualizado satisfactoriamente',

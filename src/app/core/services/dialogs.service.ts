@@ -109,10 +109,10 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  editEstudianteDialog(estudiante: EstudianteRequest) {
+  editEstudianteDialog(idEstudiante: number) {
     let dialogRef: MatDialogRef<EstudiantesEditComponent>;
     dialogRef = this.matDialog.open(EstudiantesEditComponent, {
-      data: {estudiante}
+      data: {idEstudiante}
     });
     return dialogRef.afterClosed();
   }

@@ -29,6 +29,7 @@ import {DataUserService} from "./services/data_user.service";
 import {ValidateService} from "./services/validators";
 import { NotificationsComponent } from './util/notifications/notifications.component';
 import {MatCardModule} from "@angular/material/card";
+import {ConverterService} from "./services/converters.service";
 
 @NgModule({
   declarations: [NotificationsComponent],
@@ -59,6 +60,7 @@ import {MatCardModule} from "@angular/material/card";
     EstudianteServiceImpl,
     SolicitudServiceImpl,
     NotificationsComponent,
+    ConverterService,
   ],
   entryComponents: [
   ]

@@ -45,6 +45,7 @@ export class FormulariosEditComponent implements OnInit {
 
   //Datos del formulario a envíar a la Step de visualización
   editFormulario: Formulario;
+  idFormulario: number;
   minDate: Date;
   maxDate: Date;
 
@@ -68,24 +69,36 @@ export class FormulariosEditComponent implements OnInit {
               private authenticationService: AuthenticationServiceImpl) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
-    this.editFormulario = this.dataFormularioService.getDataFormulario();
+    this.idFormulario = this.dataFormularioService.getDataFormulario();
     this.minDate = new Date();
     this.maxDate = new Date();
     this.loading = false;
     this.listProgramas = [];
-    this.consultarHorarios();
-    this.consultarPreguntas();
-    this.establecerFechaMaxMin();
     this.urlFormulario = '';
     this.listAllHorarioDocente = [];
     this.formEditFormulario = null;
   }
 
   ngOnInit() {
-    this.getLisAllHorarios();
-    this.crearFormEditFormulario();
-    this.listTipoDatos = this.getTipoDatos();
-    this.listTipoCampos = this.getTipoCampos();
+    this.getFormulario();
+  }
+
+  getFormulario(){
+    this.loading = false;
+    this.formularioService.get(this.idFormulario).subscribe((res:Formulario)=>{
+      this.editFormulario = res;
+    }, error =>{
+      this.toasterService.openSnackBarCumtom(error,'error')
+      this.loading = true;
+    },()=>{
+      this.consultarHorarios();
+      this.consultarPreguntas();
+      this.establecerFechaMaxMin();
+      this.getLisAllHorarios();
+      this.crearFormEditFormulario();
+      this.listTipoDatos = this.getTipoDatos();
+      this.listTipoCampos = this.getTipoCampos();
+    })
   }
 
 

@@ -1,6 +1,5 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {FormularioServiceImpl} from "../../../../core/http/implement/formulario.service.impl";
 import Formulario from "../../../../core/models/formulario.model";
@@ -22,6 +21,8 @@ import {AuthenticationServiceImpl} from "../../../../core/http/implement/authent
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 import {NavigationStart, Router} from "@angular/router";
 import {filter} from "rxjs/operators";
+import {FormularioTable} from "../../../../core/util/interface_tables/formulario_table.interface";
+import {ConverterService} from "../../../../core/services/converters.service";
 
 @Component({
   selector: 'app-formularios-list',
@@ -30,14 +31,13 @@ import {filter} from "rxjs/operators";
 })
 export class FormulariosListComponent implements OnInit {
 
-  //@ViewChild(MatPaginator) paginator: MatPaginator;
-  //@ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   //columnas de la tabla
   displayedColumns: string[] = ['fecha_registro', 'nombre_formulario', 'opciones'];
 
   //Datos a exponer en la tabla
-  dataSource: MatTableDataSource<Formulario>;
+  dataSource: MatTableDataSource<FormularioTable>;
 
   //Visualización barra de carga
   loading: boolean;
@@ -45,7 +45,7 @@ export class FormulariosListComponent implements OnInit {
   //Identificador docente provisional
   idDocente: number;
 
-  formularios: Array<Formulario>;
+  formularios: Array<FormularioTable>;
 
   constructor(private formularioService: FormularioServiceImpl,
               private  programaService: ProgramaServiceImpl,
@@ -55,7 +55,8 @@ export class FormulariosListComponent implements OnInit {
               private toasterService: ToasterService,
               private validate: ValidateService,
               private authenticationService: AuthenticationServiceImpl,
-              private router: Router) {
+              private router: Router,
+              private converterService: ConverterService) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this.idDocente = authenticationService.currentUserValue.user_id;
     this.loading = true;
@@ -75,11 +76,6 @@ export class FormulariosListComponent implements OnInit {
     this.getFormularios();
   }
 
-  ngAfterViewInit() {
-    //this.dataSource.paginator = this.paginator;
-    //this.dataSource.sort = this.sort;
-  }
-
   getFormularios() {
     this.loading = false;
     this.formularios = [];
@@ -91,18 +87,25 @@ export class FormulariosListComponent implements OnInit {
             aux.push(i)
           }
         }
-        this.formularios = aux;
-        this.dataSource = new MatTableDataSource(this.formularios);
+        this.formularios =this.converterService.converterToTableFormularios(aux);
+
       },
       (error) => {
-        this.toasterService.openSnackBarCumtom(
-          error,
-          'error')
+        this.toasterService.openSnackBarCumtom(error, 'error')
+        this.loading = true;
       },
       () => {
+        this.dataSource = new MatTableDataSource(this.formularios);
+        this.setInitPaginatorAndSort()
         this.loading = true;
       });
   }
+
+  setInitPaginatorAndSort(){
+    this.dataSource.paginator = this.paginator;
+    this.paginator._intl.itemsPerPageLabel = ' Filas por página';
+  }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -113,12 +116,8 @@ export class FormulariosListComponent implements OnInit {
     }
   }
 
-  aplicarFormatoFecha(formulario: Formulario): string {
-    return moment(formulario.fecha_registro).format("YYYY-MM-DD");
-  }
-
-  setFormulario(form: Formulario) {
-    this.dataFormularioService.setDataFormulario(form);
+  editarFormulario(idFormulario: number) {
+    this.dataFormularioService.setDataFormulario(idFormulario);
   }
 
   eliminarFormulario(idFormulario: number) {

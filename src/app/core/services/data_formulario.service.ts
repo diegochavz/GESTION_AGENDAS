@@ -4,16 +4,16 @@ import Formulario from '../models/formulario.model';
 @Injectable()
 export class DataFormularioService {
 
-  dataFormulario: Formulario;
+  dataFormulario: number;
 
   constructor() {
   }
 
-  getDataFormulario(): Formulario {
+  getDataFormulario(): number {
     return this.dataFormulario;
   }
 
-  setDataFormulario(dataFormulario: Formulario) {
-    this.dataFormulario = dataFormulario;
+  setDataFormulario(idFormulario: number) {
+    this.dataFormulario = idFormulario;
   }
 }
