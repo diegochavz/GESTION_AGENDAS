@@ -38,25 +38,25 @@
 
               <ng-container matColumnDef="codigo_docente">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Código</th>
-                <td mat-cell *matCellDef="let row"> {{row.codigo_docente}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.codigo}} </td>
               </ng-container>
 
               <ng-container matColumnDef="nombre">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre</th>
-                <td mat-cell *matCellDef="let row"> {{row.usuario.nombre}}</td>
+                <td mat-cell *matCellDef="let row"> {{row.nombre}}</td>
               </ng-container>
 
               <ng-container matColumnDef="correo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo</th>
-                <td mat-cell *matCellDef="let row"> {{row.usuario.correo}}</td>
+                <td mat-cell *matCellDef="let row"> {{row.correo}}</td>
               </ng-container>
 
               <ng-container matColumnDef="opciones">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Opciones</th>
                 <td mat-cell *matCellDef="let row">
-                  <button mat-icon-button class="ico-input-color s-opc" (click)="editarDocente(row)">
+                  <button mat-icon-button class="ico-input-color s-opc" (click)="editarDocente(row.id)">
                     <i class="fas fa-edit"></i></button>
-                  <button mat-icon-button class="ico-input-color s-opc" (click)="eliminarDocente(row.usuario.id)">
+                  <button mat-icon-button class="ico-input-color s-opc" (click)="eliminarDocente(row.id)">
                     <i class="fas fa-trash"></i></button>
                 </td>
               </ng-container>
@@ -65,9 +65,10 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
               <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">Información no encontrada "{{input.value}}"</td>
+                <td class="mat-cell" colspan="4">Información no encontrada para "{{input.value}}"</td>
               </tr>
             </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
           </div>
         </div>
       </div>

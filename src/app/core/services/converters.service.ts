@@ -12,6 +12,8 @@ import DirectorResponse from "../models/director_response.model";
 import {DirectorTable} from "../util/interface_tables/director_table.interface";
 import Programa from "../models/programa.model";
 import {ProgramaTable} from "../util/interface_tables/programa_table.interface";
+import DocenteResponse from "../models/docente_response.model";
+import {DocenteTable} from "../util/interface_tables/docente_table.interface";
 
 @Injectable()
 export class ConverterService {
@@ -46,6 +48,21 @@ export class ConverterService {
     }
     return auxList;
   }
+
+  converterToTableDocentes(listDocentes: DocenteResponse[]): DocenteTable [] {
+    let auxList = new Array<DocenteTable>();
+    for (let doc of listDocentes) {
+      let docTable: DocenteTable = {
+        id: doc.usuario.id,
+        codigo: doc.codigo_docente,
+        nombre: doc.usuario.nombre,
+        correo: doc.usuario.correo,
+      }
+      auxList.push(docTable)
+    }
+    return auxList;
+  }
+
 
   converterToTablePrograma(listPrograma: Programa[]): ProgramaTable [] {
     let auxList = new Array<ProgramaTable>();

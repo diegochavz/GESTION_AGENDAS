@@ -24,6 +24,8 @@ export class DocentesEditComponent implements OnInit {
 
   docente: DocenteResponse;
 
+  idDocente:number;
+
   listProgramasUso: number[];
 
   constructor(private programaService: ProgramaServiceImpl,
@@ -34,58 +36,75 @@ export class DocentesEditComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.listProgramas = [];
     this.loading = true;
-    this.docente = data.docenteResponse;
+    this.idDocente = data.idDocente;
     this.listProgramasUso = [];
   }
 
   ngOnInit(): void {
-    this.cargaDatosDocente();
+    this.formEditDocente = this._formBuilder.group({
+      codigo_docente: ['', [Validators.required]],
+      nombre: ['', [Validators.required]],
+      programas: [null, [Validators.required]],
+      correo: ['', [Validators.required]],
+    });
+    this.getDocente();
+    this.getProgramas();
+  }
+
+  getProgramas(){
+    this.loading = false;
+    this.programaService.getAll().subscribe((res: Array<Programa>) => {
+      this.listProgramas = res;
+    }, (error)=>{
+      this.toasterService.openSnackBarCumtom(error, 'error')
+      this.loading = true;
+    },()=>{
+      this.loading = true;
+    })
+  }
+
+  getDocente(){
+    this.loading = false;
+    this.docenteService.get(this.idDocente).subscribe((res:DocenteResponse)=>{
+      this.docente = res;
+    },error =>{
+      this.toasterService.openSnackBarCumtom(error,'error');
+      this.loading = true;
+    },()=>{
+      this.loading = true;
+      this.cargaDatosDocente();
+    })
   }
 
   cargaDatosDocente() {
-    if (this.docente != null && this.docente != undefined) {
-      this.formEditDocente = this._formBuilder.group({
-        codigo_docente: [this.docente.codigo_docente, [Validators.required]],
-        nombre: [this.docente.usuario.nombre, [Validators.required]],
-        programas: [null, [Validators.required]],
-        correo: [this.docente.usuario.correo, [Validators.required]],
-      });
-      this.programaService.getAll().subscribe((res: Array<Programa>) => {
-        this.listProgramas = res;
-        this.consultarProgramas();
-      }, (error)=>{
-        this.toasterService.openSnackBarCumtom(
-          error,
-          'error')
-
-      })
-    }
+      this.formEditDocente.get('codigo_docente').setValue(this.docente.codigo_docente)
+      this.formEditDocente.get('nombre').setValue(this.docente.usuario.nombre)
+      this.formEditDocente.get('correo').setValue(this.docente.usuario.correo)
+      this.consultarProgramasDocente();
   }
 
-  consultarProgramas() {
-    if (this.docente != null && this.docente != undefined) {
+  consultarProgramasDocente() {
       const aux = new Array<number>();
       this.loading = false;
       this.docenteService.getProgramasNormalByDocente(this.docente.usuario.id).subscribe((res: Array<ProgramaResponse>) => {
         for (let i of res) {
             aux.push(i.programa);
             if(i.esta_vinculado == true){
+              //marcar programas del docente en uso por formularios
               this.listProgramasUso.push(i.programa)
             }
           }
+        //marcar programas del docente
           this.formEditDocente.get('programas').setValue(aux)
         },
         (error) => {
-          this.toasterService.openSnackBarCumtom(
-            error,
-            'error')
+          this.toasterService.openSnackBarCumtom(error,'error')
+          this.loading = true;
         },
         () => {
-
           this.loading = true;
         }
       )
-    }
   }
 
   salir(): void {
@@ -117,6 +136,7 @@ export class DocentesEditComponent implements OnInit {
           error,
           'error')
         this.dialogRef.close();
+        this.loading = true;
       },
       () => {
         this.loading = true;

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {DialogService} from "../../../../core/services/dialogs.service";
 import {ToasterService} from "../../../../core/services/toaster.service";
@@ -10,33 +10,38 @@ import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import Director from "../../../../core/models/director.model";
 import Docente from "../../../../core/models/docente.model";
+import {DocenteTable} from "../../../../core/util/interface_tables/docente_table.interface";
+import {MatPaginator} from "@angular/material/paginator";
+import {ConverterService} from "../../../../core/services/converters.service";
 
 @Component({
   selector: 'app-docentes-list',
   templateUrl: './docentes-list.component.html',
   styleUrls: ['./docentes-list.component.scss']
 })
-export class DocentesListComponent implements OnInit, AfterViewInit {
+export class DocentesListComponent implements OnInit {
 
   //columnas de la tabla
-  displayedColumns: string[] = ['codigo_docente','nombre', 'correo','opciones'];
+  displayedColumns: string[] = ['codigo_docente', 'nombre', 'correo', 'opciones'];
 
   //Datos a exponer en la tabla
-  dataSource: MatTableDataSource<DocenteResponse>;
+  dataSource: MatTableDataSource<DocenteTable>;
 
   //Visualización barra de carga
   loading: boolean;
 
-  docentes: Array<DocenteResponse>;
+  docentes: Array<DocenteTable>;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private  docenteService: DocenteServiceImpl,
               private programaService: ProgramaServiceImpl,
               private dialogService: DialogService,
               private toasterService: ToasterService,
               private authenticationService: AuthenticationServiceImpl,
-              private validate: ValidateService) {
-    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario,TIPO_USER.DIRECTOR)
+              private validate: ValidateService,
+              private converterService: ConverterService) {
+    this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DIRECTOR)
     this.loading = true;
     this.docentes = [];
     this.dataSource = new MatTableDataSource(this.docentes);
@@ -44,38 +49,40 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.getDocentes();
-  }
-
-  ngAfterViewInit() {
-
   }
 
   getDocentes() {
     this.loading = false;
     this.docentes = [];
     this.programaService.getDocentesByPrograma(this.authenticationService.currentUserValue.programas[0].id).subscribe(
-      (listDocentes: DocenteResponse[])=>{
+      (listDocentes: DocenteResponse[]) => {
         let aux = []
-        for(let i of listDocentes){
-          if(i.usuario.id != this.authenticationService.currentUserValue.user_id){
+        for (let i of listDocentes) {
+          if (i.usuario.id != this.authenticationService.currentUserValue.user_id) {
             aux.push(i);
           }
         }
-        this.docentes = aux;
-        this.dataSource = new MatTableDataSource(this.docentes);
+        this.docentes = this.converterService.converterToTableDocentes(aux);
       },
       (error) => {
-        this.toasterService.openSnackBarCumtom(
-          error,
-          'error')
+        this.toasterService.openSnackBarCumtom(error, 'error')
+        this.loading = true;
 
       },
       () => {
+        this.dataSource = new MatTableDataSource(this.docentes);
+        this.setInitPaginatorAndSort();
         this.loading = true;
       });
   }
+
+  setInitPaginatorAndSort() {
+    this.dataSource.paginator = this.paginator;
+    this.paginator._intl.itemsPerPageLabel = ' Filas por página';
+  }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -91,7 +98,7 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  loadDataDocente(){
+  loadDataDocente() {
     this.dialogService.loadDataDocenteDialog().subscribe(res => {
       this.getDocentes();
     });
@@ -103,8 +110,8 @@ export class DocentesListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  editarDocente(docenteResponse: DocenteResponse) {
-    this.dialogService.editDocenteDialog(docenteResponse).subscribe(res => {
+  editarDocente(idDocente: number) {
+    this.dialogService.editDocenteDialog(idDocente).subscribe(res => {
       this.getDocentes();
     });
   }
