@@ -1,21 +1,13 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, Input,  OnInit, ViewEncapsulation} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import Formulario from "../../../../core/models/formulario.model";
 import Horario from "../../../../core/models/horario.model";
-import {MatCalendar, MatCalendarCellClassFunction, MatCalendarCellCssClasses} from "@angular/material/datepicker";
+import { MatCalendarCellCssClasses} from "@angular/material/datepicker";
 import {TIPO_DATO} from "../../../../core/constants/tipo_dato.constants";
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-} from '@angular/material-moment-adapter';
-
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {DateAdapter} from '@angular/material/core';
 import * as moment from 'moment';
 import {TIPO_CAMPO} from "../../../../core/constants/tipo_campo.constants";
 import Pregunta from "../../../../core/models/pregunta.model";
-import {Observable, Observer} from "rxjs";
-import {CrearFormularioDocenteComponent} from "../formularios_add/formulario_add.component";
 import Programa from "../../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 
@@ -130,7 +122,7 @@ export class FormulariosShowComponent implements OnInit {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       if (this.showFormulario.horarios != null && this.showFormulario.horarios != undefined) {
         for (let i of this.showFormulario.horarios) {
-          let dateAux = i.fecha_horario.split("-");
+          let dateAux = i.fecha_inicio.split("-");
           let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
           newFechasDisponibles.push(newD);
         }
@@ -151,7 +143,7 @@ export class FormulariosShowComponent implements OnInit {
       const horarios = this.showFormulario.horarios;
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
-          let dateAux = horarios[i].fecha_horario.split("-");
+          let dateAux = horarios[i].fecha_inicio.split("-");
           let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
           if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
             ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&

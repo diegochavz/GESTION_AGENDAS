@@ -1,7 +1,5 @@
 import {Router} from "@angular/router";
 import {Injectable} from "@angular/core";
-import Horario from "../models/horario.model";
-import * as moment from "moment";
 
 @Injectable()
 export class ValidateService {
@@ -29,47 +27,6 @@ export class ValidateService {
       return;
     }
     this.validateUser(tipo_user);
-  }
-
-  validarCruceFecha(horarioNew: Horario, listHorarios: Array<Horario>): boolean {
-    for (let horario of listHorarios) {
-      if ( horario.fecha_horario == horarioNew.fecha_horario) {
-        const horaInicioNew = moment(horarioNew.inicio_horario.replace(':', ''), "hmm");
-        const horaInicioOld = moment(this.formatHora(horario.inicio_horario).replace(':', ''), "hmm");
-        const horaFinNew = moment(horarioNew.fin_horario.replace(':', ''), "hmm");
-        const horaFinOld = moment(this.formatHora(horario.fin_horario).replace(':', ''), "hmm");
-
-        if (horaInicioNew.isSame(horaFinOld) &&
-          horaInicioNew.isAfter(horaInicioOld)
-          && horaFinNew.isAfter(horaFinOld)) {
-          return false;
-        } else if(horaFinNew.isSame(horaInicioOld) &&
-          horaInicioOld.isAfter(horaInicioNew)
-          && horaFinOld.isAfter(horaFinNew)) {
-          return false;
-        } else if(horaInicioNew.isSameOrBefore(horaInicioOld) &&
-          horaFinNew.isSameOrAfter(horaInicioOld)
-          && horaFinNew.isSameOrBefore(horaFinOld)) {
-          return true;
-        } else if (horaInicioNew.isSameOrBefore(horaInicioOld)
-          && horaFinNew.isSameOrAfter(horaFinOld)) {
-          return true;
-        } else if (horaInicioNew.isSameOrAfter(horaInicioOld)
-          && horaFinNew.isSameOrBefore(horaFinOld)) {
-          return true;
-        } else if (horaInicioNew.isSameOrAfter(horaInicioOld)
-          && horaInicioNew.isSameOrBefore(horaFinOld) &&
-          horaFinNew.isSameOrAfter(horaFinOld)) {
-          return true;
-        } else {
-        }
-      }
-    }
-    return false;
-  }
-
-  formatHora(hora: string): string {
-      return hora.split(':')[0] + ":" + hora.split(':')[1]
   }
 
 }

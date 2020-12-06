@@ -1,33 +1,20 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
-  RequiredValidator,
   Validators
 } from '@angular/forms';
 import Formulario from "../../../../core/models/formulario.model";
 import {FormularioServiceImpl} from "../../../../core/http/implement/formulario.service.impl";
-import Pregunta from "../../../../core/models/pregunta.model";
 import {TIPO_CAMPO} from "../../../../core/constants/tipo_campo.constants";
 import {TIPO_DATO} from "../../../../core/constants/tipo_dato.constants";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
-import {newArray} from "@angular/compiler/src/util";
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
-import {
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter
-} from "@angular/material-moment-adapter";
-import {Observable, Subject} from "rxjs";
+import {DateAdapter} from "@angular/material/core";
 import Programa from "../../../../core/models/programa.model";
-import {ProgramaServiceImpl} from "../../../../core/http/implement/programa.service.impl";
 import {v4 as uuidv4} from 'uuid';
 import * as moment from 'moment';
-import {DefaultMatCalendarRangeStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY} from "@angular/material/datepicker";
 import {DocenteServiceImpl} from "../../../../core/http/implement/docente.service.impl";
 import {ToasterService} from "../../../../core/services/toaster.service";
 import Horario from "../../../../core/models/horario.model";
@@ -36,6 +23,10 @@ import {ValidateService} from "../../../../core/services/validators";
 import {AuthenticationServiceImpl} from "../../../../core/http/implement/authentication.service.impl";
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 import {URL_FORMULARIO} from "../../../../core/constants/url_formulario.constants";
+import {MatTableDataSource} from "@angular/material/table";
+import {EstudianteTable} from "../../../../core/util/interface_tables/estudiante_table.interface";
+import {MatPaginator} from "@angular/material/paginator";
+import {FormularioHelpsService} from "../../../../core/services/formulario_helps.service";
 
 @Component({
   selector: 'formulario-add',
@@ -44,16 +35,14 @@ import {URL_FORMULARIO} from "../../../../core/constants/url_formulario.constant
 })
 export class CrearFormularioDocenteComponent implements OnInit {
 
-  //Form
   formAddFormulario: FormGroup;
 
   formPreguntasFormulario: FormGroup;
 
-
-  //Barra de carga del mat-progress-bar
   loading: boolean;
 
   listTipoDatos: Array<string>;
+
   listTipoCampos: Array<string>;
 
   //Recurso para los CHIPs de angular
@@ -64,15 +53,13 @@ export class CrearFormularioDocenteComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
 
+  listHorariosNew: Horario[];
+
   listProgramas: Array<Programa>;
 
-  idDocente : number;
+  idDocente: number;
 
   urlFormulario: string;
-
-  listAllHorarioDocente: Array<Horario>;
-
-  validadorTimeOut: any;
 
   constructor(private _adapter: DateAdapter<any>,
               private _formBuilder: FormBuilder,
@@ -81,7 +68,8 @@ export class CrearFormularioDocenteComponent implements OnInit {
               private toasterService: ToasterService,
               private clipboardService: ClipboardService,
               private validate: ValidateService,
-              private authenticationService: AuthenticationServiceImpl,) {
+              private authenticationService: AuthenticationServiceImpl,
+              private formularioHelps: FormularioHelpsService) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
     this.idDocente = authenticationService.currentUserValue.user_id;
@@ -91,27 +79,14 @@ export class CrearFormularioDocenteComponent implements OnInit {
     this.listProgramas = [];
     this.newFormulario = new Formulario();
     this.urlFormulario = '';
-    this.listAllHorarioDocente = [];
+    this.listHorariosNew = [];
   }
 
   ngOnInit() {
-    this.getLisAllHorarios();
     this.crearFormAddFormulario();
     this.listTipoDatos = this.getTipoDatos();
     this.listTipoCampos = this.getTipoCampos();
     this.agregarPregunta();
-    this.agregarHorario();
-  }
-
-  getLisAllHorarios() {
-      this.docenteService.getHorariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe((res: Horario[]) => {
-        this.listAllHorarioDocente = res;
-      }, (error) => {
-        this.toasterService.openSnackBarCumtom(
-          error,
-          'error'
-        )
-      })
   }
 
   /****CARGA VALORES INICIALES***/
@@ -127,12 +102,13 @@ export class CrearFormularioDocenteComponent implements OnInit {
       programas: [null, [Validators.required]],
       restringe_estudiantes: [false],
       restringe_otros_estudiantes: [false],
-      horarios: this._formBuilder.array([]),
       carga_archivos: [false],
     });
+
     this.formPreguntasFormulario = this._formBuilder.group({
       preguntas: this._formBuilder.array([]),
     });
+
     this.formAddFormulario.valueChanges.subscribe(res => {
       if (res.disponibilidad_inicio_formulario >= res.disponibilidad_fin_formulario &&
         res.disponibilidad_fin_formulario !== '') {
@@ -142,12 +118,14 @@ export class CrearFormularioDocenteComponent implements OnInit {
         this.formAddFormulario.get('disponibilidad_fin_formulario').setValidators([Validators.required])
       }
     });
+
     this.docenteService.getProgramasByDocente(this.idDocente).subscribe(
       (programas: Array<Programa>) => {
         this.listProgramas = programas;
       }
     );
   }
+
 
   /****CONFIGURACIÓN PREGUNTAS***/
 
@@ -221,52 +199,11 @@ export class CrearFormularioDocenteComponent implements OnInit {
     }
   }
 
-  /****CONFIGURACIÓN HORARIOS***/
+  /****RECIBIR HORARIOS***/
 
-  get horarios(): FormArray {
-    return this.formAddFormulario.get('horarios') as FormArray;
-  }
-
-  agregarHorario() {
-    const horario = this._formBuilder.group({
-      cruce: false,
-      fecha_horario: ['', [Validators.required]],
-      inicio_horario: ['', [Validators.required]],
-      fin_horario: ['', [Validators.required]],
-    });
-    horario.valueChanges.subscribe(res => {
-      if (res.inicio_horario >= res.fin_horario) {
-        horario.get('fin_horario').setErrors({'error': true})
-      } else {
-        horario.get('fin_horario').setErrors(null)
-        horario.get('fin_horario').setValidators([Validators.required])
-      }
-
-      if (res.fecha_horario != '' && res.inicio_horario != '' && res.fin_horario != '') {
-
-        this.validadorTimeOut = setTimeout(() => {
-          let data = horario.value;
-          let auxHor = new Horario(moment(data.fecha_horario).format("YYYY-MM-DD"), data.inicio_horario, data.fin_horario)
-          horario.get('cruce').setValue(this.validate.validarCruceFecha(auxHor, this.listAllHorarioDocente))
-          if (horario.get('cruce').value) {
-            horario.get('cruce').setErrors({'error-cruce': true})
-          } else {
-            horario.get('cruce').setErrors(null)
-          }
-        }, 2000);
-      }
-
-
-    });
-    this.horarios.push(horario);
-  }
-
-  borrarHorario(indice: number) {
-    this.horarios.removeAt(indice)
-  }
-
-  stopTimeOut(){
-    clearTimeout(this.validadorTimeOut);
+  getListHorariosNew(listHorarios: Horario[]) {
+    console.log("Listado de horarios resultantes ", listHorarios)
+    this.listHorariosNew = listHorarios;
   }
 
   /****ENVIO Y REGISTRO DE INFORMACIÓN***/
@@ -283,33 +220,22 @@ export class CrearFormularioDocenteComponent implements OnInit {
     this.maxDate = new Date(this.newFormulario.disponibilidad_fin_formulario);
     this.newFormulario.disponibilidad_inicio_formulario = moment(this.newFormulario.disponibilidad_inicio_formulario).format("YYYY-MM-DD")
     this.newFormulario.disponibilidad_fin_formulario = moment(this.newFormulario.disponibilidad_fin_formulario).format("YYYY-MM-DD")
-    this.newFormulario.docente = this.idDocente+"";
+    this.newFormulario.docente = this.idDocente + "";
 
-    const horariosCal = this.newFormulario.horarios;
-    let horarioListAux = new Array<Horario>();
-    let duracionAux = this.newFormulario.duracion;
-    let intervaloAux = this.newFormulario.intervalo;
-
-    for (let i = 0; i < horariosCal.length; i++) {
-      const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
-      const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
-      let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
-      if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
-        while (horaFinal.isAfter(horaVariable)) {
-          let newH = horaVariable.clone().add(duracionAux, "minutes")
-          horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
-          newH = newH.clone().add(intervaloAux, "minutes")
-          horaVariable = newH;
-        }
-      }
-      this.newFormulario.horarios = horarioListAux;
+    let auxList = new Array<Horario>();
+    for (let i = 0; i < this.listHorariosNew.length; i++) {
+      let mm = this.formularioHelps.desglosarHorarios(this.listHorariosNew[i]);
+      auxList = auxList.concat(mm)
     }
+    this.newFormulario.horarios = this.formularioHelps.parseHorarioToTurnos(auxList, this.newFormulario.duracion, this.newFormulario.intervalo);
     this.urlFormulario = URL_FORMULARIO.BASE + this.newFormulario.enlace_uuid_formulario;
 
   }
 
   onFormSubmit() {
     this.loading = false;
+    this.newFormulario.horarios = this.listHorariosNew;
+    console.log(this.newFormulario)
     this.formularioService.save(this.newFormulario).subscribe(
       (newForm) => {
         this.toasterService.openSnackBarCumtom(

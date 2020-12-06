@@ -65,6 +65,10 @@ import { AutorizacionesApproveComponent } from './autorizaciones/autorizaciones-
 import {MatTabsModule} from '@angular/material/tabs';
 import { LoadDataEstudianteComponent } from './estudiantes/load-data-estudiante/load-data-estudiante.component';
 import { PerfilDocenteComponent } from './perfil-docente/perfil-docente.component';
+import { SetHorariosComponent } from './formularios/set-horarios/set-horarios.component';
+import { AddHorarioComponent } from './formularios/add-horario/add-horario.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { EditHorariosComponent } from './formularios/edit-horarios/edit-horarios.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -108,6 +112,7 @@ FullCalendarModule.registerPlugins([
     FullCalendarModule,
     CoreModule,
     MatTabsModule,
+    MatSlideToggleModule,
   ],
   declarations: [
     MainDocenteComponent,
@@ -130,6 +135,9 @@ FullCalendarModule.registerPlugins([
     AutorizacionesApproveComponent,
     LoadDataEstudianteComponent,
     PerfilDocenteComponent,
+    SetHorariosComponent,
+    AddHorarioComponent,
+    EditHorariosComponent,
   ],
   entryComponents:[
     FormulariosDeleteComponent,

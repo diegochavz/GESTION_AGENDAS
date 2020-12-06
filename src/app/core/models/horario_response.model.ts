@@ -1,6 +1,4 @@
-import {Time} from "@angular/common";
-
-export default class Horario {
+export default class HorarioResponse {
   id:number;
   fecha_inicio: string;
   fecha_fin:string;
@@ -8,4 +6,8 @@ export default class Horario {
   hora_fin: string;
   se_repite:boolean;
   dias_semanas:number[];
+  formulario: number;
+  fecha_registro: Date;
+  fecha_actualizacion: Date;
+  disponibilidad:boolean;
 }

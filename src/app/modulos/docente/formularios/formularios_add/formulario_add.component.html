@@ -25,210 +25,185 @@
 
             <mat-step label="Horario de atención">
               <form [formGroup]="formAddFormulario">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <h1 class="display-4">Configuración de horarios de atención</h1>
-                    <p class="m-t-subtitle-stepper">Establece los horarios de atención para tus estudiantes </p>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h1 class="display-4">Datos basicos del formularios</h1>
+                      <p class="m-t-subtitle-stepper">Diligencia los siguientes datos basicos solicitados a
+                        continuación</p>
+                    </div>
                   </div>
-                </div>
-                <div class="row  pl-lg-4">
-                  <div class="col-lg-6 col-md-12">
+
                     <div class="row">
-                      <div formArrayName='horarios'>
-                        <div *ngFor="let horario of horarios.controls; let i = index;">
-                          <div [formGroupName]="i">
-                            <div class="row">
-                              <div class="col-lg-4">
-                                <mat-form-field class="fluid" appearance="legacy">
-                                  <input formControlName="fecha_horario" matInput [matDatepicker]="picker1"
-                                         placeholder="Día" required>
-                                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                  <mat-datepicker #picker1></mat-datepicker>
-                                </mat-form-field>
-                              </div>
-                              <div class="col-lg-3">
-                                <mat-form-field class="fluid" appearance="legacy">
-                                  <mat-label>Hora inicio
-                                  </mat-label>
-                                  <input class="inicio-hr" matInput formControlName="inicio_horario" type="time" #timeInicio required>
-                                </mat-form-field>
-                              </div>
-                              <div class="col-lg-3">
-                                <mat-form-field class="fluid" appearance="legacy">
-                                  <mat-label>Hora fin</mat-label>
-                                  <input matInput class="fin-hor" formControlName="fin_horario" type="time" #timeFin required>
-                                </mat-form-field>
-                              </div>
-                              <div class="col-lg-1">
-                                <a mat-icon-button color="primary" (click)="borrarHorario(i)">
-                                  <p class="icon-input"><i class="fas fa-trash"></i></p>
-                                </a>
-                              </div>
-                            </div>
-                            <div class="row msn-error-h" *ngIf="timeInicio.value>=timeFin.value && timeFin.value != 0">
-                              <div class="col-12">
-                                <p class="msn-error-p">La hora fin es inferior o igual a la hora inicio</p>
-                              </div>
-                            </div>
-
-                            <div class="row msn-error-h" *ngIf="horarios.controls[i].get('cruce').hasError('error-cruce')">
-                              <div class="col-12">
-                                <p class="msn-error-p">El horario se encuentra en cruce con otro horario</p>
-                              </div>
-                            </div>
-
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <mat-form-field form appearance="fill" class="fluid">
+                              <mat-label>Nombre del formulario</mat-label>
+                              <input matInput formControlName="nombre_formulario" required>
+                              <mat-icon matSuffix><a matTooltip="Nombre relacionado al asunto de la asesoría"
+                                                     matTooltipPosition="after">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-form-field>
                           </div>
-
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <mat-form-field appearance="fill" class="fluid">
+                              <mat-label>Ubicación presencial
+                              </mat-label>
+                              <input matInput formControlName="ubicacion_formulario" required>
+                              <mat-icon matSuffix><a matTooltip="Donde se realizará la asesoría"
+                                                     matTooltipPosition="after">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <h6 class="heading-small text-muted mb-4 titulo-general-elementos">Disponibilidad del
+                          formulario</h6>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <mat-form-field class="fluid">
+                              <input matInput formControlName="disponibilidad_inicio_formulario"
+                                     [matDatepicker]="picker2"
+                                     placeholder="Fecha inicio" #calInicio>
+                              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                              <mat-datepicker #picker2></mat-datepicker>
+                              <mat-icon matSuffix><a
+                                matTooltip="Las asesorías serán agendadas a partir de esta fecha"
+                                matTooltipPosition="after">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-lg-6">
+                            <mat-form-field class="fluid">
+                              <input matInput formControlName="disponibilidad_fin_formulario"
+                                     [matDatepicker]="picker3"
+                                     placeholder="Fecha finalización" #calFin>
+                              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                              <mat-datepicker #picker3></mat-datepicker>
+                              <mat-icon matSuffix><a matTooltip="Las asesorías estarán disponibles hasta esta fecha"
+                                                     matTooltipPosition="after">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row msn-error-h"
+                             *ngIf="this.formAddFormulario.get('disponibilidad_fin_formulario').hasError('error')">
+                          <div class="col-12">
+                            <p class="msn-error-p">La fecha de finalización es inferior o igual a la fecha
+                              inicio</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <mat-form-field class="fluid" appearance="fill">
+                              <mat-label>Tiempo mínimo
+                              </mat-label>
+                              <input matInput formControlName="tiempo_minimo" type="number" required
+                                     placeholder="MINUTOS">
+                              <mat-icon matSuffix><a
+                                matTooltip="Tiempo dentro del cual no se podrán agendar asesorías"
+                                matTooltipPosition="after">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-lg-6">
+                            <mat-form-field class="fluid" appearance="fill">
+                              <mat-label>Intervalo
+                              </mat-label>
+                              <input matInput formControlName="intervalo" type="number" required
+                                     placeholder="MINUTOS">
+                              <mat-icon matSuffix><a matTooltip="Tiempo de receso entre asesorías"
+                                                     matTooltipPosition="after">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <mat-form-field class="fluid" appearance="fill">
+                              <mat-label>Duración
+                              </mat-label>
+                              <input matInput formControlName="duracion" type="number" required
+                                     placeholder="MINUTOS">
+                              <mat-icon matSuffix><a matTooltip="Tiempo dedicado a la asesoría"
+                                                     matTooltipPosition="after">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-lg-6">
+                            <mat-form-field class="fluid" appearance="fill">
+                              <mat-label>Programas</mat-label>
+                              <mat-select formControlName="programas" multiple>
+                                <mat-option *ngFor="let programa of listProgramas"
+                                            [value]="programa.id">{{programa.nombre_programa}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <mat-checkbox formControlName="carga_archivos" class="fluid"> El formulario permite
+                              carga de
+                              archivos en la solicitud
+                              <mat-icon matSuffix><a matTooltip="Permite cargar archivos a la solicitud de asesoría"
+                                                     matTooltipPosition="right">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <mat-checkbox formControlName="restringe_estudiantes" class="fluid">Restringir
+                              solicitudes a mis
+                              estudiantes registrados
+                              <mat-icon matSuffix><a
+                                matTooltip="Las solicitudes de tus estudiantes deberán ser autorizadas"
+                                matTooltipPosition="right">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <mat-checkbox formControlName="restringe_otros_estudiantes" class="fluid">Restringir
+                              solicitudes
+                              a otros estudiantes
+                              <mat-icon matSuffix><a
+                                matTooltip="Las solicitudes de otros estudiantes deberán ser autorizadas"
+                                matTooltipPosition="right">
+                                <i class="fas fa-exclamation-circle"></i></a></mat-icon>
+                            </mat-checkbox>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <a class="fluid" mat-icon-button color="primary" (click)="agregarHorario()">
-                          <p class="icon-input"><i class="fas fa-plus-circle"></i> Agregar un nuevo horario
-                            <mat-icon matSuffix><a matTooltip="Agrega un nuevo horario de atención de acuerdo a tu disponibilidad" matTooltipPosition="after">
-                              <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                          </p>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-md-12 ">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <mat-form-field form appearance="fill" class="fluid">
-                          <mat-label>Nombre del formulario</mat-label>
-                          <input matInput formControlName="nombre_formulario" required>
-                          <mat-icon matSuffix><a matTooltip="Nombre relacionado al asunto de la asesoría" matTooltipPosition="after">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <mat-form-field appearance="fill" class="fluid">
-                          <mat-label>Ubicación presencial
-                          </mat-label>
-                          <input matInput formControlName="ubicacion_formulario" required>
-                          <mat-icon matSuffix><a matTooltip="Donde se realizará la asesoría" matTooltipPosition="after">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <h6 class="heading-small text-muted mb-4 titulo-general-elementos">Disponibilidad del
-                      formulario</h6>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <mat-form-field class="fluid">
-                          <input matInput formControlName="disponibilidad_inicio_formulario" [matDatepicker]="picker2"
-                                 placeholder="Fecha inicio" #calInicio>
-                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                          <mat-datepicker #picker2></mat-datepicker>
-                          <mat-icon matSuffix><a matTooltip="Las asesorías serán agendadas a partir de esta fecha" matTooltipPosition="after">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-lg-6">
-                        <mat-form-field class="fluid">
-                          <input matInput formControlName="disponibilidad_fin_formulario" [matDatepicker]="picker3"
-                                 placeholder="Fecha finalización" #calFin>
-                          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                          <mat-datepicker #picker3></mat-datepicker>
-                          <mat-icon matSuffix><a matTooltip="Las asesorías estarán disponibles hasta esta fecha" matTooltipPosition="after">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="row msn-error-h"
-                         *ngIf="this.formAddFormulario.get('disponibilidad_fin_formulario').hasError('error')">
-                      <div class="col-12">
-                        <p class="msn-error-p">La fecha de finalización es inferior o igual a la fecha inicio</p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <mat-form-field class="fluid" appearance="fill">
-                          <mat-label>Tiempo mínimo
-                          </mat-label>
-                          <input matInput formControlName="tiempo_minimo" type="number" required placeholder="MINUTOS">
-                          <mat-icon matSuffix><a matTooltip="Tiempo dentro del cual no se podrán agendar asesorías"
-                                                 matTooltipPosition="after">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-lg-6">
-                        <mat-form-field class="fluid" appearance="fill">
-                          <mat-label>Intervalo
-                          </mat-label>
-                          <input matInput formControlName="intervalo" type="number" required placeholder="MINUTOS">
-                          <mat-icon matSuffix><a matTooltip="Tiempo de receso entre asesorías"
-                                                 matTooltipPosition="after">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <mat-form-field class="fluid" appearance="fill">
-                          <mat-label>Duración
-                          </mat-label>
-                          <input matInput formControlName="duracion" type="number" required placeholder="MINUTOS">
-                          <mat-icon matSuffix><a matTooltip="Tiempo dedicado a la asesoría"
-                                                 matTooltipPosition="after">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-lg-6">
-                        <mat-form-field class="fluid" appearance="fill">
-                          <mat-label>Programas académicos</mat-label>
-                          <mat-select formControlName="programas" multiple>
-                            <mat-option *ngFor="let programa of listProgramas"
-                                        [value]="programa.id">{{programa.nombre_programa}}</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <mat-checkbox formControlName="carga_archivos" class="fluid"> El formulario permite carga de
-                          archivos
-                          <mat-icon matSuffix><a matTooltip="Permite cargar archivos a la solicitud de asesoría" matTooltipPosition="right">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-checkbox>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <mat-checkbox formControlName="restringe_estudiantes" class="fluid">Restringir solicitudes a mis
-                          estudiantes
-                          <mat-icon matSuffix><a matTooltip="Las solicitudes de tus estudiantes deberán ser autorizadas" matTooltipPosition="right">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-checkbox>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <mat-checkbox formControlName="restringe_otros_estudiantes" class="fluid">Restringir solicitudes
-                          a otros estudiantes
-                          <mat-icon matSuffix><a matTooltip="Las solicitudes de otros estudiantes deberán ser autorizadas" matTooltipPosition="right">
-                            <i class="fas fa-exclamation-circle"></i></a></mat-icon>
-                        </mat-checkbox>
-                      </div>
-                    </div>
-                  </div>
+
                 </div>
-                <mat-divider class="m-lg-3"></mat-divider>
-                <div class="btn-stepper">
-                  <button type="submit"
-                          mat-raised-button
-                          color="warn"
-                          matStepperNext
-                          (click)="stopTimeOut()"
-                          [disabled]="this.formAddFormulario.invalid">
-                    Siguiente
-                  </button>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h1 class="display-4">Configuración de horarios de atención</h1>
+                      <p class="m-t-subtitle-stepper">Ingresa tus espacios destinados a brindar asesoría
+                        académica</p>
+                    </div>
+                  </div>
+                  <app-set-horarios-add (datosHorario)="getListHorariosNew($event)"></app-set-horarios-add>
                 </div>
               </form>
+              <mat-divider class="m-lg-3"></mat-divider>
+              <div class="btn-stepper">
+                <button type="submit"
+                        mat-raised-button
+                        color="warn"
+                        matStepperNext
+                        [disabled]="this.formAddFormulario.invalid || listHorariosNew.length == 0">
+                  Siguiente
+                </button>
+              </div>
             </mat-step>
             <mat-step label="Formulario de información">
               <form [formGroup]="formPreguntasFormulario">
@@ -263,10 +238,11 @@
                                       <mat-label>Tipo de campo</mat-label>
                                       <mat-select formControlName="tipo_campo" required>
                                         <mat-option *ngFor="let tipo of listTipoCampos"
-                                                    [value]="tipo">{{tipo.replace('_',' ')}}</mat-option>
+                                                    [value]="tipo">{{tipo.replace('_', ' ')}}</mat-option>
                                       </mat-select>
-                                      <mat-icon matSuffix><a matTooltip="Cuadro de texto para entradas escritas o combobox para múltiples opciones"
-                                                             matTooltipPosition="below">
+                                      <mat-icon matSuffix><a
+                                        matTooltip="Cuadro de texto para entradas escritas o combobox para múltiples opciones"
+                                        matTooltipPosition="below">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-form-field>
                                   </div>
@@ -277,8 +253,9 @@
                                         <mat-option *ngFor="let tipo of listTipoDatos"
                                                     [value]="tipo">{{tipo}}</mat-option>
                                       </mat-select>
-                                      <mat-icon matSuffix><a matTooltip="El cuadro de texto solo admitirá texto o números"
-                                                             matTooltipPosition="below">
+                                      <mat-icon matSuffix><a
+                                        matTooltip="El cuadro de texto solo admitirá texto o números"
+                                        matTooltipPosition="below">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-form-field>
                                   </div>
@@ -311,8 +288,9 @@
                                   </div>
                                   <div class="col-lg-2">
                                     <mat-checkbox formControlName="obligatoria" class="">Obligatorio
-                                      <mat-icon matSuffix><a matTooltip="Este campo deberá se diligenciado obligatoriamente"
-                                                             matTooltipPosition="right">
+                                      <mat-icon matSuffix><a
+                                        matTooltip="Este campo deberá se diligenciado obligatoriamente"
+                                        matTooltipPosition="right">
                                         <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                                     </mat-checkbox>
                                   </div>
@@ -332,7 +310,8 @@
                       <div class="col-lg-12">
                         <a class="fluid" mat-icon-button color="primary" (click)="agregarPregunta()">
                           <p class="icon-input"><i class="fas fa-plus-circle"></i> Agregar pregunta
-                            <mat-icon matSuffix><a matTooltip="Añade otra pregunta a ofrecer a los estudiantes" matTooltipPosition="after">
+                            <mat-icon matSuffix><a matTooltip="Añade otra pregunta a ofrecer a los estudiantes"
+                                                   matTooltipPosition="after">
                               <i class="fas fa-exclamation-circle"></i></a></mat-icon>
                           </p>
                         </a>

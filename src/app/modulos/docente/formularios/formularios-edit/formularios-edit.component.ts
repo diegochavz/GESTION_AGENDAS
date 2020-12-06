@@ -117,7 +117,7 @@ export class FormulariosEditComponent implements OnInit {
     if (this.editFormulario != null && this.editFormulario != undefined) {
       this.loading = false;
       this.formularioService.getHorariosByFormulario(this.editFormulario.id).subscribe(res => {
-          this.listarHorarios(res);
+         // this.listarHorarios(res);
         }, () => {
         }, () => {
           this.loading = true;
@@ -125,7 +125,7 @@ export class FormulariosEditComponent implements OnInit {
       )
     }
   }
-
+/*
   listarHorarios(restHorarios: Horario[]) {
     for (let i = 0; i < restHorarios.length; i++) {
       let dateHorario = restHorarios[i].fecha_horario.split("-")
@@ -150,7 +150,7 @@ export class FormulariosEditComponent implements OnInit {
       });
       this.horarios.push(horario);
     }
-  }
+  }*/
 
 
   establecerFechaMaxMin() {
@@ -364,7 +364,7 @@ export class FormulariosEditComponent implements OnInit {
 
       if (res.fecha_horario != '' && res.inicio_horario != '' && res.fin_horario != '') {
 
-        this.validadorTimeOut = setTimeout(() => {
+       /* this.validadorTimeOut = setTimeout(() => {
           let data = horario.value;
           let auxHor = new Horario(moment(data.fecha_horario).format("YYYY-MM-DD"), data.inicio_horario, data.fin_horario)
           horario.get('cruce').setValue(this.validate.validarCruceFecha(auxHor, this.listAllHorarioDocente))
@@ -373,7 +373,7 @@ export class FormulariosEditComponent implements OnInit {
           } else {
             horario.get('cruce').setErrors(null)
           }
-        }, 2000);
+        }, 2000);*/
       }
     });
 
@@ -431,11 +431,11 @@ export class FormulariosEditComponent implements OnInit {
     let horariosAux = new Array<Horario>();
     for (let i = 0; i < this.horarios.controls.length; i++) {
       let aux = this.horarios.controls[i].value;
-      let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario, aux.id_horario, aux.disponibilidad);
-      horariosAux.push(hor)
+     // let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario, aux.id_horario, aux.disponibilidad);
+      //horariosAux.push(hor)
     }
     this.editFormulario.horarios = horariosAux;
-    this.calcularNuevosHorarios();
+    //this.calcularNuevosHorarios();
   }
 
   calcularNuevosHorarios() {
@@ -443,7 +443,7 @@ export class FormulariosEditComponent implements OnInit {
     let horarioListAux = new Array<Horario>();
     let duracionAux = this.editFormulario.duracion;
     let intervaloAux = this.editFormulario.intervalo;
-
+/*
     for (let i = 0; i < horariosCal.length; i++) {
       if (horariosCal[i].disponibilidad == true) {
         const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
@@ -460,7 +460,7 @@ export class FormulariosEditComponent implements OnInit {
         }
       }
 
-    }
+    }*/
 
     this.editFormulario.horarios = horarioListAux;
   }

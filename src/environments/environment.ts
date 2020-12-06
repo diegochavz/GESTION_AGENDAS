@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://agendadocb.cpsw.ingsistemasufps.co:8082/api/',
+  apiUrl: 'http://agendadocb.cpsw.ingsistemasufps.co:8000/api/',
 
   //loginPath: 'security/login',
   //timeIntervalChecker: 1000,
