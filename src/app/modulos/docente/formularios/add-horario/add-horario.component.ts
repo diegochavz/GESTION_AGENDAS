@@ -17,9 +17,7 @@ export class AddHorarioComponent implements OnInit {
   horario: Horario;
   listHorariosOcupados: Horario[];
   listHorarosAgregados: Horario[];
-
   formHorario: FormGroup;
-
   validadorTimeOut: any;
 
   constructor(private estudianteService: EstudianteServiceImpl,
@@ -199,17 +197,17 @@ export class AddHorarioComponent implements OnInit {
     if (this.formHorario.valid) {
       if (this.formHorario.get('repeticion').value == true) {
         if (this.getDias().length != 0) {
-          this.registrarFormulario();
+          this.registrarHorario();
         } else {
           return;
         }
       } else {
-        this.registrarFormulario();
+        this.registrarHorario();
       }
     }
   }
 
-  registrarFormulario() {
+  registrarHorario() {
     clearTimeout(this.validadorTimeOut);
     let auxHorario = new Horario();
     auxHorario.fecha_inicio = moment(this.formHorario.get('fecha_inicio').value).format("YYYY-MM-DD")

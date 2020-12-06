@@ -7,7 +7,7 @@
         <div class="col-lg-6 col-sm-12">
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Fecha inicio</mat-label>
-            <input formControlName="fecha_inicio" matInput [matDatepicker]="picker1"
+            <input formControlName="fecha_inicio"  #calInicio matInput [matDatepicker]="picker1"
                    placeholder="Fecha inicio" required>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
@@ -17,10 +17,16 @@
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Fecha finalización</mat-label>
             <input formControlName="fecha_fin" matInput [matDatepicker]="picker2"
-                   placeholder="Fecha fin" required>
+                   placeholder="Fecha fin" required  #calFin>
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
           </mat-form-field>
+        </div>
+      </div>
+      <div class="row msn-error-h"
+           *ngIf="this.formHorario.get('fecha_fin').hasError('error')">
+        <div class="col-12">
+          <p class="msn-error-p">La fecha de finalización es inferior a la fecha inicio</p>
         </div>
       </div>
       <div class="row">
@@ -28,14 +34,14 @@
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Hora inicio
             </mat-label>
-            <input class="inicio-hr" matInput formControlName="hora_inicio" type="time"
+            <input class="inicio-hr" matInput formControlName="inicio_horario" type="time"
                    #timeInicio required>
           </mat-form-field>
         </div>
         <div class="col-lg-6 col-sm-12">
           <mat-form-field class="fluid" appearance="fill">
             <mat-label>Hora fin</mat-label>
-            <input matInput class="fin-hor" formControlName="hora_fin" type="time" #timeFin
+            <input matInput class="fin-hor" formControlName="fin_horario" type="time" #timeFin
                    required>
           </mat-form-field>
         </div>
@@ -43,6 +49,12 @@
       <div class="row msn-error-h" *ngIf="timeInicio.value>=timeFin.value && timeFin.value != 0">
         <div class="col-12">
           <p class="msn-error-p">La hora fin es inferior o igual a la hora inicio</p>
+        </div>
+      </div>
+      <div class="row msn-error-h"
+           *ngIf="formHorario.get('cruce').hasError('error-cruce')">
+        <div class="col-12">
+          <p class="msn-error-p">El horario se encuentra en cruce con otro horario agendado o seleccionado previamente</p>
         </div>
       </div>
       <div class="row">
@@ -91,5 +103,5 @@
 <mat-dialog-actions align="end">
   <a mat-button class="btn-modal" (click)="salir()">Cancelar</a>
   <a mat-raised-button color="accent" class="btn-modal" (click)="eliminar()">{{(horario.se_repite)? 'Eliminar seríe':'Eliminar horario'}} </a>
-  <a mat-raised-button color="warn" class="btn-modal" (click)="actualizarHorario()" [disabled]="formHorario.invalid">Guardar</a>
+  <a mat-raised-button color="warn" class="btn-modal" (click)="editarHorario()" [disabled]="formHorario.invalid || getValidacion()">Guardar</a>
 </mat-dialog-actions>

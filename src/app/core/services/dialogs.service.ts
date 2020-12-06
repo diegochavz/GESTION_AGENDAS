@@ -201,10 +201,10 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  editHorarioDialog(horario: Horario) {
+  editHorarioDialog(horario: Horario, horariosOcupados: Horario[], horariosAgregados: Horario[]) {
     let dialogRef: MatDialogRef<EditHorariosComponent>;
     dialogRef = this.matDialog.open(EditHorariosComponent, {
-      data: {horario}
+      data: {horario, horariosOcupados,horariosAgregados }
     });
     return dialogRef.afterClosed();
   }
