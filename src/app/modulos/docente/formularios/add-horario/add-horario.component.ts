@@ -11,7 +11,6 @@ import {FormularioHelpsService} from "../../../../core/services/formulario_helps
 @Component({
   selector: 'app-add-horario',
   templateUrl: './add-horario.component.html',
-  styleUrls: ['./add-horario.component.scss']
 })
 export class AddHorarioComponent implements OnInit {
 
