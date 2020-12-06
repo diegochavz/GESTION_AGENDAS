@@ -74,8 +74,8 @@ export class AutorizacionesShowComponent implements OnInit {
 
   get horaAsesoria(){
     if(!this.solicitud!=null && this.solicitud!=undefined){
-      return this.formatHora(this.solicitud.horario_data.hora_fin)+" - "+
-        this.formatHora(this.solicitud.horario_data.hora_fin);
+      return this.formatHora(this.solicitud.horario_data.fin_horario)+" - "+
+        this.formatHora(this.solicitud.horario_data.inicio_horario);
     }
     return '';
   }
