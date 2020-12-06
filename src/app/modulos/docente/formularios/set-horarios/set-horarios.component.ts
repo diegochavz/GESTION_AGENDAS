@@ -34,7 +34,7 @@ export class SetHorariosComponent implements OnInit {
   calendarOptions: CalendarOptions;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['fecha_inicio', 'fecha_fin', 'hora_inicio', 'hora_fin', 'se_repite', 'dias'];
+  displayedColumns: string[] = ['fecha_inicio', 'fecha_fin', 'inicio_horario', 'fin_horario', 'se_repite', 'dias'];
   dataSource: MatTableDataSource<Horario>;
 
   listHorariosNew: Horario[];
@@ -136,7 +136,7 @@ export class SetHorariosComponent implements OnInit {
      fecha_fin.setDate(fecha_fin.getDate() - 1);
      horario.fecha_fin = moment(fecha_fin).format("YYYY-MM-DD")
      horario.hora_inicio = moment(selectInfo.start).format('HH:mm')
-     horario.hora_fin = moment(selectInfo.end).format('HH:mm')
+     horario.fin_horario = moment(selectInfo.end).format('HH:mm')
      return horario;
    }*/
 
@@ -146,8 +146,8 @@ export class SetHorariosComponent implements OnInit {
     let fecha_fin = fechaFin
     fecha_fin.setDate(fecha_fin.getDate() - 1);
     horario.fecha_fin = moment(fecha_fin).format("YYYY-MM-DD")
-    horario.hora_inicio = moment(fechaInicio).format('HH:mm')
-    horario.hora_fin = moment(fechaFin).format('HH:mm')
+    horario.inicio_horario = moment(fechaInicio).format('HH:mm')
+    horario.fin_horario = moment(fechaFin).format('HH:mm')
     return horario;
   }
 
@@ -155,15 +155,15 @@ export class SetHorariosComponent implements OnInit {
     for (let i = 0; i < listHorarios.length; i++) {
       let auxFechaInicio = listHorarios[i].fecha_inicio.split("-");
       let fechaInicio = new Date(+auxFechaInicio[0], (+auxFechaInicio[1] - 1), +auxFechaInicio[2])
-      let horaInicio = listHorarios[i].hora_inicio.split(':')
+      let horaInicio = listHorarios[i].inicio_horario.split(':')
       fechaInicio.setHours(+horaInicio[0], +horaInicio[1])
 
       let auxFechaFin = listHorarios[i].fecha_fin.split("-");
       let fechaFin = new Date(+auxFechaFin[0], (+auxFechaFin[1] - 1), +auxFechaFin[2])
-      let horaFin = listHorarios[i].hora_fin.split(':')
+      let horaFin = listHorarios[i].fin_horario.split(':')
       fechaFin.setHours(+horaFin[0], +horaFin[1])
 
-      this.agregarEvento(id, (listHorarios[i].hora_inicio + " - " + listHorarios[i].hora_fin), fechaInicio, fechaFin, '#B0F8AC')
+      this.agregarEvento(id, (listHorarios[i].inicio_horario + " - " + listHorarios[i].fin_horario), fechaInicio, fechaFin, '#B0F8AC')
     }
 
   }
@@ -191,7 +191,7 @@ export class SetHorariosComponent implements OnInit {
     let res = this.formularioHelps.parseEventToHorario(this.listHorariosNew, id, clickInfo.event.start, clickInfo.event.end);
     let position = res.position;
     let horario = res.horario;
-    this.dialogService.editHorarioDialog(horario).subscribe(res => {
+    this.dialogService.editHorarioDialog(horario, this.listHorarioOcupados, this.listHorariosNew).subscribe(res => {
       if (res != undefined){
         if (res == 0) {
           return;
@@ -202,6 +202,7 @@ export class SetHorariosComponent implements OnInit {
           this.eliminarEventHorario(id);
           this.eliminarItemList(position);
           this.listHorariosNew.push(res)
+          this.setInitThen();
           this.cargaNewEventsCalendar(this.formularioHelps.desglosarHorarios(res),
             this.crearIDHorario(res.fecha_inicio, res.fecha_fin, res.dias_semanas));
         }

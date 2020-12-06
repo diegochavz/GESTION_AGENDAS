@@ -285,8 +285,8 @@ export class ViewFormularioComponent implements OnInit {
               let auxHorario = new Horario();
               auxHorario.fecha_inicio = horarios[i].fecha;
               auxHorario.fecha_fin = auxHorario.fecha_inicio;
-              auxHorario.hora_inicio = horarios[i].hora_inicio;
-              auxHorario.hora_fin = horarios[i].hora_final;
+              auxHorario.inicio_horario = horarios[i].hora_inicio;
+              auxHorario.fin_horario = horarios[i].hora_final;
               this.listHorariosDisponibles.push(auxHorario)
             }
           }
@@ -377,7 +377,7 @@ export class ViewFormularioComponent implements OnInit {
     formData.append('id_formulario', this.formulario.id + "")
     formData.append('id_docente', this.formulario.docente + "")
     formData.append('fecha', this.horarioAsesoria.fecha_inicio)
-    formData.append('hora', this.formatHora(this.horarioAsesoria.hora_inicio))
+    formData.append('hora', this.formatHora(this.horarioAsesoria.inicio_horario))
     formData.append('archivo', this.file)
     formData.append('enlace_uuid_solicitud', uuidv4())
 

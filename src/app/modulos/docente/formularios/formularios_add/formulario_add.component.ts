@@ -235,7 +235,7 @@ export class CrearFormularioDocenteComponent implements OnInit {
   onFormSubmit() {
     this.loading = false;
     this.newFormulario.horarios = this.listHorariosNew;
-    console.log(this.newFormulario)
+    console.log(JSON.stringify(this.newFormulario))
     this.formularioService.save(this.newFormulario).subscribe(
       (newForm) => {
         this.toasterService.openSnackBarCumtom(

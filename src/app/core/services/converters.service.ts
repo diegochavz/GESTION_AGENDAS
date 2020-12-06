@@ -72,8 +72,8 @@ export class ConverterService {
         id: hor.id,
         fecha_inicio: hor.fecha_inicio,
         fecha_fin: hor.fecha_fin,
-        hora_inicio: hor.hora_inicio,
-        hora_fin: hor.hora_fin,
+        inicio_horario: hor.inicio_horario,
+        fin_horario: hor.fin_horario,
         dias: this.setDias(hor.dias_semanas),
         se_repite:this.setRepetirHorario(hor.se_repite),
       }
@@ -114,8 +114,8 @@ export class ConverterService {
       let estTable: SolicitudTable = {
         id: sol.id,
         fecha: moment(sol.fecha_solicitada).format("YYYY-MM-DD"),
-        horaInicio: this.formatHora(sol.horario_data.hora_inicio),
-        horaFin: this.formatHora(sol.horario_data.hora_fin),
+        horaInicio: this.formatHora(sol.horario_data.inicio_horario),
+        horaFin: this.formatHora(sol.horario_data.fin_horario),
         estudiantes: this.estudiantesAsesoria(sol.estudiantes_data)
       }
       auxList.push(estTable)
@@ -129,8 +129,8 @@ export class ConverterService {
       let estTable: AutorizacionTable = {
         id: sol.id,
         fecha: moment(sol.fecha_solicitada).format("YYYY-MM-DD"),
-        horaInicio: this.formatHora(sol.horario_data.hora_inicio),
-        horaFin: this.formatHora(sol.horario_data.hora_fin),
+        horaInicio: this.formatHora(sol.horario_data.inicio_horario),
+        horaFin: this.formatHora(sol.horario_data.fin_horario),
         estudiantes: this.estudiantesAsesoria(sol.estudiantes_data)
       }
       auxList.push(estTable)
