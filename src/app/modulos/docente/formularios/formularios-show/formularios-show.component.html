@@ -91,8 +91,8 @@
                     <div class="col-lg-8">
                       <mat-radio-group class="text-center">
                         <div *ngFor="let horario of listHorariosDisponibles" (click)="selectedHorario(horario)" >
-                          <mat-radio-button class="border-circle card" value="{{horario.hora_inicio}}">
-                            {{horario.hora_inicio}} - {{horario.hora_fin}}
+                          <mat-radio-button class="border-circle card" value="{{horario.inicio_horario}}">
+                            {{horario.inicio_horario}} - {{horario.fin_horario}}
                           </mat-radio-button>
                         </div>
                       </mat-radio-group>
