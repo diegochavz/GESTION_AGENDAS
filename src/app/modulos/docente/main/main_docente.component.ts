@@ -85,6 +85,7 @@ export class MainDocenteComponent implements OnInit {
 
   loadCalendar() {
     this.calendarOptions = {
+      'locale':'es',
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
