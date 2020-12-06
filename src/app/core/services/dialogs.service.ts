@@ -15,18 +15,17 @@ import {EstudiantesAddComponent} from "../../modulos/docente/estudiantes/estudia
 import {DirectoresAddComponent} from "../../modulos/super_usuario/directores/directores-add/directores-add.component";
 import {DirectoresDeleteComponent} from "../../modulos/super_usuario/directores/directores-delete/directores-delete.component";
 import {DirectoresEditComponent} from "../../modulos/super_usuario/directores/directores-edit/directores-edit.component";
-import DirectorResponse from "../models/director_response.model";
-import DocenteResponse from "../models/docente_response.model";
-import SolicitudResponse from "../models/solicitud_response.model";
 import {SolicitudesShowComponent} from "../../modulos/docente/solicitudes/solicitudes-show/solicitudes-show.component";
 import {SolicitudesDeleteComponent} from "../../modulos/docente/solicitudes/solicitudes-delete/solicitudes-delete.component";
-import EstudianteRequest from "../models/estudiante_request.model";
 import {AutorizacionesApproveComponent} from "../../modulos/docente/autorizaciones/autorizaciones-approve/autorizaciones-approve.component";
 import {AutorizacionesDeleteComponent} from "../../modulos/docente/autorizaciones/autorizaciones-delete/autorizaciones-delete.component";
 import {AutorizacionesShowComponent} from "../../modulos/docente/autorizaciones/autorizaciones-show/autorizaciones-show.component";
 import {LoadDataEstudianteComponent} from "../../modulos/docente/estudiantes/load-data-estudiante/load-data-estudiante.component";
 import {LoadDataProgramaComponent} from "../../modulos/super_usuario/programas/load-data-programa/load-data-programa.component";
 import {LoadDataDocenteComponent} from "../../modulos/director/docentes/load-data-docente/load-data-docente.component";
+import Horario from "../models/horario.model";
+import {AddHorarioComponent} from "../../modulos/docente/formularios/add-horario/add-horario.component";
+import {EditHorariosComponent} from "../../modulos/docente/formularios/edit-horarios/edit-horarios.component";
 
 @Injectable()
 export class DialogService {
@@ -190,6 +189,22 @@ export class DialogService {
     let dialogRef: MatDialogRef<AutorizacionesDeleteComponent>;
     dialogRef = this.matDialog.open(AutorizacionesDeleteComponent, {
       data: {idAutorizacion}
+    });
+    return dialogRef.afterClosed();
+  }
+
+  createHorarioDialog(horario: Horario, horariosOcupados: Horario[], horariosAgregados: Horario[]) {
+    let dialogRef: MatDialogRef<AddHorarioComponent>;
+    dialogRef = this.matDialog.open(AddHorarioComponent, {
+      data: {horario, horariosOcupados,horariosAgregados }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  editHorarioDialog(horario: Horario) {
+    let dialogRef: MatDialogRef<EditHorariosComponent>;
+    dialogRef = this.matDialog.open(EditHorariosComponent, {
+      data: {horario}
     });
     return dialogRef.afterClosed();
   }
