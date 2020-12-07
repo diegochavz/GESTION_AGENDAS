@@ -108,7 +108,6 @@ export class FormularioHelpsService {
 
   parseHorarioToTurnos(listHorario: Horario[], duracion: number, intervalo: number): Horario[] {
     const horariosCal = listHorario;
-    console.log(horariosCal)
     let horarioListAux = new Array<Horario>();
     let duracionAux = duracion;
     let intervaloAux = intervalo;
@@ -147,6 +146,19 @@ export class FormularioHelpsService {
       }
     }
     return auxList;
+  }
+
+  parseListDocentesHorariosToHorario(list:any[]): Horario[]{
+    let auxLis = new Array<Horario>();
+    for(let i = 0; i<list.length; i++){
+      let horario = new Horario();
+      horario.fecha_inicial = list[i].fecha_horario;
+      horario.fecha_final = list[i].fecha_horario;
+      horario.inicio_horario = list[i].inicio_horario;
+      horario.fin_horario = list[i].fin_horario;
+      auxLis.push(horario)
+    }
+    return auxLis;
   }
 
   /***AUXILIARES***/

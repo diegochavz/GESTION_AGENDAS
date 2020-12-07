@@ -39,7 +39,7 @@ export class SetHorariosComponent implements OnInit {
 
   listHorariosNew: Horario[];
 
-  listHorarioOcupados: HorarioResponse[];
+  listHorarioOcupados: Horario[];
 
   constructor(private _adapter: DateAdapter<any>,
               private _formBuilder: FormBuilder,
@@ -57,7 +57,7 @@ export class SetHorariosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getLisHorariosOcupado();
+    this.getLisHorariosOcupado();
     this.loadCalendar();
   }
 
@@ -82,63 +82,35 @@ export class SetHorariosComponent implements OnInit {
     };
   }
 
-  /*
+
     getLisHorariosOcupado() {
       this.loading = false;
       this.docenteService.getHorariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe((res: HorarioResponse[]) => {
-        this.listHorarioOcupados = res;
-        this.convertSolicitudesToEventos(res)
+        console.log(res)
+        this.listHorarioOcupados = this.formularioHelps.parseListDocentesHorariosToHorario(res);
+        console.log(this.listHorarioOcupados)
       }, (error) => {
         this.toasterService.openSnackBarCumtom(error, 'error')
         this.loading = true;
       }, () => {
+        this.cargaNewEventsCalendar(this.listHorarioOcupados, '---', '#FAA5A5')
         this.loading = true;
       })
-    }*/
-
-  convertSolicitudesToEventos(listHorario: Horario[]) {
-    /*  for (let i = 0; i < listHorario.length; i++) {
-
-        let auxFechaInicio = listHorario[i].fecha_inicio.split("-");
-        let fechaInicio = new Date(+auxFechaInicio[0], (+auxFechaInicio[1] - 1), +auxFechaInicio[2])
-        let horaInicio = listHorario[i].inicio_horario.split(':')
-        fechaInicio.setHours(+horaInicio[0], +horaInicio[1])
-
-        let fechaFin = new Date(+auxInicio[0], (+auxInicio[1] - 1), +auxInicio[2])
-        let horaFin = listHorario[i].fin_horario.split(':')
-        fechaFin.setHours(+horaFin[0], +horaFin[1])
-
-        this.agregarEvento(listHorario[i].id, 'Ocupado', fechaInicio, fechaFin,'#A7091C' )
-      }*/
-  }
+    }
 
   //MANEJADOR DE EVETOS CALENDAR
-
   handleDateSelect(selectInfo: DateSelectArg) {
     const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect();
     this.dialogService.createHorarioDialog(this.crearHorarioObject(selectInfo.start, selectInfo.end), this.listHorarioOcupados, this.listHorariosNew).subscribe((res: Horario) => {
       if (res != null) {
-        console.log(res.se_repite)
         this.listHorariosNew.push(res)
         this.setInitThen();
         this.cargaNewEventsCalendar(this.formularioHelps.desglosarHorarios(res),
-          this.crearIDHorario(res.fecha_inicial, res.fecha_final, res.dias_semanas));
+          this.crearIDHorario(res.fecha_inicial, res.fecha_final, res.dias_semanas), '#B0F8AC');
       }
     });
   }
-
-
-  /* crearHorarioObject(selectInfo: DateSelectArg): Horario {
-     let horario = new Horario();
-     horario.fecha_inicio = moment(selectInfo.start).format("YYYY-MM-DD")
-     let fecha_fin = selectInfo.end
-     fecha_fin.setDate(fecha_fin.getDate() - 1);
-     horario.fecha_fin = moment(fecha_fin).format("YYYY-MM-DD")
-     horario.hora_inicio = moment(selectInfo.start).format('HH:mm')
-     horario.fin_horario = moment(selectInfo.end).format('HH:mm')
-     return horario;
-   }*/
 
   crearHorarioObject(fechaInicio, fechaFin): Horario {
     let horario = new Horario();
@@ -151,7 +123,7 @@ export class SetHorariosComponent implements OnInit {
     return horario;
   }
 
-  cargaNewEventsCalendar(listHorarios: Horario[], id) {
+  cargaNewEventsCalendar(listHorarios: Horario[], id, color) {
     for (let i = 0; i < listHorarios.length; i++) {
       let auxFechaInicio = listHorarios[i].fecha_inicial.split("-");
       let fechaInicio = new Date(+auxFechaInicio[0], (+auxFechaInicio[1] - 1), +auxFechaInicio[2])
@@ -163,7 +135,7 @@ export class SetHorariosComponent implements OnInit {
       let horaFin = listHorarios[i].fin_horario.split(':')
       fechaFin.setHours(+horaFin[0], +horaFin[1])
 
-      this.agregarEvento(id, (listHorarios[i].inicio_horario + " - " + listHorarios[i].fin_horario), fechaInicio, fechaFin, '#B0F8AC')
+      this.agregarEvento(id, (listHorarios[i].inicio_horario + " - " + listHorarios[i].fin_horario), fechaInicio, fechaFin, color)
     }
 
   }
@@ -189,25 +161,29 @@ export class SetHorariosComponent implements OnInit {
   handleEventClick(clickInfo: EventClickArg) {
     let id = clickInfo.event.id;
     let res = this.formularioHelps.parseEventToHorario(this.listHorariosNew, id, clickInfo.event.start, clickInfo.event.end);
-    let position = res.position;
-    let horario = res.horario;
-    this.dialogService.editHorarioDialog(horario, this.listHorarioOcupados, this.listHorariosNew).subscribe(res => {
-      if (res != undefined){
-        if (res == 0) {
-          return;
-        } else if (res == 1) {
-          this.eliminarEventHorario(id);
-          this.eliminarItemList(position);
-        } else {
-          this.eliminarEventHorario(id);
-          this.eliminarItemList(position);
-          this.listHorariosNew.push(res)
-          this.setInitThen();
-          this.cargaNewEventsCalendar(this.formularioHelps.desglosarHorarios(res),
-            this.crearIDHorario(res.fecha_inicial, res.fecha_final, res.dias_semanas));
+    if(res != null){
+      let position = res.position;
+      let horario = res.horario;
+      this.dialogService.editHorarioDialog(horario, this.listHorarioOcupados, this.listHorariosNew).subscribe(res => {
+        if (res != undefined){
+          if (res == 0) {
+            return;
+          } else if (res == 1) {
+            this.eliminarEventHorario(id);
+            this.eliminarItemList(position);
+          } else {
+            this.eliminarEventHorario(id);
+            this.eliminarItemList(position);
+            this.listHorariosNew.push(res)
+            this.setInitThen();
+            this.cargaNewEventsCalendar(this.formularioHelps.desglosarHorarios(res),
+              this.crearIDHorario(res.fecha_inicial, res.fecha_final, res.dias_semanas), '#B0F8AC');
+          }
         }
-      }
-    })
+      })
+    }
+
+
   }
 
   eliminarItemList(index: number) {

@@ -202,7 +202,6 @@ export class CrearFormularioDocenteComponent implements OnInit {
   /****RECIBIR HORARIOS***/
 
   getListHorariosNew(listHorarios: Horario[]) {
-    console.log("Listado de horarios resultantes ", listHorarios)
     this.listHorariosNew = listHorarios;
   }
 
@@ -235,7 +234,6 @@ export class CrearFormularioDocenteComponent implements OnInit {
   onFormSubmit() {
     this.loading = false;
     this.newFormulario.horarios = this.listHorariosNew;
-    console.log(JSON.stringify(this.newFormulario))
     this.formularioService.save(this.newFormulario).subscribe(
       (newForm) => {
         this.toasterService.openSnackBarCumtom(
