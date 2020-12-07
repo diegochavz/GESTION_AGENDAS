@@ -9,19 +9,19 @@ export class FormularioHelpsService {
   }
 
   desglosarHorarios(horario: Horario): Horario[] {
-    if (horario.fecha_inicio == horario.fecha_fin) {
+    if (horario.fecha_inicial == horario.fecha_final) {
       return [horario];
     }
-    let fecha_inicio = moment(horario.fecha_inicio);
-    let fecha_fin = moment(horario.fecha_fin);
+    let fecha_inicio = moment(horario.fecha_inicial);
+    let fecha_fin = moment(horario.fecha_final);
     let dias = horario.dias_semanas;
     let auxList = new Array<Horario>();
     if (dias != null && dias != undefined) {
       while (fecha_inicio.isSameOrBefore(fecha_fin)) {
         if (dias.includes(fecha_inicio.day())) {
           let auxHorario = new Horario();
-          auxHorario.fecha_inicio = fecha_inicio.format("YYYY-MM-DD")
-          auxHorario.fecha_fin = auxHorario.fecha_inicio
+          auxHorario.fecha_inicial = fecha_inicio.format("YYYY-MM-DD")
+          auxHorario.fecha_final = auxHorario.fecha_inicial
           auxHorario.inicio_horario = horario.inicio_horario;
           auxHorario.fin_horario = horario.fin_horario;
           auxList.push(auxHorario);
@@ -37,8 +37,8 @@ export class FormularioHelpsService {
     let inicio_horario = moment(fechaInicio).format('HH:mm')
     let fin_horario = moment(fechaFin).format('HH:mm')
     for (let i = 0; i < listHorarios.length; i++) {
-      let auxInicio = moment(listHorarios[i].fecha_inicio)
-      let auxFin = moment(listHorarios[i].fecha_fin)
+      let auxInicio = moment(listHorarios[i].fecha_inicial)
+      let auxFin = moment(listHorarios[i].fecha_final)
 
       if (id.substring(0, 1) == '0') {
         while (auxInicio.isSameOrBefore(auxFin)) {
@@ -66,7 +66,7 @@ export class FormularioHelpsService {
       for (let i = 0; i < listHorarios.length; i++) {
         let horario = listHorarios[i]
 
-        if (horario.fecha_inicio == horarioNew.fecha_inicio && horario.fecha_fin == horarioNew.fecha_fin) {
+        if (horario.fecha_inicial == horarioNew.fecha_inicial && horario.fecha_final == horarioNew.fecha_final) {
           const horaInicioNew = moment(horarioNew.inicio_horario.replace(':', ''), "hmm");
           const horaInicioOld = moment(this.formatHora(horario.inicio_horario).replace(':', ''), "hmm");
           const horaFinNew = moment(horarioNew.fin_horario.replace(':', ''), "hmm");
@@ -114,15 +114,15 @@ export class FormularioHelpsService {
     let intervaloAux = intervalo;
 
     for (let i = 0; i < horariosCal.length; i++) {
-      const dateHorario = moment(horariosCal[i].fecha_inicio).format("YYYY-MM-DD");
+      const dateHorario = moment(horariosCal[i].fecha_inicial).format("YYYY-MM-DD");
       const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
       let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
       if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
         while (horaFinal.isAfter(horaVariable)) {
           let newH = horaVariable.clone().add(duracionAux, "minutes")
           let horarioAux = new Horario();
-          horarioAux.fecha_inicio = dateHorario;
-          horarioAux.fecha_fin = horarioAux.fecha_inicio;
+          horarioAux.fecha_inicial = dateHorario;
+          horarioAux.fecha_final = horarioAux.fecha_inicial;
           horarioAux.inicio_horario = horaVariable.format("HH:mm");
           horarioAux.fin_horario = newH.format("HH:mm");
           horarioListAux.push(horarioAux)
@@ -139,8 +139,8 @@ export class FormularioHelpsService {
     let auxList = new Array<Horario>();
     for(let i = 0; i<listHorario.length;i++){
       if(!(
-        listHorario[i].fecha_inicio == horario.fecha_inicio &&
-        listHorario[i].fecha_fin == horario.fecha_fin &&
+        listHorario[i].fecha_inicial == horario.fecha_inicial &&
+        listHorario[i].fecha_final == horario.fecha_final &&
         listHorario[i].inicio_horario == horario.inicio_horario &&
         listHorario[i].fin_horario == horario.fin_horario)){
         auxList.push(listHorario[i]);

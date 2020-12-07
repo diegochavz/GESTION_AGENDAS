@@ -38,11 +38,11 @@ export class AddHorarioComponent implements OnInit {
   crearFormHorario() {
     this.formHorario = this._formBuilder.group({
       cruce: false,
-      fecha_inicio: [moment(this.horario.fecha_inicio), [Validators.required]],
-      fecha_fin: [moment(this.horario.fecha_fin), [Validators.required]],
+      fecha_inicial: [moment(this.horario.fecha_inicial), [Validators.required]],
+      fecha_final: [moment(this.horario.fecha_final), [Validators.required]],
       inicio_horario: [this.horario.inicio_horario, [Validators.required]],
       fin_horario: [this.horario.fin_horario, [Validators.required]],
-      repeticion: !(this.horario.fecha_inicio == this.horario.fecha_fin),
+      repeticion: !(this.horario.fecha_inicial == this.horario.fecha_final),
       lunes: false,
       martes: [false],
       miercoles: [false],
@@ -52,8 +52,8 @@ export class AddHorarioComponent implements OnInit {
       domingo: false,
     })
     //Validate select from week or day
-    if (moment(this.horario.fecha_fin).isBefore(moment(this.horario.fecha_inicio))) {
-      this.formHorario.get('fecha_fin').setValue(moment(this.horario.fecha_inicio));
+    if (moment(this.horario.fecha_final).isBefore(moment(this.horario.fecha_inicial))) {
+      this.formHorario.get('fecha_final').setValue(moment(this.horario.fecha_inicial));
       this.formHorario.get('repeticion').setValue(false);
     }
 
@@ -67,18 +67,18 @@ export class AddHorarioComponent implements OnInit {
       }
 
       //validación fecha
-      if (res.fecha_inicio > res.fecha_fin && res.fecha_fin !== '') {
-        this.formHorario.get('fecha_fin').setErrors({'error': true})
+      if (res.fecha_inicial > res.fecha_final && res.fecha_final !== '') {
+        this.formHorario.get('fecha_final').setErrors({'error': true})
       } else {
-        this.formHorario.get('fecha_fin').setErrors(null)
-        this.formHorario.get('fecha_fin').setValidators([Validators.required])
+        this.formHorario.get('fecha_final').setErrors(null)
+        this.formHorario.get('fecha_final').setValidators([Validators.required])
       }
 
-      if (res.fecha_inicio != '' && res.fecha_fin != '' && res.inicio_horario != '' && res.fin_horario != '') {
+      if (res.fecha_inicial != '' && res.fecha_final != '' && res.inicio_horario != '' && res.fin_horario != '') {
         this.validadorTimeOut = setTimeout(() => {
           let auxHorario = new Horario();
-          auxHorario.fecha_inicio = moment(res.fecha_inicio).format("YYYY-MM-DD");
-          auxHorario.fecha_fin = moment(res.fecha_fin).format("YYYY-MM-DD");
+          auxHorario.fecha_inicial = moment(res.fecha_inicial).format("YYYY-MM-DD");
+          auxHorario.fecha_final = moment(res.fecha_final).format("YYYY-MM-DD");
           auxHorario.inicio_horario = res.inicio_horario;
           auxHorario.fin_horario = res.fin_horario;
           auxHorario.dias_semanas = this.getDias();
@@ -210,8 +210,8 @@ export class AddHorarioComponent implements OnInit {
   registrarHorario() {
     clearTimeout(this.validadorTimeOut);
     let auxHorario = new Horario();
-    auxHorario.fecha_inicio = moment(this.formHorario.get('fecha_inicio').value).format("YYYY-MM-DD")
-    auxHorario.fecha_fin = moment(this.formHorario.get('fecha_fin').value).format("YYYY-MM-DD")
+    auxHorario.fecha_inicial = moment(this.formHorario.get('fecha_inicial').value).format("YYYY-MM-DD")
+    auxHorario.fecha_final = moment(this.formHorario.get('fecha_final').value).format("YYYY-MM-DD")
     auxHorario.inicio_horario = this.formHorario.get('inicio_horario').value
     auxHorario.fin_horario = this.formHorario.get('fin_horario').value
     auxHorario.se_repite = this.formHorario.get('repeticion').value

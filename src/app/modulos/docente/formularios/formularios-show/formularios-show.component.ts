@@ -122,7 +122,7 @@ export class FormulariosShowComponent implements OnInit {
     if (this.showFormulario != null && this.showFormulario != undefined) {
       if (this.showFormulario.horarios != null && this.showFormulario.horarios != undefined) {
         for (let i of this.showFormulario.horarios) {
-          let dateAux = i.fecha_inicio.split("-");
+          let dateAux = i.fecha_inicial.split("-");
           let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
           newFechasDisponibles.push(newD);
         }
@@ -143,7 +143,7 @@ export class FormulariosShowComponent implements OnInit {
       const horarios = this.showFormulario.horarios;
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
-          let dateAux = horarios[i].fecha_inicio.split("-");
+          let dateAux = horarios[i].fecha_inicial.split("-");
           let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
           if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
             ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&

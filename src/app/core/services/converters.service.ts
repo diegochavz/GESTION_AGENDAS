@@ -70,8 +70,8 @@ export class ConverterService {
     for (let hor of listHorarios) {
       let horTable: HorarioTable = {
         id: hor.id,
-        fecha_inicio: hor.fecha_inicio,
-        fecha_fin: hor.fecha_fin,
+        fecha_inicial: hor.fecha_inicial,
+        fecha_final: hor.fecha_final,
         inicio_horario: hor.inicio_horario,
         fin_horario: hor.fin_horario,
         dias: this.setDias(hor.dias_semanas),
