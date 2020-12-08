@@ -156,6 +156,7 @@
                         <input formControlName="file" id="file" type="file" class="form-control bd-none"
                                (change)="onFileChange($event)">
                       </div>
+                      <p>El archivo no debe superar los 512 KB</p>
                     </div>
                     <div class="row"><h3 class="pr-2">Selecciona el lugar de asesoría académica</h3><br/></div>
                     <div class="row">
@@ -262,7 +263,7 @@
                   <mat-action-row>
                     <a mat-button (click)="prevStep()">Anterior</a>
                     <a mat-raised-button color="accent" (click)="onFormSubmit()"
-                       [disabled]=" (horarioAsesoria==null && horarioAsesoria == undefined ) || formularioAddAsesoria.invalid">Agendar</a>
+                       [disabled]=" (horarioAsesoria==null && horarioAsesoria == undefined ) || formularioAddAsesoria.invalid || !pesoArchivo">Agendar</a>
                   </mat-action-row>
                 </mat-expansion-panel>
               </mat-accordion>

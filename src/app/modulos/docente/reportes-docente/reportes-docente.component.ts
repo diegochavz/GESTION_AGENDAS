@@ -72,7 +72,7 @@ export class ReportesDocenteComponent implements OnInit {
   crearReporteFormularios() {
     this.formReporteFormularios = this._formBuilder.group({
       fecha_inicio: ['', [Validators.required]],
-      fecha_fin: ['', [Validators.required]],
+      fecha_final: ['', [Validators.required]],
       asistida: [false],
       no_asistida: [false],
       nombreFormulario: [false],
@@ -97,8 +97,8 @@ export class ReportesDocenteComponent implements OnInit {
   crearFormReporte() {
     this.formReporteAsesorias = this._formBuilder.group({
       formulario: [null],
-      fecha_inicio: ['', [Validators.required]],
-      fecha_fin: ['', [Validators.required]],
+      fecha_inicial: ['', [Validators.required]],
+      fecha_final: ['', [Validators.required]],
     })
     this.formReporteAsesorias.get('formulario').valueChanges.subscribe(res => {
       this.consultarPreguntasForColumns(res);
@@ -144,12 +144,12 @@ export class ReportesDocenteComponent implements OnInit {
   generarReporteSolicitudes() {
     let auxReport = new Reporte();
 
-    if (this.formReporteFormularios.value.fecha_inicio != '') {
+    if (this.formReporteFormularios.value.fecha_inicial != '') {
       auxReport.fecha_inicio = moment(this.formReporteFormularios.value.fecha_inicio).format("YYYY-MM-DD")
     }
 
-    if (this.formReporteFormularios.value.fecha_fin != '') {
-      auxReport.fecha_final = moment(this.formReporteFormularios.value.fecha_fin).format("YYYY-MM-DD")
+    if (this.formReporteFormularios.value.fecha_final != '') {
+      auxReport.fecha_final = moment(this.formReporteFormularios.value.fecha_final).format("YYYY-MM-DD")
     }
 
     auxReport.asistida = this.formReporteFormularios.value.asistida;

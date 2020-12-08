@@ -67,15 +67,15 @@ export class AutorizacionesShowComponent implements OnInit {
 
   get fechaAsesoria():string{
     if(!this.solicitud!=null && this.solicitud!=undefined){
-      return this.solicitud.horario_data.fecha_horario;
+      return this.solicitud.fecha_solicitada;
     }
     return '';
   }
 
   get horaAsesoria(){
     if(!this.solicitud!=null && this.solicitud!=undefined){
-      return this.formatHora(this.solicitud.horario_data.inicio_horario)+" - "+
-        this.formatHora(this.solicitud.horario_data.fin_horario);
+      return this.formatHora(this.solicitud.horario_data.fin_horario)+" - "+
+        this.formatHora(this.solicitud.horario_data.inicio_horario);
     }
     return '';
   }

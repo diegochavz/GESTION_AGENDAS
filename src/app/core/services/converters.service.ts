@@ -14,6 +14,8 @@ import Programa from "../models/programa.model";
 import {ProgramaTable} from "../util/interface_tables/programa_table.interface";
 import DocenteResponse from "../models/docente_response.model";
 import {DocenteTable} from "../util/interface_tables/docente_table.interface";
+import Horario from "../models/horario.model";
+import {HorarioTable} from "../util/interface_tables/horario_table.interface";
 
 @Injectable()
 export class ConverterService {
@@ -63,6 +65,22 @@ export class ConverterService {
     return auxList;
   }
 
+  converterToTableHorarios(listHorarios: Horario[]): HorarioTable [] {
+    let auxList = new Array<HorarioTable>();
+    for (let hor of listHorarios) {
+      let horTable: HorarioTable = {
+        id: hor.id,
+        fecha_inicial: hor.fecha_inicial,
+        fecha_final: hor.fecha_final,
+        inicio_horario: hor.inicio_horario,
+        fin_horario: hor.fin_horario,
+        dias: this.setDias(hor.dias_semanas),
+        se_repite:this.setRepetirHorario(hor.se_repite),
+      }
+      auxList.push(horTable)
+    }
+    return auxList;
+  }
 
   converterToTablePrograma(listPrograma: Programa[]): ProgramaTable [] {
     let auxList = new Array<ProgramaTable>();
@@ -95,7 +113,7 @@ export class ConverterService {
     for (let sol of listSolicitudes) {
       let estTable: SolicitudTable = {
         id: sol.id,
-        fecha: moment(sol.horario_data.fecha_horario).format("YYYY-MM-DD"),
+        fecha: moment(sol.fecha_solicitada).format("YYYY-MM-DD"),
         horaInicio: this.formatHora(sol.horario_data.inicio_horario),
         horaFin: this.formatHora(sol.horario_data.fin_horario),
         estudiantes: this.estudiantesAsesoria(sol.estudiantes_data)
@@ -110,7 +128,7 @@ export class ConverterService {
     for (let sol of listSolicitudes) {
       let estTable: AutorizacionTable = {
         id: sol.id,
-        fecha: moment(sol.horario_data.fecha_horario).format("YYYY-MM-DD"),
+        fecha: moment(sol.fecha_solicitada).format("YYYY-MM-DD"),
         horaInicio: this.formatHora(sol.horario_data.inicio_horario),
         horaFin: this.formatHora(sol.horario_data.fin_horario),
         estudiantes: this.estudiantesAsesoria(sol.estudiantes_data)
@@ -135,6 +153,48 @@ export class ConverterService {
       }
     }
     return estudiantesAux;
+  }
+
+  setDias(value: number[]):string{
+    if(value == undefined){
+      return "NO APLICA"
+    } else {
+      let res = '';
+      for(let i = 0; i< value.length;i++){
+        switch (value[i]){
+          case 0:
+            res += " Domingo "
+            break;
+          case 1:
+            res += " Lunes "
+            break;
+          case 2:
+            res += " Martes "
+            break;
+          case 3:
+            res += " Miercoles "
+            break;
+          case 4:
+            res += " Jueves "
+            break;
+          case 5:
+            res += " Viernes "
+            break;
+          case 6:
+            res += " Sabado "
+            break;
+        }
+      }
+      return res;
+    }
+  }
+
+  setRepetirHorario(value:boolean){
+    if(value){
+      return "SI"
+    } else {
+      return "NO"
+    }
   }
 
 }

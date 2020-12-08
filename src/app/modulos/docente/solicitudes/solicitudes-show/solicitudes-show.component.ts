@@ -135,7 +135,7 @@ export class SolicitudesShowComponent implements OnInit {
 
   get fechaAsesoria():string{
     if(!this.solicitud!=null && this.solicitud!=undefined){
-      return this.solicitud.horario_data.fecha_horario;
+      return this.solicitud.fecha_solicitada;
     }
     return '';
   }

@@ -85,6 +85,7 @@ export class MainDocenteComponent implements OnInit {
 
   loadCalendar() {
     this.calendarOptions = {
+      'locale':'es',
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -106,9 +107,11 @@ export class MainDocenteComponent implements OnInit {
 
         let agendadas = 0;
         let pendientes = 0;
+        let auxList =new Array<SolicitudResponse>();
 
         for(let i of listsolitudes){
           if(i.estado == 1){
+            auxList.push(i)
             pendientes++;
           } else if(i.estado == 2) {
             agendadas++;
@@ -117,7 +120,8 @@ export class MainDocenteComponent implements OnInit {
         this.cuentaAutorizaciones = pendientes;
         this.cuentaAsesorias = agendadas;
 
-        this.convertSolicitudesToEventos(listsolitudes);
+
+        this.convertSolicitudesToEventos(auxList);
       },
       (error) => {
       },

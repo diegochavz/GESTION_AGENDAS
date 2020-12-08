@@ -30,6 +30,7 @@ import {ValidateService} from "./services/validators";
 import { NotificationsComponent } from './util/notifications/notifications.component';
 import {MatCardModule} from "@angular/material/card";
 import {ConverterService} from "./services/converters.service";
+import {FormularioHelpsService} from "./services/formulario_helps.service";
 
 @NgModule({
   declarations: [NotificationsComponent],
@@ -61,6 +62,7 @@ import {ConverterService} from "./services/converters.service";
     SolicitudServiceImpl,
     NotificationsComponent,
     ConverterService,
+    FormularioHelpsService,
   ],
   entryComponents: [
   ]
