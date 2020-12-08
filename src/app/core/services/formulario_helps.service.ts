@@ -135,7 +135,7 @@ export class FormularioHelpsService {
   }
 
   sacarHorarioDeList(listHorario: Horario[], horario: Horario): Horario[]{
-    let auxList = new Array<Horario>();
+    let auxList = [];
     for(let i = 0; i<listHorario.length;i++){
       if(!(
         listHorario[i].fecha_inicial == horario.fecha_inicial &&
@@ -152,10 +152,13 @@ export class FormularioHelpsService {
     let auxLis = new Array<Horario>();
     for(let i = 0; i<list.length; i++){
       let horario = new Horario();
+      horario.id = list[i].id
+      horario.formulario = list[i].formulario
       horario.fecha_inicial = list[i].fecha_horario;
       horario.fecha_final = list[i].fecha_horario;
-      horario.inicio_horario = list[i].inicio_horario;
-      horario.fin_horario = list[i].fin_horario;
+      horario.inicio_horario = this.formatHora(list[i].inicio_horario);
+      horario.fin_horario = this.formatHora(list[i].fin_horario);
+      horario.disponibilidad = list[i].disponibilidad;
       auxLis.push(horario)
     }
     return auxLis;

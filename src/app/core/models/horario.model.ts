@@ -8,4 +8,6 @@ export default class Horario {
   fin_horario: string;
   se_repite:boolean;
   dias_semanas:number[];
+  formulario: number;
+  disponibilidad: boolean;
 }

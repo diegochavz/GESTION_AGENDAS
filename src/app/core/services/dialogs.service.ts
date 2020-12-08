@@ -26,6 +26,7 @@ import {LoadDataDocenteComponent} from "../../modulos/director/docentes/load-dat
 import Horario from "../models/horario.model";
 import {AddHorarioComponent} from "../../modulos/docente/formularios/add-horario/add-horario.component";
 import {EditHorariosComponent} from "../../modulos/docente/formularios/edit-horarios/edit-horarios.component";
+import {GetEditHorarioComponent} from "../../modulos/docente/formularios/get-edit-horario/get-edit-horario.component";
 
 @Injectable()
 export class DialogService {
@@ -205,6 +206,14 @@ export class DialogService {
     let dialogRef: MatDialogRef<EditHorariosComponent>;
     dialogRef = this.matDialog.open(EditHorariosComponent, {
       data: {horario, horariosOcupados,horariosAgregados }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  getEditHorarioDialog(horario: Horario, horariosEdit: Horario[] , horariosOcupados: Horario[], horariosAgregados: Horario[]) {
+    let dialogRef: MatDialogRef<GetEditHorarioComponent>;
+    dialogRef = this.matDialog.open(GetEditHorarioComponent, {
+      data: {horario, horariosEdit, horariosOcupados,horariosAgregados }
     });
     return dialogRef.afterClosed();
   }

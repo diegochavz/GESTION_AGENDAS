@@ -86,9 +86,7 @@ export class SetHorariosComponent implements OnInit {
     getLisHorariosOcupado() {
       this.loading = false;
       this.docenteService.getHorariosByDocente(this.authenticationService.currentUserValue.user_id).subscribe((res: HorarioResponse[]) => {
-        console.log(res)
         this.listHorarioOcupados = this.formularioHelps.parseListDocentesHorariosToHorario(res);
-        console.log(this.listHorarioOcupados)
       }, (error) => {
         this.toasterService.openSnackBarCumtom(error, 'error')
         this.loading = true;

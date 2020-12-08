@@ -21,6 +21,7 @@ import {AuthenticationServiceImpl} from "../../../../core/http/implement/authent
 import {TIPO_USER} from "../../../../core/constants/tipo_user.constants";
 import {URL_FORMULARIO} from "../../../../core/constants/url_formulario.constants";
 import {Router} from "@angular/router";
+import {FormularioHelpsService} from "../../../../core/services/formulario_helps.service";
 
 @Component({
   selector: 'app-formularios-edit',
@@ -49,13 +50,12 @@ export class FormulariosEditComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
 
+  listHorariosAdd: Horario[];
+  listHorariosEdit: Horario[];
+
   listProgramas: Array<Programa>;
 
-  listAllHorarioDocente: Array<Horario>
-
   urlFormulario: string;
-
-  validadorTimeOut: any;
 
   constructor(private _adapter: DateAdapter<any>,
               private _formBuilder: FormBuilder,
@@ -66,7 +66,8 @@ export class FormulariosEditComponent implements OnInit {
               private toasterService: ToasterService,
               private clipboardService: ClipboardService,
               private validate: ValidateService,
-              private authenticationService: AuthenticationServiceImpl) {
+              private authenticationService: AuthenticationServiceImpl,
+              private formularioHelps: FormularioHelpsService) {
     this.validate.validateTipoUser(authenticationService.currentUserValue.tipo_usuario, TIPO_USER.DOCENTE)
     this._adapter.setLocale('es');
     this.idFormulario = this.dataFormularioService.getDataFormulario();
@@ -75,8 +76,10 @@ export class FormulariosEditComponent implements OnInit {
     this.loading = false;
     this.listProgramas = [];
     this.urlFormulario = '';
-    this.listAllHorarioDocente = [];
     this.formEditFormulario = null;
+    this.editFormulario = new Formulario();
+    this.listHorariosAdd = [];
+    this.listHorariosEdit = [];
   }
 
   ngOnInit() {
@@ -91,67 +94,25 @@ export class FormulariosEditComponent implements OnInit {
       this.toasterService.openSnackBarCumtom(error,'error')
       this.loading = true;
     },()=>{
-      this.consultarHorarios();
       this.consultarPreguntas();
       this.establecerFechaMaxMin();
-      this.getLisAllHorarios();
       this.crearFormEditFormulario();
       this.listTipoDatos = this.getTipoDatos();
       this.listTipoCampos = this.getTipoCampos();
     })
   }
 
+  /****RECIBIR HORARIOS***/
+
+  getListHorariosAdd(listHorarios: Horario[]) {
+    this.listHorariosAdd = listHorarios;
+  }
+
+  getListHorariosEdit(listHorarios: Horario[]){
+    this.listHorariosEdit = listHorarios;
+  }
 
   /****CARGA VALORES INICIALES***/
-
-  getLisAllHorarios() {
-    if (this.editFormulario != null && this.editFormulario != undefined) {
-      this.docenteService.getHorariosByDocente(this.editFormulario.docente).subscribe((res: Horario[]) => {
-        this.listAllHorarioDocente = res;
-      }, () => {
-      })
-    }
-  }
-
-  consultarHorarios() {
-    if (this.editFormulario != null && this.editFormulario != undefined) {
-      this.loading = false;
-      this.formularioService.getHorariosByFormulario(this.editFormulario.id).subscribe(res => {
-         // this.listarHorarios(res);
-        }, () => {
-        }, () => {
-          this.loading = true;
-        }
-      )
-    }
-  }
-/*
-  listarHorarios(restHorarios: Horario[]) {
-    for (let i = 0; i < restHorarios.length; i++) {
-      let dateHorario = restHorarios[i].fecha_horario.split("-")
-      let dateAux = new Date(+dateHorario[0], +dateHorario[1] - 1, +dateHorario[2])
-      const horario = this._formBuilder.group(
-        {
-          cruce: false,
-          disponibilidad: [restHorarios[i].disponibilidad],
-          id_horario: [{value: restHorarios[i].id, disabled: !restHorarios[i].disponibilidad}],
-          fecha_horario: [{value: dateAux, disabled: !restHorarios[i].disponibilidad}],
-          inicio_horario: [{value: restHorarios[i].inicio_horario, disabled: !restHorarios[i].disponibilidad}],
-          fin_horario: [{value: restHorarios[i].fin_horario, disabled: !restHorarios[i].disponibilidad}],
-        });
-
-      horario.valueChanges.subscribe(res => {
-        if (res.inicio_horario >= res.fin_horario) {
-          horario.get('fin_horario').setErrors({'error': true})
-        } else {
-          horario.get('fin_horario').setErrors(null)
-          horario.get('fin_horario').setValidators([Validators.required])
-        }
-      });
-      this.horarios.push(horario);
-    }
-  }*/
-
 
   establecerFechaMaxMin() {
     if (this.editFormulario != null && this.editFormulario != undefined) {
@@ -338,66 +299,6 @@ export class FormulariosEditComponent implements OnInit {
     }
   }
 
-  /****CONFIGURACIÓN HORARIOS***/
-
-  get horarios(): FormArray {
-    return this.formEditFormulario.get('horarios') as FormArray;
-  }
-
-  agregarHorario() {
-    const horario = this._formBuilder.group({
-      cruce: false,
-      disponibilidad: true,
-      id_horario: null,
-      fecha_horario: '',
-      inicio_horario: '',
-      fin_horario: '',
-    });
-
-    horario.valueChanges.subscribe(res => {
-      if (res.inicio_horario >= res.fin_horario) {
-        horario.get('fin_horario').setErrors({'error': true})
-      } else {
-        horario.get('fin_horario').setErrors(null)
-        horario.get('fin_horario').setValidators([Validators.required])
-      }
-
-      if (res.fecha_horario != '' && res.inicio_horario != '' && res.fin_horario != '') {
-
-       /* this.validadorTimeOut = setTimeout(() => {
-          let data = horario.value;
-          let auxHor = new Horario(moment(data.fecha_horario).format("YYYY-MM-DD"), data.inicio_horario, data.fin_horario)
-          horario.get('cruce').setValue(this.validate.validarCruceFecha(auxHor, this.listAllHorarioDocente))
-          if (horario.get('cruce').value) {
-            horario.get('cruce').setErrors({'error-cruce': true})
-          } else {
-            horario.get('cruce').setErrors(null)
-          }
-        }, 2000);*/
-      }
-    });
-
-    this.horarios.push(horario);
-  }
-
-  stopTimeOut(){
-    clearTimeout(this.validadorTimeOut);
-  }
-
-
-  borrarHorario(indice) {
-    let aux = this.horarios.controls[indice].value
-    if (aux.id_horario != null) {
-      this.formularioService.deleteHorarioById(+aux.id_horario).subscribe(res => {
-      }, (error) => {
-        this.toasterService.openSnackBarCumtom(
-          error,
-          'error')
-      })
-    }
-    this.horarios.removeAt(indice)
-  }
-
   copiarURL() {
     this.clipboardService.copyFromContent(this.urlFormulario);
   }
@@ -422,48 +323,18 @@ export class FormulariosEditComponent implements OnInit {
     this.editFormulario.disponibilidad_inicio_formulario = moment(this.editFormulario.disponibilidad_inicio_formulario).format("YYYY-MM-DD")
     this.editFormulario.disponibilidad_fin_formulario = moment(this.editFormulario.disponibilidad_fin_formulario).format("YYYY-MM-DD")
 
-    this.getHorariosFromForm();
+    let auxList = new Array<Horario>();
+    for (let i = 0; i < this.listHorariosAdd.length; i++) {
+      let mm = this.formularioHelps.desglosarHorarios(this.listHorariosAdd[i]);
+      auxList = auxList.concat(mm)
+    }
+    let auxDes = this.formularioHelps.parseHorarioToTurnos(auxList, this.editFormulario.duracion, this.editFormulario.intervalo);
+    this.editFormulario.horarios = auxDes.concat(this.listHorariosEdit)
+
     this.getPreguntasFromForm();
 
   }
 
-  getHorariosFromForm() {
-    let horariosAux = new Array<Horario>();
-    for (let i = 0; i < this.horarios.controls.length; i++) {
-      let aux = this.horarios.controls[i].value;
-     // let hor = new Horario(moment(aux.fecha_horario).format("YYYY-MM-DD"), aux.inicio_horario, aux.fin_horario, aux.id_horario, aux.disponibilidad);
-      //horariosAux.push(hor)
-    }
-    this.editFormulario.horarios = horariosAux;
-    //this.calcularNuevosHorarios();
-  }
-
-  calcularNuevosHorarios() {
-    const horariosCal = this.editFormulario.horarios;
-    let horarioListAux = new Array<Horario>();
-    let duracionAux = this.editFormulario.duracion;
-    let intervaloAux = this.editFormulario.intervalo;
-/*
-    for (let i = 0; i < horariosCal.length; i++) {
-      if (horariosCal[i].disponibilidad == true) {
-        const dateHorario = moment(horariosCal[i].fecha_horario).format("YYYY-MM-DD");
-        const horaFinal = moment(horariosCal[i].fin_horario.replace(':', ''), "hmm");
-        let horaVariable = moment(horariosCal[i].inicio_horario.replace(':', ''), "hmm");
-
-        if (horaFinal.isSameOrAfter(horaVariable.clone().add(duracionAux, "minutes"))) {
-          while (horaFinal.isAfter(horaVariable)) {
-            let newH = horaVariable.clone().add(duracionAux, "minutes")
-            horarioListAux.push(new Horario(dateHorario, horaVariable.format("HH:mm"), newH.format("HH:mm")))
-            newH = newH.clone().add(intervaloAux, "minutes")
-            horaVariable = newH;
-          }
-        }
-      }
-
-    }*/
-
-    this.editFormulario.horarios = horarioListAux;
-  }
 
   getPreguntasFromForm() {
     let preguntasAux = new Array<Pregunta>();
@@ -501,39 +372,29 @@ export class FormulariosEditComponent implements OnInit {
   }
 
   registrarHorarioAtencion() {
-    let listadoHorarios = this.editFormulario.horarios;
+    console.log("horarios a registrar --> ",JSON.stringify(this.listHorariosAdd))
+    this.formularioService.addHorarioCrearbyFormulario(this.editFormulario.id,this.listHorariosAdd).subscribe(() => {
+    }, (error) => {
+      this.toasterService.openSnackBarCumtom(
+        error,
+        'error')
+    }, () => {
+    });
 
-    //BORRADO DE HORARIOS VIEJOS
-    let listAux = this.horarios.getRawValue()
-    for (let horarioControl of listAux) {
-      if (horarioControl.id_horario != null) {
-        if (horarioControl.disponibilidad == true) {
-          this.formularioService.deleteHorarioById(horarioControl.id_horario).subscribe(() => {
-            },
-            (error) => {
-              this.toasterService.openSnackBarCumtom(
-                error,
-                'error')
-
-            }, () => {
-            });
-        }
-      }
+    /*
+    for (let i = 0; i< this.listHorariosAdd.length; i++) {
+      let hor = this.listHorariosAdd[i];
+     // hor.formulario = this.editFormulario.id
+     // console.log(JSON.stringify(hor));
+      this.formularioService.addHorarioCrearbyFormulario(this.editFormulario.id,hor).subscribe(() => {
+      }, (error) => {
+        this.toasterService.openSnackBarCumtom(
+          error,
+          'error')
+      }, () => {
+      });
     }
-
-    setTimeout(() => {
-      //REGISTRO NUEVOS HORARIOS
-      for (let horarioList of listadoHorarios) {
-        this.formularioService.addHorariobyFormulario(this.editFormulario.id, horarioList).subscribe(() => {
-        }, (error) => {
-          this.toasterService.openSnackBarCumtom(
-            error,
-            'error')
-        }, () => {
-        });
-      }
-    }, 2000);
-
+    */
   }
 
   registrarPreguntas(): boolean {

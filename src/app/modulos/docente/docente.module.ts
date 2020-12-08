@@ -69,6 +69,8 @@ import { SetHorariosComponent } from './formularios/set-horarios/set-horarios.co
 import { AddHorarioComponent } from './formularios/add-horario/add-horario.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { EditHorariosComponent } from './formularios/edit-horarios/edit-horarios.component';
+import { GetHorariosComponent } from './formularios/get-horarios/get-horarios.component';
+import { GetEditHorarioComponent } from './formularios/get-edit-horario/get-edit-horario.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -138,6 +140,8 @@ FullCalendarModule.registerPlugins([
     SetHorariosComponent,
     AddHorarioComponent,
     EditHorariosComponent,
+    GetHorariosComponent,
+    GetEditHorarioComponent,
   ],
   entryComponents:[
     FormulariosDeleteComponent,

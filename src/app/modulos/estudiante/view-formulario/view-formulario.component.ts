@@ -92,7 +92,9 @@ export class ViewFormularioComponent implements OnInit {
     this.loading = true;
     this.nombreDocente = '';
     this.fechaEscogida = '';
+    console.log("Estoy entrando aquí")
     const uuid = this.route.snapshot.paramMap.get('enlace');
+    console.log(uuid)
     this.getFormulario(uuid);
     this.listProgramas = [];
     this.file = null;
@@ -125,10 +127,12 @@ export class ViewFormularioComponent implements OnInit {
 
   getFormulario(uuid) {
     this.loading = false;
+    console.log(uuid)
     this.formularioService.getFormularioByEnlace(uuid).subscribe((res: Array<FormularioResponse>) => {
       if (res != null && res != undefined) {
         if (res.length > 0) {
           this.formulario = res[0];
+          console.log(res[0])
           if (this.formulario.activo == 0) {
             this.routes.navigate(['/not-page'])
           }
