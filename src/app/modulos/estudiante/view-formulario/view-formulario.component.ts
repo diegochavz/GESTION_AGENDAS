@@ -30,6 +30,7 @@ import Programa from "../../../core/models/programa.model";
 import {ProgramaServiceImpl} from "../../../core/http/implement/programa.service.impl";
 import Turno from "../../../core/models/turno.model";
 import {v4 as uuidv4} from 'uuid';
+import {FormularioHelpsService} from "../../../core/services/formulario_helps.service";
 
 @Component({
   selector: 'app-view-formulario',
@@ -51,7 +52,7 @@ export class ViewFormularioComponent implements OnInit {
 
   listHorariosDisponibles: Array<Horario>;
 
-  listHorariosFormulario: Array<Turno>;
+  listHorariosFormulario: Array<Horario>;
 
   listPreguntasFormulario: Array<Pregunta>
 
@@ -80,7 +81,8 @@ export class ViewFormularioComponent implements OnInit {
               private solicitudService: SolicitudServiceImpl,
               private toasterService: ToasterService,
               private programaService: ProgramaServiceImpl,
-              private router: Router) {
+              private router: Router,
+              private formularioHelps: FormularioHelpsService) {
     this._adapter.setLocale('es');
     this.formulario = new FormularioResponse();
     this.listHorariosDisponibles = [];
@@ -92,9 +94,7 @@ export class ViewFormularioComponent implements OnInit {
     this.loading = true;
     this.nombreDocente = '';
     this.fechaEscogida = '';
-    console.log("Estoy entrando aquí")
     const uuid = this.route.snapshot.paramMap.get('enlace');
-    console.log(uuid)
     this.getFormulario(uuid);
     this.listProgramas = [];
     this.file = null;
@@ -127,12 +127,10 @@ export class ViewFormularioComponent implements OnInit {
 
   getFormulario(uuid) {
     this.loading = false;
-    console.log(uuid)
     this.formularioService.getFormularioByEnlace(uuid).subscribe((res: Array<FormularioResponse>) => {
       if (res != null && res != undefined) {
         if (res.length > 0) {
           this.formulario = res[0];
-          console.log(res[0])
           if (this.formulario.activo == 0) {
             this.routes.navigate(['/not-page'])
           }
@@ -184,10 +182,12 @@ export class ViewFormularioComponent implements OnInit {
   consultarHorarios() {
     if (Object.keys(this.formulario).length !== 0) {
       this.loading = false;
-      this.formularioService.getHorariosDisponiblesByFormulario(this.formulario.id).subscribe((res: Array<Turno>) => {
-        this.listHorariosFormulario = res;
-      }, () => {
-      }, () => {
+      this.formularioService.getHorariosByFormulario(this.formulario.id).subscribe((res: Array<Horario>)=>{
+        this.listHorariosFormulario = this.formularioHelps.parseListDocentesHorariosToHorario(res) ;
+      }, (error)=>{
+        this.toasterService.openSnackBarCumtom(error,'error')
+        this.loading = true;
+      }, ()=>{
         this.loading = true;
         this.showCalendar = true;
       })
@@ -256,8 +256,8 @@ export class ViewFormularioComponent implements OnInit {
     if (Object.keys(this.formulario).length !== 0) {
       if (this.listHorariosFormulario.length > 0) {
         for (let i of this.listHorariosFormulario) {
-          if (i.disponible == true) {
-            let dateAux = i.fecha.split("-");
+          if (i.disponibilidad == true) {
+            let dateAux = i.fecha_inicial.split("-");
             let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
             newFechasDisponibles.push(newD);
           }
@@ -280,17 +280,17 @@ export class ViewFormularioComponent implements OnInit {
       const horarios = this.listHorariosFormulario;
       if (horarios != undefined && horarios != null) {
         for (var i = 0; i < horarios.length; i++) {
-          if (horarios[i].disponible == true) {
-            let dateAux = horarios[i].fecha.split("-");
+          if (horarios[i].disponibilidad == true) {
+            let dateAux = horarios[i].fecha_inicial.split("-");
             let newD = new Date(+dateAux[0], (+dateAux[1] - 1), +dateAux[2])
             if ((moment(newD).date() == moment(fechaSeleccionada).date()) &&
               ((moment(newD).month()) == moment(fechaSeleccionada).month()) &&
               (moment(newD).year() == moment(fechaSeleccionada).year())) {
               let auxHorario = new Horario();
-              auxHorario.fecha_inicial = horarios[i].fecha;
+              auxHorario.fecha_inicial = horarios[i].fecha_inicial;
               auxHorario.fecha_final = auxHorario.fecha_inicial;
-              auxHorario.inicio_horario = horarios[i].hora_inicio;
-              auxHorario.fin_horario = horarios[i].hora_final;
+              auxHorario.inicio_horario = horarios[i].inicio_horario;
+              auxHorario.fin_horario = horarios[i].fin_horario;
               this.listHorariosDisponibles.push(auxHorario)
             }
           }
@@ -369,14 +369,23 @@ export class ViewFormularioComponent implements OnInit {
     this.step--;
   }
 
+  pesoArchivo = true;
   onFileChange(evt: any) {
     const target: DataTransfer = <DataTransfer>(evt.target);
     if (target.files.length == 1) {
       this.file = target.files[0]
+      let size = this.file.size;
+      //let MB = this.file.size /(1024 * 1024);
+      if(size<524288){
+       this.pesoArchivo = true;
+      } else {
+        this.pesoArchivo = false;
+      }
     }
   }
 
   onFormSubmit() {
+
     let formData = new FormData();
     formData.append('id_formulario', this.formulario.id + "")
     formData.append('id_docente', this.formulario.docente + "")
@@ -393,13 +402,11 @@ export class ViewFormularioComponent implements OnInit {
       resAux.push(res);
     }
     formData.append('respuestas', JSON.stringify(resAux))
-
     let auxEstudiantes = new Array<EstudianteResponse>()
     for (let i = 0; i < this.integrantes.controls.length; i++) {
       auxEstudiantes.push(<EstudianteResponse>Object.assign({}, this.integrantes.controls[i].value))
     }
     formData.append('estudiantes', JSON.stringify(auxEstudiantes))
-
     formData.append('es_virtual', this.formularioAddAsesoria.get('es_virtual').value)
 
 
