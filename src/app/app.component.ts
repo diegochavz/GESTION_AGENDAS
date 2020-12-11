@@ -18,6 +18,5 @@ export class AppComponent {
 
   @HostListener("window:beforeunload", ["$event"])
   beforeUnloadHander() {
-   this.auth.logout();
   }
 }
